@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --accent: #d9fb02;
+  --background: #fff;
+}
+
+body {
+  background: var(--background);
+}
