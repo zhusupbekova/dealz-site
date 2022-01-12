@@ -20,5 +20,9 @@ module.exports = {
       body: ["Synonym", "system-ui", "sans-serif"],
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/aspect-ratio"),
+  ],
 };

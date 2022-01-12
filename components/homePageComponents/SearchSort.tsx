@@ -1,32 +1,37 @@
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon, SearchIcon } from "@heroicons/react/outline";
+import {
+  BellIcon,
+  ChevronDownIcon,
+  SearchIcon,
+} from "@heroicons/react/outline";
 import { Fragment } from "react";
 import { classNames } from "../../utils/style";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Latest", href: "#", current: false },
 ];
 
 export function SearchSort() {
   return (
-    <div className="flex items-center justify-between border-b border-gray-200 pt-24 pb-4">
-      <div className="flex">
+    <div className="items-center justify-between border-b border-gray-200 pt-24 pb-4 grid grid-cols-1 gap-8 lg:grid-cols-6 xl:grid-cols-8">
+      <button className="inline-flex justify-between items-center h-full md:ml-0 border rounded px-6 py-2 lg:col-span-2 xl:col-span-2 text-white bg-primary">
+        <p className="text-left text-lg font-semibold leading-tight">
+          Join 3248 others <br /> getting deals alert
+        </p>{" "}
+        <BellIcon className="h-10 w-10" />
+      </button>
+
+      <div className="flex h-full lg:col-span-3 xl:col-span-5">
         <form
-          className="w-full flex md:ml-0 border rounded-sm px-4 py-2"
+          className="w-full h-full flex md:ml-0 border rounded-sm px-4 py-2"
           action="#"
           method="GET"
         >
           <label htmlFor="desktop-search-field" className="sr-only">
             Search deals
           </label>
-          <label htmlFor="mobile-search-field" className="sr-only">
-            Search deals
-          </label>
-          <div className="relative w-full text-gray-400 focus-within:text-gray-600">
+          <div className="relative w-full h-full text-gray-400 focus-within:text-gray-600">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
               <SearchIcon
                 className="flex-shrink-0 h-5 w-5"
@@ -36,17 +41,17 @@ export function SearchSort() {
             <input
               name="mobile-search-field"
               id="mobile-search-field"
-              className="h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400 sm:hidden"
+              className="h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400"
               placeholder="Search"
               type="search"
             />
-            <input
+            {/* <input
               name="desktop-search-field"
               id="desktop-search-field"
               className="hidden h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400 sm:block"
               placeholder="Search deals"
               type="search"
-            />
+            /> */}
           </div>
         </form>
       </div>

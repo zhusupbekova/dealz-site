@@ -1,5 +1,5 @@
 import React, { Fragment, PropsWithChildren, useEffect } from "react";
-import useSWR from "swr";
+import useSWR, { SWRResponse } from "swr";
 import qs from "qs";
 
 import { Popover, Transition } from "@headlessui/react";
@@ -17,6 +17,9 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 
 import { classNames } from "../../utils/style";
 import { brand, navigation } from "../../config";
+import { ICategories, ICategoryStats } from "../../utils/schema";
+import { fetcher } from "../../utils/fetcher";
+import { Loading } from "../common/LoadingComponent";
 
 const query = qs.stringify(
   {
@@ -28,26 +31,22 @@ const query = qs.stringify(
 );
 
 export function Header() {
-  //   const { data: categories, error: categoriesError } = useSWR<any>(
-  //     `/api/c/categories/stats?${query}`,
-  //     fetcher
-  //   );
+  // const { data: categories, error }: SWRResponse<ICategories, Error> = useSWR(
+  //   `/api/categories`,
+  //   fetcher
+  // );
 
-  //   console.log(categories);
-  //   if (categoriesError) return <div>failed to load</div>;
-  //   if (!categories) return <div>loading...</div>;
-
-  const categories = {
-    data: [
-      { title: "business", slug: "business", num_of_deals: 6 },
-      { title: "vpn", slug: "vpn", num_of_deals: 10 },
-      { title: "affiliate", slug: "affiliate", num_of_deals: 3 },
-    ],
-  };
+  const {
+    data: categories,
+    error: categoriesError,
+  }: SWRResponse<ICategoryStats[], Error> = useSWR(
+    `/api/c/categories/stats`,
+    fetcher
+  );
 
   return (
     <Popover className="relative bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className=" max-w-screen-2xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <a href="/">
@@ -101,22 +100,26 @@ export function Header() {
                         <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
                           <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                             <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 lg:grid-cols-2">
-                              {categories.data.map((item) => (
-                                <a
-                                  key={item.title}
-                                  href={`/categories/${item.slug}`}
-                                  className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
-                                >
-                                  <div className="flex">
-                                    <p className="text-base font-medium text-gray-900">
-                                      {item.title}
-                                    </p>
-                                    <p className="ml-1 text-sm text-gray-500">
-                                      {item.num_of_deals}
-                                    </p>
-                                  </div>
-                                </a>
-                              ))}
+                              {categories ? (
+                                categories.map((item) => (
+                                  <a
+                                    key={item.title}
+                                    href={`/categories/${item.slug}`}
+                                    className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
+                                  >
+                                    <div className="flex">
+                                      <p className="text-base font-medium text-gray-900">
+                                        {item.title}
+                                      </p>
+                                      <p className="ml-1 text-sm text-gray-500">
+                                        {item.dealsCount ?? null}
+                                      </p>
+                                    </div>
+                                  </a>
+                                ))
+                              ) : (
+                                <Loading />
+                              )}
                             </div>
                           </div>
                         </Popover.Panel>
@@ -217,7 +220,7 @@ export function Header() {
                               <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
                                 <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                                   <div className="relative grid gap-4 bg-white px-5 py-6 sm:gap-8 sm:p-8 grid-cols-2">
-                                    {categories.data.map((item) => (
+                                    {categories?.map((item) => (
                                       <a
                                         key={item.title}
                                         href={`/categories/${item.slug}`}
@@ -228,7 +231,7 @@ export function Header() {
                                             {item.title}
                                           </p>
                                           <p className="ml-1 text-sm text-gray-500">
-                                            {item.num_of_deals}
+                                            {item.dealsCount}
                                           </p>
                                         </div>
                                       </a>

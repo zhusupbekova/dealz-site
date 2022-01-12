@@ -4,10 +4,10 @@ import { brand } from "../../config";
 export function Hero() {
   return (
     <div className="text-center">
-      <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-        <span className="block xl:inline">{brand.slogan1}</span>{" "}
-        <span className="block text-primary xl:inline">{brand.slogan2}</span>
-      </h1>
+      <h1
+        className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl mb-6"
+        dangerouslySetInnerHTML={{ __html: brand.slogan }}
+      ></h1>
       <div className="mt-5  mx-auto sm:flex sm:justify-center md:mt-8">
         <div className="rounded-md shadow border">
           <a

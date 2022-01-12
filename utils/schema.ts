@@ -1,0 +1,110 @@
+export interface ICategory {
+  id: number;
+  attributes: {
+    title: string;
+    slug: string;
+    dealsCount: number;
+    createdAt: Date;
+    updatedAt: Date;
+    publishedAt: Date;
+  };
+}
+
+export interface ICategoryStats {
+  id: number;
+  dealsCount: string;
+  title: string;
+  slug: string;
+}
+
+export interface ICategories {
+  data: ICategory[];
+}
+
+export interface IMediaFormat {
+  ext: ".png" | ".jpeg" | ".jpg";
+  url: string;
+  hash: string;
+  mime: string;
+  name: string;
+  path: null | string;
+  size: number;
+  width: number;
+  height: number;
+}
+
+export interface IMedia {
+  data: {
+    id: number;
+    attributes: {
+      name: string;
+      alternativeText: string;
+      caption: string;
+      width: number;
+      height: number;
+      formats: {
+        large: IMediaFormat;
+        small: IMediaFormat;
+        medium: IMediaFormat;
+        thumbnail: IMediaFormat;
+      };
+      hash: string;
+      ext: ".png" | ".jpeg" | ".jpg";
+      mime: string;
+      size: number;
+      url: string;
+      previewUrl: null | string;
+      provider: "local" | any;
+      provider_metadata: null | any;
+      createdAt: Date;
+      updatedAt: Date;
+    };
+  };
+}
+
+export interface IDeal {
+  id: number;
+  attributes: {
+    title: string;
+    description: string;
+    slug: string;
+    used_times: null | number;
+    createdAt: Date;
+    updatedAt: Date;
+    publishedAt: Date;
+    type: "deal" | "coupon";
+    affiliate_link: null | string;
+    coupon_code: null | string;
+    featured: null | boolean;
+    categories: ICategories;
+    banner: IMedia;
+    brand: IBrand;
+  };
+}
+
+export interface IDeals {
+  data: IDeal[];
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}
+
+export interface IBrand {
+  data: {
+    id: number;
+    attributes: {
+      name: string;
+      slogan: string;
+      logo: IMedia;
+      createdAt: Date;
+      updatedAt: Date;
+      publishedAt: Date;
+      slug: string;
+    };
+  };
+}
