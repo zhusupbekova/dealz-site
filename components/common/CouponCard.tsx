@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { IDeal } from "../../utils/schema";
 import { classNames } from "../../utils/style";
+import { Button } from "./Button";
+import { CategoryTag } from "./CategoryTag";
 
 export function CouponCard({ item }: { item: IDeal }) {
   const [isFavourite, setIsFavourite] = useState(false);
 
   return (
-    <Link href={`/${item.attributes.slug}`}>
+    <Link href={`/deals/${item.id}`}>
       <div
         key={item.id}
         className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
@@ -22,24 +24,19 @@ export function CouponCard({ item }: { item: IDeal }) {
           />
           <div className="flex">
             <img
-              className=" absolute right-2  translate-y-2/4  h-12 w-12 rounded-full ring-4 ring-white sm:h-16 sm:w-16"
+              className="absolute right-2 translate-y-2/4  h-12 w-12 rounded-full ring-4 ring-white sm:h-16 sm:w-16"
               src={_.pick(
                 item,
                 "attributes.brand.data.attributes.logo.data.attributes.url"
               )}
-              alt=""
+              alt={`${item.attributes.brand.data?.attributes.name}-logo`}
             />
           </div>
         </div>
 
         <div className="p-4 space-x-2 flex border-t">
           {item.attributes.categories.data.map((category) => (
-            <span
-              className="border rounded-sm px-2 py-1 text-xs tracking-wide text-gray-400"
-              key={category.id}
-            >
-              {category.attributes.title}
-            </span>
+            <CategoryTag category={category} />
           ))}
         </div>
         <div className="flex-1 p-4 space-y-2 flex flex-col border-t">
@@ -47,7 +44,7 @@ export function CouponCard({ item }: { item: IDeal }) {
             {item.attributes.title}
           </h3>
           <p className="text-sm text-gray-500">
-            {item.attributes.brand?.data.attributes.slogan}
+            {item.attributes.brand?.data?.attributes.slogan}
           </p>
           <div className="flex-1 flex flex-col justify-end">
             <p className="text-sm italic text-gray-500">
@@ -57,7 +54,7 @@ export function CouponCard({ item }: { item: IDeal }) {
         </div>
 
         <div className="flex items-center p-2 bottom-0">
-          <button
+          {/* <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
@@ -71,10 +68,21 @@ export function CouponCard({ item }: { item: IDeal }) {
               )}
               aria-hidden="true"
             />
-          </button>
-          <button className="flex-1 ml-2 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primaryHover">
+          </button> */}
+          {/* <button className="flex-1 ml-2 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primaryHover">
             Use this {item.attributes.type}
-          </button>
+          </button> */}
+          <Button.Like
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsFavourite(!isFavourite);
+            }}
+            isFavourite={isFavourite}
+          />
+          <Button.Primary className="flex-1">
+            {" "}
+            Use this {item.attributes.type}
+          </Button.Primary>
         </div>
       </div>
     </Link>

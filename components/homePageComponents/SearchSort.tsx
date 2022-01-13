@@ -2,10 +2,12 @@ import { Menu, Transition } from "@headlessui/react";
 import {
   BellIcon,
   ChevronDownIcon,
+  PlusSmIcon,
   SearchIcon,
 } from "@heroicons/react/outline";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { classNames } from "../../utils/style";
+import { FilterMobile } from "./Filter";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -13,16 +15,18 @@ const sortOptions = [
 ];
 
 export function SearchSort() {
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
   return (
-    <div className="items-center justify-between border-b border-gray-200 pt-24 pb-4 grid grid-cols-1 gap-8 lg:grid-cols-6 xl:grid-cols-8">
-      <button className="inline-flex justify-between items-center h-full md:ml-0 border rounded px-6 py-2 lg:col-span-2 xl:col-span-2 text-white bg-primary">
+    <div className="items-center justify-between border-b border-gray-200 pt-24 pb-4 grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+      <button className="inline-flex justify-between items-center h-full md:ml-0 border rounded px-6 py-2 col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-2 text-white bg-primary">
         <p className="text-left text-lg font-semibold leading-tight">
           Join 3248 others <br /> getting deals alert
         </p>{" "}
         <BellIcon className="h-10 w-10" />
       </button>
 
-      <div className="flex h-full lg:col-span-3 xl:col-span-5">
+      <div className="flex h-full col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-5">
         <form
           className="w-full h-full flex md:ml-0 border rounded-sm px-4 py-2"
           action="#"
@@ -45,18 +49,33 @@ export function SearchSort() {
               placeholder="Search"
               type="search"
             />
-            {/* <input
-              name="desktop-search-field"
-              id="desktop-search-field"
-              className="hidden h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400 sm:block"
-              placeholder="Search deals"
-              type="search"
-            /> */}
           </div>
         </form>
       </div>
+      <FilterMobile
+        mobileFiltersOpen={mobileFiltersOpen}
+        setMobileFiltersOpen={setMobileFiltersOpen}
+      />
+      {/* <aside>
+        <h2 className="sr-only">Filters</h2> */}
 
-      <Menu as="div" className="relative inline-block text-left ml-8">
+      <button
+        type="button"
+        className="inline-flex items-center col-span-1 md:col-span-2 lg:hidden"
+        onClick={() => setMobileFiltersOpen(true)}
+      >
+        <span className="text-base font-medium text-gray-700">Filters</span>
+        <PlusSmIcon
+          className="flex-shrink-0 ml-1 h-5 w-5 text-gray-400"
+          aria-hidden="true"
+        />
+      </button>
+      {/* </aside> */}
+
+      <Menu
+        as="div"
+        className="relative inline-block text-right sm:text-left col-span-1 md:col-span-2 lg:col-span-1"
+      >
         <div>
           <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
             Sort

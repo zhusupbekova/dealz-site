@@ -22,7 +22,6 @@ export const footer = {
     { name: "Terms and Condition", href: "#" },
     { name: "Privacy Policy", href: "#" },
     { name: "Cookie Notice", href: "#" },
-    { name: "API Status", href: "#" },
   ],
   social: [
     {

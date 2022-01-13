@@ -12,13 +12,13 @@ export function Layout({ children }: PropsWithChildren<{}>) {
   const router = useRouter();
 
   return (
-    <div className="h-screen">
+    <div className="h-screen flex flex-col justify-between">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main className="mt-16 mx-auto  max-w-screen-2xl px-4 sm:mt-24">
+      <main className="mt-16 mx-auto w-full max-w-screen-2xl px-4 sm:mt-24">
         {children}
       </main>
 

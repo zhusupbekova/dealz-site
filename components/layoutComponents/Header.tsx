@@ -20,6 +20,7 @@ import { brand, navigation } from "../../config";
 import { ICategories, ICategoryStats } from "../../utils/schema";
 import { fetcher } from "../../utils/fetcher";
 import { Loading } from "../common/LoadingComponent";
+import { Button } from "../common/Button";
 
 const query = qs.stringify(
   {
@@ -46,7 +47,7 @@ export function Header() {
 
   return (
     <Popover className="relative bg-white">
-      <div className=" max-w-screen-2xl mx-auto px-4 sm:px-6">
+      <div className=" max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <a href="/">
@@ -145,12 +146,16 @@ export function Header() {
             >
               Sign in
             </a>
-            <a
+            {/* <a
               href="#"
               className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primaryHover"
             >
               Sign up
-            </a>
+            </a> */}
+
+            <Button.Primary href={"#"} className="ml-8">
+              Sign up
+            </Button.Primary>
           </div>
         </div>
       </div>
@@ -189,7 +194,7 @@ export function Header() {
                 <nav className="grid gap-y-8">
                   {navigation.map((item) =>
                     item.name.toLowerCase().includes("categories") ? (
-                      <Popover className="relative">
+                      <Popover className="relative" key={item.href}>
                         {({ open }) => (
                           <>
                             <Popover.Button
@@ -246,6 +251,7 @@ export function Header() {
                     ) : (
                       <a
                         href={item.href}
+                        key={item.href}
                         className="text-base font-medium text-gray-900 hover:text-gray-700"
                       >
                         {item.name}

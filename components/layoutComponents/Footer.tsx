@@ -8,8 +8,8 @@ export function Footer() {
         Footer
       </h2>
       <div className=" max-w-screen-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <div className="space-y-8 xl:col-span-1">
+        <div className="md:grid md:grid-cols-3 md:gap-8">
+          <div className="space-y-8 md:col-span-1">
             <img className="h-10" src={brand.logo} alt={brand.name} />
             <p
               className="text-gray-500 text-base"
@@ -28,13 +28,13 @@ export function Footer() {
               ))}
             </div>
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+          <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 md:col-span-2">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
                   Links
                 </h3>
-                <ul role="list" className="mt-4 space-y-4">
+                <ul role="list" className="mt-4 space-y-2">
                   {footer.links.map((item) => (
                     <li key={item.name}>
                       <a
@@ -53,7 +53,7 @@ export function Footer() {
                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
                   Legal
                 </h3>
-                <ul role="list" className="mt-4 space-y-4">
+                <ul role="list" className="mt-4 space-y-2">
                   {footer.legal.map((item) => (
                     <li key={item.name}>
                       <a

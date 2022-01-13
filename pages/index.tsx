@@ -18,15 +18,7 @@ import { classNames } from "../utils/style";
 import { ICategories, IDeals } from "../utils/schema";
 import { Filter, FilterMobile } from "../components/homePageComponents/Filter";
 import { Loading } from "../components/common/LoadingComponent";
-
-const query = qs.stringify(
-  {
-    populate: ["categories", "brand", "brand.logo"],
-  },
-  {
-    encodeValuesOnly: true,
-  }
-);
+import { dealsQuery } from "../utils/queries";
 
 export default function Home() {
   return (
@@ -39,9 +31,9 @@ export default function Home() {
 }
 
 function Gallery() {
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  // const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { data: deals, error }: SWRResponse<IDeals, Error> = useSWR(
-    `/api/deals?${query}`,
+    `/api/deals?${dealsQuery}`,
     fetcher
   );
 
@@ -50,14 +42,14 @@ function Gallery() {
   return (
     <div className="bg-white">
       <div>
-        <FilterMobile
+        {/* <FilterMobile
           mobileFiltersOpen={mobileFiltersOpen}
           setMobileFiltersOpen={setMobileFiltersOpen}
-        />
+        /> */}
 
         <main className="mx-auto">
           <div className="pt-12 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
-            <aside>
+            {/* <aside>
               <h2 className="sr-only">Filters</h2>
 
               <button
@@ -74,10 +66,8 @@ function Gallery() {
                 />
               </button>
 
-              {/* <form className="divide-y divide-gray-200 space-y-10"> */}
-              <Filter />
-              {/* </form> */}
-            </aside>
+            </aside> */}
+            <Filter />
 
             <section
               aria-labelledby="product-heading"
@@ -121,69 +111,3 @@ function Gallery() {
   }
   ```
 */
-
-const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
-const navigation = {
-  categories: [
-    {
-      name: "Women",
-      featured: [
-        { name: "Sleep", href: "#" },
-        { name: "Swimwear", href: "#" },
-        { name: "Underwear", href: "#" },
-      ],
-      collection: [
-        { name: "Everything", href: "#" },
-        { name: "Core", href: "#" },
-        { name: "New Arrivals", href: "#" },
-        { name: "Sale", href: "#" },
-      ],
-      categories: [
-        { name: "Basic Tees", href: "#" },
-        { name: "Artwork Tees", href: "#" },
-        { name: "Bottoms", href: "#" },
-        { name: "Underwear", href: "#" },
-        { name: "Accessories", href: "#" },
-      ],
-      brands: [
-        { name: "Full Nelson", href: "#" },
-        { name: "My Way", href: "#" },
-        { name: "Re-Arranged", href: "#" },
-        { name: "Counterfeit", href: "#" },
-        { name: "Significant Other", href: "#" },
-      ],
-    },
-    {
-      name: "Men",
-      featured: [
-        { name: "Casual", href: "#" },
-        { name: "Boxers", href: "#" },
-        { name: "Outdoor", href: "#" },
-      ],
-      collection: [
-        { name: "Everything", href: "#" },
-        { name: "Core", href: "#" },
-        { name: "New Arrivals", href: "#" },
-        { name: "Sale", href: "#" },
-      ],
-      categories: [
-        { name: "Artwork Tees", href: "#" },
-        { name: "Pants", href: "#" },
-        { name: "Accessories", href: "#" },
-        { name: "Boxers", href: "#" },
-        { name: "Basic Tees", href: "#" },
-      ],
-      brands: [
-        { name: "Significant Other", href: "#" },
-        { name: "My Way", href: "#" },
-        { name: "Counterfeit", href: "#" },
-        { name: "Re-Arranged", href: "#" },
-        { name: "Full Nelson", href: "#" },
-      ],
-    },
-  ],
-  pages: [
-    { name: "Company", href: "#" },
-    { name: "Stores", href: "#" },
-  ],
-};
