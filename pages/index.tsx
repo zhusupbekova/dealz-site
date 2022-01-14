@@ -67,7 +67,9 @@ function Gallery() {
               </button>
 
             </aside> */}
-            <Filter />
+            <div>
+              <Filter />
+            </div>
 
             <section
               aria-labelledby="product-heading"

@@ -73,7 +73,6 @@ export function FilterMobile({
         checked: false,
       })) ?? [],
   };
-  console.log(categoriesFilter);
 
   return (
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -103,7 +102,7 @@ export function FilterMobile({
           leaveFrom="translate-x-0"
           leaveTo="translate-x-full"
         >
-          <div className="ml-auto relative max-w-xs w-full h-full bg-white shadow-xl py-4 pb-6 flex flex-col overflow-y-auto">
+          <div className=" ml-auto relative max-w-xs w-full h-full bg-white shadow-xl py-4 pb-6 flex flex-col overflow-y-auto">
             <div className="px-4 flex items-center justify-between">
               <h2 className="text-lg font-medium text-gray-900">Filters</h2>
               <button
@@ -226,7 +225,7 @@ export function Filter({}: IFilterProps) {
   };
 
   return (
-    <div className="hidden lg:block bg-gray-100 p-4 border rounded">
+    <div className="sticky top-12 hidden lg:block bg-gray-100 p-4 border rounded">
       <form className="hidden lg:block">
         <div key="featured" className="flex items-center justify-between py-6">
           <label

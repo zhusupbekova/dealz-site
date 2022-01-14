@@ -1,9 +1,11 @@
 import { Transition, Dialog } from "@headlessui/react";
+import * as _ from "lodash";
 import { ExclamationIcon } from "@heroicons/react/outline";
 import { CheckCircleIcon, CheckIcon } from "@heroicons/react/solid";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { brand } from "../../config";
 import { IDeal } from "../../utils/schema";
+import { CouponBrandLogo } from "./CouponBrandLogo";
 
 interface ICouponnModal {
   open?: boolean;
@@ -15,15 +17,9 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
   const [copyButtonText, setCopyButtonText] = useState("Copy");
   const copyMeOnClipboard = () => {
     var copyText = document.getElementById("couponCode").innerText;
-    console.log(copyText);
-    /* Select the text field */
-    // copyText.select();
-    // copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
-    /* Copy the text inside the text field */
     navigator.clipboard.writeText(copyText);
 
-    /* Alert the copied text */
     setCopyButtonText("Copied");
   };
 
@@ -72,8 +68,21 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                     alt={brand.name}
                   />
                 </div>
-                <div className="my-3 text-center sm:my-14 sm:mx-4">
-                  <Dialog.Title as="h3" className="text-gray-900">
+                <div className="mt-3 mb-3 text-center sm:mt-14 sm:mb-10 sm:mx-4">
+                  <Dialog.Title
+                    as="h3"
+                    className="relative text-gray-900 py-6 border rounded-md"
+                  >
+                    <CouponBrandLogo
+                      url={
+                        item.attributes.brand.data.attributes.logo.data
+                          .attributes.url
+                      }
+                      name={item.attributes.brand.data.attributes.name}
+                      className={
+                        "absolute translate-x-1/2 -translate-y-1/3 top-0 right-0 "
+                      }
+                    />
                     <h2 className="text-xl leading-6 font-medium">
                       {item.attributes.title}
                     </h2>
@@ -116,14 +125,9 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                 </div>
               </div>
               <div className="px-4">
-                {/* <button
-                  type="button"
-                  className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:text-sm"
-                  //   onClick={() => setOpen(false)}
-                ></button> */}
                 <a
                   href="#_"
-                  className="relative w-full inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-primary rounded-md shadow-md group"
+                  className="relative w-full inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-white bg-primary transition duration-300 ease-out border-2 border-primary rounded-md shadow-md group"
                 >
                   <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-primary group-hover:translate-x-0 ease">
                     <svg
@@ -141,7 +145,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                       ></path>
                     </svg>
                   </span>
-                  <span className="absolute flex items-center justify-center w-full h-full text-primary transition-all duration-300 transform group-hover:translate-x-full ease">
+                  <span className="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform group-hover:translate-x-full ease">
                     Go to {item.attributes.brand.data?.attributes.name}
                   </span>
                   <span className="relative invisible">
@@ -159,7 +163,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                 </div>
               </div>
               <div className="w-full bg-gray-200 absolute bottom-0 left-0 p-6 flex items-center justify-between text-xs text-gray-400">
-                <a>{item.attributes.type} not working?</a>
+                <a>{_.capitalize(item.attributes.type)} not working?</a>
                 <a>Terms & Conditions</a>
               </div>
             </div>

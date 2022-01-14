@@ -1,15 +1,19 @@
+import Link from "next/link";
 import { ICategory } from "../../utils/schema";
 
 interface ICategoryTagProps {
   category: ICategory;
 }
+
 export function CategoryTag({ category }: ICategoryTagProps) {
   return (
-    <span
-      className="border rounded-sm px-2 py-1 text-xs tracking-wide text-gray-400"
-      key={category.id}
-    >
-      {category.attributes.title}
-    </span>
+    <Link href={`/?categories=${category.attributes.slug}`}>
+      <span
+        className="border rounded-sm px-2 py-1 text-xs tracking-wide text-gray-400 cursor-pointer"
+        key={category.id}
+      >
+        {category.attributes.title}
+      </span>
+    </Link>
   );
 }

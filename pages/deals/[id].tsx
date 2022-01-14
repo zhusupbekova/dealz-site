@@ -11,7 +11,7 @@ import { fetcher } from "../../utils/fetcher";
 import { dealsQuery } from "../../utils/queries";
 import { IDeal, IDeals } from "../../utils/schema";
 import { CategoryTag } from "../../components/common/CategoryTag";
-import { CouponModal } from "../../components/common/CouponModal";
+import { CouponModal } from "../../components/couponCardComponents/CouponModal";
 
 interface IDealDetailResponse {
   data: IDeal;
@@ -24,7 +24,8 @@ export default function DealDetailPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { id } = router.query;
-  console.log(id);
+
+  //static
   const { data: deal, error }: SWRResponse<IDealDetailResponse, Error> = useSWR(
     id ? `/api/deals/${id}?${dealsQuery}` : null,
     fetcher
