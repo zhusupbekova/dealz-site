@@ -6,9 +6,11 @@ import { IDeal } from "../../utils/schema";
 import { classNames } from "../../utils/style";
 import { Button } from "./Button";
 import { CategoryTag } from "./CategoryTag";
+import { CouponModal } from "./CouponModal";
 
 export function CouponCard({ item }: { item: IDeal }) {
   const [isFavourite, setIsFavourite] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <Link href={`/deals/${item.id}`}>
@@ -79,11 +81,18 @@ export function CouponCard({ item }: { item: IDeal }) {
             }}
             isFavourite={isFavourite}
           />
-          <Button.Primary className="flex-1">
+          <Button.Primary
+            className="flex-1"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsModalOpen(true);
+            }}
+          >
             {" "}
             Use this {item.attributes.type}
           </Button.Primary>
         </div>
+        <CouponModal open={isModalOpen} setOpen={setIsModalOpen} item={item} />
       </div>
     </Link>
   );
