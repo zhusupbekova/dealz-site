@@ -11,6 +11,7 @@ import { fetcher } from "../../utils/fetcher";
 import { dealsQuery } from "../../utils/queries";
 import { IDeal, IDeals } from "../../utils/schema";
 import { CategoryTag } from "../../components/common/CategoryTag";
+import { CouponModal } from "../../components/common/CouponModal";
 
 interface IDealDetailResponse {
   data: IDeal;
@@ -20,6 +21,8 @@ interface IDealDetailResponse {
 export default function DealDetailPage() {
   const router = useRouter();
   const [isFavourite, setIsFavourite] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { id } = router.query;
   console.log(id);
   const { data: deal, error }: SWRResponse<IDealDetailResponse, Error> = useSWR(
@@ -54,7 +57,13 @@ export default function DealDetailPage() {
                   </p>
                 </div>
               </div>
-              <Button.Primary className="animate-pulse w-full ">
+              <Button.Primary
+                className="animate-pulse w-full "
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsModalOpen(true);
+                }}
+              >
                 Use this {deal.data.attributes.type}
               </Button.Primary>
               <Button.Like
@@ -66,6 +75,11 @@ export default function DealDetailPage() {
               >
                 Save{isFavourite ? "d" : ""} for later
               </Button.Like>
+              <CouponModal
+                open={isModalOpen}
+                setOpen={setIsModalOpen}
+                item={deal.data}
+              />
             </div>
           </div>
 
