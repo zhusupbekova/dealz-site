@@ -11,7 +11,7 @@ export function CouponBrandLogo({ url, name, className }: ICouponBrandLogo) {
   return (
     <div
       className={classNames(
-        "overflow-hidden h-12 w-12 rounded-full ring-4 ring-white sm:h-16 sm:w-16 bg-gray-200",
+        "overflow-hidden h-12 w-12 rounded-full sm:h-16 sm:w-16 bg-gray-100",
         className ? className : ""
       )}
     >

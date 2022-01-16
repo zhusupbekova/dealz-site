@@ -162,7 +162,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                   </p>
                 </div>
               </div>
-              <div className="w-full bg-gray-200 absolute bottom-0 left-0 p-6 flex items-center justify-between text-xs text-gray-400">
+              <div className="w-full bg-gray-100 absolute bottom-0 left-0 p-6 flex items-center justify-between text-xs text-gray-400">
                 <a>{_.capitalize(item.attributes.type)} not working?</a>
                 <a>Terms & Conditions</a>
               </div>

@@ -2,6 +2,23 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, HeartIcon, ShareIcon } from "@heroicons/react/solid";
 import { Fragment } from "react";
 import { classNames } from "../../utils/style";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  LineShareButton,
+  LinkedinShareButton,
+  PinterestShareButton,
+  RedditShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  ViberShareButton,
+  VKShareButton,
+  WhatsappShareButton,
+  EmailIcon,
+  FacebookIcon,
+  PinterestIcon,
+  TelegramIcon,
+} from "react-share";
 
 interface IButtonProps {
   children?: React.ReactNode;
@@ -12,6 +29,11 @@ interface IButtonProps {
 
 interface ILikeButtonProps {
   isFavourite: boolean;
+}
+
+interface IShareButtonProps {
+  dealUrl: string;
+  mediaUrl: string;
 }
 
 const Primary: React.FC<IButtonProps> = ({
@@ -88,22 +110,58 @@ const Like: React.FC<IButtonProps & ILikeButtonProps> = ({
   );
 };
 
-const socialOptions = [];
+const shareSocialOptions = [
+  {
+    key: "email",
+    button: (props?) => (
+      <EmailShareButton url={props.url} className="h-full">
+        <EmailIcon round={true} className="h-6 w-6" />{" "}
+      </EmailShareButton>
+    ),
+  },
+  {
+    key: "facebook",
+    button: (props?) => (
+      <FacebookShareButton url={props.url} className="h-full">
+        <FacebookIcon round={true} className="h-6 w-6" />{" "}
+      </FacebookShareButton>
+    ),
+  },
+  {
+    key: "pinterest",
+    button: (props?) => (
+      <PinterestShareButton
+        url={props.url}
+        className="h-full"
+        media={props.mediaUrl}
+      >
+        <PinterestIcon round={true} className="h-6 w-6" />{" "}
+      </PinterestShareButton>
+    ),
+  },
+  {
+    key: "telegram",
+    button: (props?) => (
+      <TelegramShareButton url={props.url} className="h-full">
+        <TelegramIcon round={true} className="h-6 w-6" />{" "}
+      </TelegramShareButton>
+    ),
+  },
+];
 
-const Share: React.FC<IButtonProps> = ({
+const Share: React.FC<IButtonProps & IShareButtonProps> = ({
   onClick,
   href,
   className,
   children,
+  dealUrl,
+  mediaUrl,
 }) => {
   return (
     <Menu as="div" className="relative inline-block text-left ml-8">
-      <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+      <Menu.Button className="whitespace-nowrap group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
         <ShareIcon
-          className={classNames(
-            // isFavourite ? "text-red-500" : "text-gray-400",
-            "flex-shrink-0 h-6 w-6 mx-2 text-gray-500"
-          )}
+          className={classNames("flex-shrink-0 h-6 w-6 mx-2 text-gray-500")}
           aria-hidden="true"
         />
         Share this deal
@@ -118,23 +176,21 @@ const Share: React.FC<IButtonProps> = ({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-left absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            {socialOptions.map((option) => (
-              <Menu.Item key={option.name}>
+        <Menu.Items className="origin-top-left z-10 absolute right-0 mt-2rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="p-1 flex  space-x-2 ">
+            {shareSocialOptions.map((option) => (
+              <Menu.Item key={option.key}>
                 {({ active }) => (
-                  <a
-                    href={option.href}
-                    className={classNames(
-                      option.current
-                        ? "font-medium text-gray-900"
-                        : "text-gray-500",
-                      active ? "bg-gray-100" : "",
-                      "block px-4 py-2 text-sm"
-                    )}
+                  <div
+                    key={option.key}
+                    //   className={classNames(
+                    //     option ? "font-medium text-gray-900" : "text-gray-500",
+                    //     active ? "bg-gray-100" : "",
+                    //     "block px-4 py-2 text-sm"
+                    //   )}
                   >
-                    {option.name}
-                  </a>
+                    {option.button({ url: dealUrl, mediaUrl: "dkgn" })}
+                  </div>
                 )}
               </Menu.Item>
             ))}
@@ -142,25 +198,6 @@ const Share: React.FC<IButtonProps> = ({
         </Menu.Items>
       </Transition>
     </Menu>
-    // <button
-    //   onClick={onClick}
-    //   //   className={classNames(
-    //   //     "h-12 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primaryHover",
-    //   //     className ? className : ""
-    //   //   )}
-    //   className="flex items-center justify-center"
-    // >
-    //   <ShareIcon
-    //     className={classNames(
-    //       // isFavourite ? "text-red-500" : "text-gray-400",
-    //       "flex-shrink-0 h-6 w-6 mx-2 text-gray-500"
-    //     )}
-    //     aria-hidden="true"
-    //   />
-    //   <a href={href} className="text-gray-400 whitespace-nowrap">
-    //     {children}
-    //   </a>
-    // </button>
   );
 };
 

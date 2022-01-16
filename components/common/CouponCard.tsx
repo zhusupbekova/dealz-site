@@ -33,7 +33,7 @@ export function CouponCard({ item }: { item: IDeal }) {
               objectFit="cover"
             />
             <CouponBrandLogo
-              className="absolute right-2 translate-y-2/4 cursor-pointer"
+              className="absolute right-2 bottom-0 translate-y-2/4 cursor-pointer"
               url={_.get(
                 item,
                 "attributes.brand.data.attributes.logo.data.attributes.url"
@@ -43,7 +43,7 @@ export function CouponCard({ item }: { item: IDeal }) {
           </div>
         </div>
 
-        <div className="p-4 space-x-2 flex border-t">
+        <div className="px-4 py-3 bg-gray-100 space-x-2 flex border-t">
           {item.attributes.categories.data.map((category) => (
             <CategoryTag category={category} />
           ))}
@@ -62,7 +62,7 @@ export function CouponCard({ item }: { item: IDeal }) {
           </div>
         </div>
 
-        <div className="flex items-center p-2 bottom-0">
+        <div className="flex items-center bg-gray-100 p-2 bottom-0">
           <Button.Like
             onClick={(e) => {
               e.stopPropagation();
@@ -70,16 +70,6 @@ export function CouponCard({ item }: { item: IDeal }) {
             }}
             isFavourite={isFavourite}
           />
-          {/* <Button.Primary
-            className="flex-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsModalOpen(true);
-            }}
-          >
-            {" "}
-            Use this {item.attributes.type}
-          </Button.Primary> */}
           <Button.Deal
             className="flex-1"
             onClick={(e) => {

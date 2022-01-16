@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import useSWR, { SWRResponse } from "swr";
 import rehypeRaw from "rehype-raw";
+import * as _ from "lodash";
 
 import { Button } from "../../components/common/Button";
 import { Layout } from "../../components/common/Layout";
@@ -12,6 +14,7 @@ import { dealsQuery } from "../../utils/queries";
 import { IDeal, IDeals } from "../../utils/schema";
 import { CategoryTag } from "../../components/common/CategoryTag";
 import { CouponModal } from "../../components/couponCardComponents/CouponModal";
+import { CouponBrandLogo } from "../../components/couponCardComponents/CouponBrandLogo";
 
 interface IDealDetailResponse {
   data: IDeal;
@@ -45,13 +48,13 @@ export default function DealDetailPage() {
                   <p className="text-gray-500">people used this deal</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <img
-                    className="h-12 w-12 rounded-full ring-4 ring-white sm:h-16 sm:w-16  bg-gray-100"
-                    src={
-                      deal.data.attributes.brand.data.attributes.logo.data
-                        .attributes.url
-                    }
-                    alt={`${deal.data.attributes.brand.data.attributes.name}-logo`}
+                  <CouponBrandLogo
+                    url={_.get(
+                      deal.data,
+                      "attributes.brand.data.attributes.logo.data.attributes.url"
+                    )}
+                    name={`${deal.data.attributes.brand?.data?.attributes.name}-logo`}
+                    className={"relative"}
                   />
                   <p className="text-gray-500">
                     Offered by {deal.data.attributes.brand.data.attributes.name}
@@ -87,14 +90,15 @@ export default function DealDetailPage() {
           <div className=" space-y-4">
             <div className="flex items-center justify-between">
               <div className="w-full flex items-center">
-                <img
-                  className="h-12 w-12 rounded-full ring-4 ring-white sm:h-16 sm:w-16 bg-gray-100"
-                  src={
-                    deal.data.attributes.brand.data.attributes.logo.data
-                      .attributes.url
-                  }
-                  alt={`${deal.data.attributes.brand.data.attributes.name}-logo`}
+                <CouponBrandLogo
+                  url={_.get(
+                    deal.data,
+                    "attributes.brand.data.attributes.logo.data.attributes.url"
+                  )}
+                  name={`${deal.data.attributes.brand?.data?.attributes.name}-logo`}
+                  className={"relative"}
                 />
+
                 <div>
                   <h3 className="text-lg font-medium text-gray-900">
                     Latest Money-Saving Deals for{" "}
@@ -111,15 +115,29 @@ export default function DealDetailPage() {
                     <CategoryTag category={category} />
                   ))}
                 </div>
-                <Button.Share>Share this deal</Button.Share>
+                <Button.Share
+                  dealUrl={`${window?.location.href}`}
+                  mediaUrl={`${process.env.NEXT_PUBLIC_BACKEND_URL}${_.get(
+                    deal.data,
+                    "attributes.banner.data.attributes.url"
+                  )}`}
+                >
+                  Share this deal
+                </Button.Share>
               </div>
             </div>
 
-            <img
-              className="w-full h-96 bg-gray-100"
-              src={deal.data.attributes.banner?.data.attributes.url}
-              alt={`${deal.data.attributes.title}-screenshot`}
-            />
+            <div className="relative w-full h-96 bg-gray-100">
+              <Image
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${_.get(
+                  deal.data,
+                  "attributes.banner.data.attributes.url"
+                )}`}
+                alt={deal.data.attributes.title}
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
             <ReactMarkdown
               skipHtml={false}
               rehypePlugins={[rehypeRaw]}
