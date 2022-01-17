@@ -70,7 +70,7 @@ export function Header() {
           <Popover.Group as="nav" className="hidden md:flex space-x-10">
             {navigation.map((item) =>
               item.name.toLowerCase().includes("categories") ? (
-                <Popover className="relative">
+                <Popover className="relative" key={`header_item_${item.name}`}>
                   {({ open }) => (
                     <>
                       <Popover.Button
@@ -104,7 +104,7 @@ export function Header() {
                               {categories ? (
                                 categories.map((item) => (
                                   <a
-                                    key={item.title}
+                                    key={`category_name_${item.title}`}
                                     href={`/categories/${item.slug}`}
                                     className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                                   >
@@ -188,7 +188,10 @@ export function Header() {
                 <nav className="grid gap-y-8">
                   {navigation.map((item) =>
                     item.name.toLowerCase().includes("categories") ? (
-                      <Popover className="relative" key={item.href}>
+                      <Popover
+                        className="relative"
+                        key={`header_item_${item.name}`}
+                      >
                         {({ open }) => (
                           <>
                             <Popover.Button
@@ -221,7 +224,7 @@ export function Header() {
                                   <div className="relative grid gap-4 bg-white px-5 py-6 sm:gap-8 sm:p-8 grid-cols-2">
                                     {categories?.map((item) => (
                                       <a
-                                        key={item.title}
+                                        key={`category_name_${item.title}`}
                                         href={`/categories/${item.slug}`}
                                         className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
                                       >

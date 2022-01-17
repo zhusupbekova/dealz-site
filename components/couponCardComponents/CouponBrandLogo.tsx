@@ -15,11 +15,7 @@ export function CouponBrandLogo({ url, name, className }: ICouponBrandLogo) {
         className ? className : ""
       )}
     >
-      <Image
-        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`}
-        alt={`${name}-logo`}
-        layout="fill"
-      />
+      <Image src={url} alt={`${name}-logo`} layout="fill" />
     </div>
   );
 }

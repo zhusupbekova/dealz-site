@@ -8,7 +8,6 @@ import { fetcher } from "../../utils/fetcher";
 import { Loading } from "../../components/common/LoadingComponent";
 
 export default function FlatPage({ data }) {
-  console.log(data);
   return (
     <Layout>
       <ReactMarkdown

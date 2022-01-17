@@ -21,7 +21,7 @@ interface IDealDetailResponse {
   meta: {};
 }
 
-export default function DealDetailPage({ deal }) {
+export default function DealDetailPage({ deal, href }) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -88,7 +88,7 @@ export default function DealDetailPage({ deal }) {
                       .attributes.url
                   }
                   name={`${deal.data.attributes.brand?.data?.attributes.name}-logo`}
-                  className={"relative"}
+                  className={"relative mr-4"}
                 />
 
                 <div>
@@ -104,11 +104,14 @@ export default function DealDetailPage({ deal }) {
               <div>
                 <div className="text-right space-x-2 mb-2">
                   {deal.data.attributes.categories.data.map((category) => (
-                    <CategoryTag category={category} />
+                    <CategoryTag
+                      category={category}
+                      key={`catrgory_tag_${category.attributes.slug}`}
+                    />
                   ))}
                 </div>
                 <Button.Share
-                  dealUrl={`${window?.location.href}`}
+                  dealUrl={href}
                   mediaUrl={deal.data.attributes.banner?.data.attributes.url}
                 >
                   Share this deal
@@ -151,7 +154,9 @@ export async function getServerSideProps(context) {
     };
   }
 
+  let href = context.req.protocol + "://" + context.req.host + "/deals/" + id;
+
   return {
-    props: { deal: res },
+    props: { deal: res, href },
   };
 }
