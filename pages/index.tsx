@@ -42,31 +42,8 @@ function Gallery() {
   return (
     <div className="bg-white">
       <div>
-        {/* <FilterMobile
-          mobileFiltersOpen={mobileFiltersOpen}
-          setMobileFiltersOpen={setMobileFiltersOpen}
-        /> */}
-
         <main className="mx-auto">
           <div className="pt-12 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
-            {/* <aside>
-              <h2 className="sr-only">Filters</h2>
-
-              <button
-                type="button"
-                className="inline-flex items-center lg:hidden"
-                onClick={() => setMobileFiltersOpen(true)}
-              >
-                <span className="text-base font-medium text-gray-700">
-                  Filters
-                </span>
-                <PlusSmIcon
-                  className="flex-shrink-0 ml-1 h-5 w-5 text-gray-400"
-                  aria-hidden="true"
-                />
-              </button>
-
-            </aside> */}
             <div>
               <Filter />
             </div>
@@ -79,15 +56,17 @@ function Gallery() {
                 Deals
               </h2>
 
-              <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
-                {deals ? (
-                  deals.data.map((item, idx) => (
+              {deals ? (
+                <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
+                  {deals.data.map((item, idx) => (
                     <CouponCard item={item} key={idx} />
-                  ))
-                ) : (
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center justify-between w-full h-full">
                   <Loading />
-                )}
-              </div>
+                </div>
+              )}
             </section>
           </div>
         </main>
@@ -95,21 +74,3 @@ function Gallery() {
     </div>
   );
 }
-
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/

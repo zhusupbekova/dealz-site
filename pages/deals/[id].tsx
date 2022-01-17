@@ -48,7 +48,8 @@ export default function DealDetailPage({ deal }) {
                     className={"relative"}
                   />
                   <p className="text-gray-500">
-                    Offered by {deal.data.attributes.brand.data.attributes.name}
+                    Offered by{" "}
+                    {deal.data.attributes.brand?.data.attributes.name}
                   </p>
                 </div>
               </div>
@@ -83,7 +84,7 @@ export default function DealDetailPage({ deal }) {
               <div className="w-full flex items-center">
                 <CouponBrandLogo
                   url={
-                    deal.dataattributes.brand.data.attributes.logo?.data
+                    deal.data.attributes.brand.data.attributes.logo?.data
                       .attributes.url
                   }
                   name={`${deal.data.attributes.brand?.data?.attributes.name}-logo`}
@@ -108,7 +109,7 @@ export default function DealDetailPage({ deal }) {
                 </div>
                 <Button.Share
                   dealUrl={`${window?.location.href}`}
-                  mediaUrl={deal.dataattributes.banner?.data.attributes.url}
+                  mediaUrl={deal.data.attributes.banner?.data.attributes.url}
                 >
                   Share this deal
                 </Button.Share>
@@ -117,7 +118,7 @@ export default function DealDetailPage({ deal }) {
 
             <div className="relative w-full h-96 bg-gray-100">
               <Image
-                src={deal.dataattributes.banner?.data.attributes.url}
+                src={deal.data.attributes.banner?.data.attributes.url}
                 alt={deal.data.attributes.title}
                 layout="fill"
                 objectFit="cover"
@@ -144,7 +145,7 @@ export async function getServerSideProps(context) {
 
   const res = await fetcher(`/api/deals/${id}?${dealsQuery}`);
 
-  if (!res) {
+  if (!res.data) {
     return {
       notFound: true,
     };
