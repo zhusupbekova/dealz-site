@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
 import Image from "next/image";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import useSWR, { SWRResponse } from "swr";
 import rehypeRaw from "rehype-raw";
@@ -21,18 +21,9 @@ interface IDealDetailResponse {
   meta: {};
 }
 
-export default function DealDetailPage() {
-  const router = useRouter();
+export default function DealDetailPage({ deal }) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { id } = router.query;
-
-  //static
-  const { data: deal, error }: SWRResponse<IDealDetailResponse, Error> = useSWR(
-    id ? `/api/deals/${id}?${dealsQuery}` : null,
-    fetcher
-  );
 
   return (
     <Layout>
@@ -152,4 +143,20 @@ export default function DealDetailPage() {
       )}
     </Layout>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+
+  const res = await fetcher(`/api/deals/${id}?${dealsQuery}`);
+
+  if (!res) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: { deal: res },
+  };
 }

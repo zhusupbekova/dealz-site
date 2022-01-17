@@ -6,8 +6,8 @@ export const brand = {
 };
 
 export const navigation = [
-  { name: "All deals", href: "/allDeals" },
-  { name: "Submit a deal", href: "/submitDeal" },
+  { name: "All deals", href: "/all-deals" },
+  { name: "Submit a deal", href: "/submit-deal" },
   { name: "Top 10", href: "/top10" },
   { name: "Categories", href: "/categories" },
 ];
@@ -19,9 +19,9 @@ export const footer = {
     { name: "About", href: "/about" },
   ],
   legal: [
-    { name: "Terms and Condition", href: "#" },
-    { name: "Privacy Policy", href: "#" },
-    { name: "Cookie Notice", href: "#" },
+    { name: "Terms and Condition", href: "/pages/terms-and-conditions" },
+    { name: "Privacy Policy", href: "/pages/privacy-policy" },
+    { name: "Cookie Notice", href: "/pages/cookie-notice" },
   ],
   social: [
     {

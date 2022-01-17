@@ -1,5 +1,5 @@
 module.exports = {
   images: {
-    domains: ["dealz-site.herokuapp.com"],
+    domains: ["dealz-site.herokuapp.com", "localhost"],
   },
 };
