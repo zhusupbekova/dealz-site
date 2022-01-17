@@ -23,21 +23,17 @@ export function CouponCard({ item }: { item: IDeal }) {
         <div className="bg-white cursor-pointer">
           <div className="relative w-full h-48">
             <Image
-              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${_.get(
-                item,
-                "attributes.banner.data.attributes.url"
-              )}`}
+              src={item.attributes.banner?.data?.attributes.url}
               alt={item.attributes.title}
               layout="fill"
-              // className="h-full max-w-full"
               objectFit="cover"
             />
             <CouponBrandLogo
               className="absolute right-2 bottom-0 translate-y-2/4 cursor-pointer"
-              url={_.get(
-                item,
-                "attributes.brand.data.attributes.logo.data.attributes.url"
-              )}
+              url={
+                item.attributes.brand?.data?.attributes.logo?.data?.attributes
+                  .url
+              }
               name={`${item.attributes.brand?.data?.attributes.name}-logo`}
             />
           </div>

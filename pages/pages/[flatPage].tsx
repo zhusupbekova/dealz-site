@@ -16,7 +16,7 @@ export default function FlatPage({ data }) {
         rehypePlugins={[rehypeRaw]}
         className="max-w-6xl mx-auto prose-lg"
       >
-        {data.attributes.text}
+        {data?.attributes.text}
       </ReactMarkdown>
     </Layout>
   );

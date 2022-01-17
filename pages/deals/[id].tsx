@@ -40,10 +40,10 @@ export default function DealDetailPage({ deal }) {
                 </div>
                 <div className="flex flex-col items-center">
                   <CouponBrandLogo
-                    url={_.get(
-                      deal.data,
-                      "attributes.brand.data.attributes.logo.data.attributes.url"
-                    )}
+                    url={
+                      deal.data.attributes.brand?.data.attributes.logo?.data
+                        .attributes.url
+                    }
                     name={`${deal.data.attributes.brand?.data?.attributes.name}-logo`}
                     className={"relative"}
                   />
@@ -82,10 +82,10 @@ export default function DealDetailPage({ deal }) {
             <div className="flex items-center justify-between">
               <div className="w-full flex items-center">
                 <CouponBrandLogo
-                  url={_.get(
-                    deal.data,
-                    "attributes.brand.data.attributes.logo.data.attributes.url"
-                  )}
+                  url={
+                    deal.dataattributes.brand.data.attributes.logo?.data
+                      .attributes.url
+                  }
                   name={`${deal.data.attributes.brand?.data?.attributes.name}-logo`}
                   className={"relative"}
                 />
@@ -108,10 +108,7 @@ export default function DealDetailPage({ deal }) {
                 </div>
                 <Button.Share
                   dealUrl={`${window?.location.href}`}
-                  mediaUrl={`${process.env.NEXT_PUBLIC_BACKEND_URL}${_.get(
-                    deal.data,
-                    "attributes.banner.data.attributes.url"
-                  )}`}
+                  mediaUrl={deal.dataattributes.banner?.data.attributes.url}
                 >
                   Share this deal
                 </Button.Share>
@@ -120,10 +117,7 @@ export default function DealDetailPage({ deal }) {
 
             <div className="relative w-full h-96 bg-gray-100">
               <Image
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${_.get(
-                  deal.data,
-                  "attributes.banner.data.attributes.url"
-                )}`}
+                src={deal.dataattributes.banner?.data.attributes.url}
                 alt={deal.data.attributes.title}
                 layout="fill"
                 objectFit="cover"

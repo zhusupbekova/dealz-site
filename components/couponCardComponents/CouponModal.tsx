@@ -75,10 +75,10 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                   >
                     <CouponBrandLogo
                       url={
-                        item.attributes.brand.data.attributes.logo.data
+                        item.attributes.brand?.data?.attributes.logo?.data
                           .attributes.url
                       }
-                      name={item.attributes.brand.data.attributes.name}
+                      name={item.attributes.brand.data?.attributes.name}
                       className={
                         "absolute translate-x-1/2 -translate-y-1/3 top-0 right-0 "
                       }
