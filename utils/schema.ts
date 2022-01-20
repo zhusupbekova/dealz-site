@@ -88,8 +88,8 @@ export interface IDeal {
     categories: ICategories;
     banner: IMedia;
     brand: IBrand;
+    usageCount: { count: string };
   };
-  usageCount: { count: string };
 }
 
 export interface IDeals {

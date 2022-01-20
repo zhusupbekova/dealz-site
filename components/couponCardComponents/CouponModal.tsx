@@ -6,6 +6,8 @@ import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { brand } from "../../config";
 import { IDeal } from "../../utils/schema";
 import { CouponBrandLogo } from "./CouponBrandLogo";
+import { poster } from "../../utils/fetcher";
+import { mutate } from "swr";
 
 interface ICouponnModal {
   open?: boolean;
@@ -22,6 +24,16 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
 
     setCopyButtonText("Copied");
   };
+
+  async function onUseDeal() {
+    await poster("/api/deal-usages", {
+      data: {
+        deal: item.id,
+      },
+    });
+
+    await mutate(`/deals/${item.id}`);
+  }
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -127,6 +139,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
               <div className="px-4">
                 <a
                   href="#_"
+                  onClick={() => onUseDeal()}
                   className="relative w-full inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-white bg-primary transition duration-300 ease-out border-2 border-primary rounded-md shadow-md group"
                 >
                   <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-primary group-hover:translate-x-0 ease">

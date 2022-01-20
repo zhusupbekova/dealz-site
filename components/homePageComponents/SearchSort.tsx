@@ -21,14 +21,16 @@ export function SearchSort() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [currentSortOption, setCurrentSortOption] = useState("");
   const router = useRouter();
-  const { categories, search, sort } = router.query;
+  const { featured, categories, search, sort } = router.query;
 
-  function onSort(sort: string) {
+  function onSort(text: string, sort: string) {
+    setCurrentSortOption(text);
     router.push(
       {
         query: {
-          categories,
-          search,
+          ...(categories ? { categories } : null),
+          ...(search ? { search } : null),
+          ...(featured ? { featured } : null),
           sort: sort,
         },
       },
@@ -63,8 +65,10 @@ export function SearchSort() {
               router.push(
                 {
                   query: {
-                    categories,
                     search: e.target.value,
+                    ...(categories ? { categories } : null),
+                    ...(sort ? { sort } : null),
+                    ...(featured ? { featured } : null),
                   },
                 },
                 undefined,
@@ -120,7 +124,7 @@ export function SearchSort() {
               <Menu.Item key="most-popular">
                 {({ active }) => (
                   <button
-                    onClick={() => onSort("deal_usages.length:desc")}
+                    onClick={() => onSort("most-popular", "used_times:desc")}
                     className={classNames(
                       currentSortOption === "most-popular"
                         ? "font-medium text-gray-900"
@@ -136,7 +140,7 @@ export function SearchSort() {
               <Menu.Item key="latest">
                 {({ active }) => (
                   <button
-                    onClick={() => onSort("createdAt:desc")}
+                    onClick={() => onSort("latest", "createdAt:desc")}
                     className={classNames(
                       currentSortOption === "latest"
                         ? "font-medium text-gray-900"

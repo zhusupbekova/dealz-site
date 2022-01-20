@@ -17,7 +17,7 @@ import { CouponModal } from "../../components/couponCardComponents/CouponModal";
 import { CouponBrandLogo } from "../../components/couponCardComponents/CouponBrandLogo";
 
 interface IDealDetailPageProps {
-  deal: { data: IDeal; usageCount: { count: string } };
+  deal: { data: IDeal };
   href: string;
 }
 
@@ -36,7 +36,7 @@ export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
                 <h1 className="  text-2xl font-bold text-primary">42% Off</h1>
                 <div>
                   <h1 className="text-2xl font-bold text-primary">
-                    {deal.usageCount.count}
+                    {deal.data.attributes.usageCount.count}
                   </h1>
                   <p className="text-gray-500">people used this deal</p>
                 </div>

@@ -17,8 +17,9 @@ export const fetcher = (key: string) =>
 export const poster = (key: string, body: any) =>
   fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${key}`, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-    credentials: "include",
+    // credentials: "include",
   })
     .then((t) => t.json())
     .then((d) => mutate(key).then(() => d));

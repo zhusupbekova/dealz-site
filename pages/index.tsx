@@ -41,7 +41,20 @@ function Gallery() {
     new Set()
   );
   const router = useRouter();
-  const { categories, search, sort } = router.query;
+  const { featured, categories, search, sort } = router.query;
+
+  const featuredFilterQuery = qs.stringify(
+    {
+      filters: {
+        featured: {
+          $eq: featured,
+        },
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
 
   const categoryFilterQuery = qs.stringify(
     {
@@ -96,7 +109,9 @@ function Gallery() {
   const { data: deals, error }: SWRResponse<IDeals, Error> = useSWR(
     `/api/deals?${dealsQuery}${categories ? `&${categoryFilterQuery}` : ""}${
       search ? `&${searchFilterQuery}` : ""
-    }${sort ? `&${sortFilterQuery}` : ""}`,
+    }${sort ? `&${sortFilterQuery}` : ""}${
+      featured ? `&${featuredFilterQuery}` : ""
+    }`,
     fetcher
   );
 

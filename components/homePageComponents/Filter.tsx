@@ -143,8 +143,6 @@ interface IFilterSectionProps {
   name: string;
   type: string;
   options: IFilterStat[];
-  categoriesFilter?: Set<string>;
-  setCategoriesFilter?: Dispatch<SetStateAction<Set<string>>>;
 }
 
 // function FilterSectionMobile({ section }) {
@@ -203,6 +201,8 @@ export function Filter({
   categoriesFilter,
   setCategoriesFilter,
 }: IFilterProps) {
+  const router = useRouter();
+  const { featured, search, sort, categories } = router.query;
   const { data, error }: SWRResponse<IFilterStats, Error> = useSWR(
     `/api/c/categories/stats`,
     fetcher
@@ -225,17 +225,40 @@ export function Filter({
           <input
             id="featured"
             name={`featured[]`}
-            defaultValue={"true"}
             type="checkbox"
             className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
+            onChange={(e) =>
+              e.target.checked
+                ? router.push(
+                    {
+                      query: {
+                        ...(categories ? { categories } : null),
+                        ...(search ? { search } : null),
+                        ...(sort ? { sort } : null),
+                        featured: true,
+                      },
+                    },
+                    undefined,
+                    { shallow: true }
+                  )
+                : router.push(
+                    {
+                      query: {
+                        ...(categories ? { categories } : null),
+                        ...(search ? { search } : null),
+                        ...(sort ? { sort } : null),
+                      },
+                    },
+                    undefined,
+                    { shallow: true }
+                  )
+            }
           />
         </div>
         <FilterSection
           name={"Categories"}
           type={"checkbox"}
           options={data?.categoryStats}
-          categoriesFilter={categoriesFilter}
-          setCategoriesFilter={setCategoriesFilter}
         />
         <FilterSection
           name={"Deal types"}
@@ -248,16 +271,10 @@ export function Filter({
   );
 }
 
-function FilterSection({
-  name,
-  type,
-  options,
-  categoriesFilter,
-  setCategoriesFilter,
-}: IFilterSectionProps) {
+function FilterSection({ name, type, options }: IFilterSectionProps) {
   const router = useRouter();
-  const { categories } = router.query;
-  console.log({ categories });
+  const { featured, search, sort, categories } = router.query;
+
   return (
     <Disclosure as="div" key={name} className="border-t border-gray-200 py-6">
       {({ open }) => (
@@ -281,9 +298,8 @@ function FilterSection({
                   <input
                     id={`filter-${name}-${optionIdx}`}
                     name={`${name}[]`}
-                    defaultValue={option.slug}
                     type={type}
-                    defaultChecked={false}
+                    checked={featured === "true"}
                     onClick={() =>
                       categories?.includes(option.slug)
                         ? router.push(
@@ -292,6 +308,9 @@ function FilterSection({
                                 categories: (
                                   (categories as string).split(",") as string[]
                                 ).filter((i) => i !== option.slug),
+                                ...(search ? { search } : null),
+                                ...(sort ? { sort } : null),
+                                ...(featured ? { featured } : null),
                               },
                             },
                             undefined,
@@ -305,8 +324,10 @@ function FilterSection({
                                     ? (categories as string).split(",")
                                     : []),
                                   option.slug,
-                                  // categories ? (categories as string[]).join(',') : option.slug
                                 ].join(","),
+                                ...(search ? { search } : null),
+                                ...(sort ? { sort } : null),
+                                ...(featured ? { featured } : null),
                               },
                             },
                             undefined,
