@@ -7,6 +7,7 @@ export function Footer() {
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
+
       <div className=" max-w-screen-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="md:grid md:grid-cols-3 md:gap-8">
           <div className="space-y-8 md:col-span-1">
@@ -28,6 +29,7 @@ export function Footer() {
               ))}
             </div>
           </div>
+
           <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 md:col-span-2">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
@@ -48,6 +50,7 @@ export function Footer() {
                 </ul>
               </div>
             </div>
+
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div className=" md:mt-0">
                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
@@ -69,6 +72,7 @@ export function Footer() {
             </div>
           </div>
         </div>
+
         <div className="mt-12 border-t border-gray-200 pt-8">
           <p className="text-base text-gray-400 xl:text-center">
             &copy; 2020 {brand.name}, Inc. All rights reserved.
