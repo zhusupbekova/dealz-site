@@ -61,7 +61,8 @@ export default function SubmitDeal() {
           ))}
         </div>
       </div>
-      <div className="flex flex-col items-center space-y-4">
+
+      <div className="flex flex-col items-center space-y-4 pt-8">
         <h1>Think you qualify?</h1>
         <p>Enter your details below and we will get in touch</p>
         <SubmitDealForm />
@@ -119,40 +120,6 @@ function SubmitDealForm() {
             id="name-on-card"
             name="name-on-card"
             autoComplete="cc-name"
-            className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-      </div>
-
-      <div className="col-span-full">
-        <label
-          htmlFor="card-number"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Phone number
-        </label>
-        <div className="mt-1 relative rounded-md shadow-sm">
-          <div className="absolute inset-y-0 left-0 flex items-center">
-            <label htmlFor="country" className="sr-only">
-              Country code
-            </label>
-            <select
-              id="country"
-              name="country"
-              autoComplete="country"
-              className="focus:ring-indigo-500 focus:border-indigo-500 h-full border-gray-300 py-0 pl-3 pr-7  bg-transparent text-gray-500 sm:text-sm rounded-md"
-            >
-              {countryCodesOptions.map((item) => (
-                <option key={item.key} value={item.value}>
-                  {item.value}
-                </option>
-              ))}
-            </select>
-          </div>
-          <input
-            type="text"
-            id="phone-number"
-            name="phone-number"
             className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
@@ -218,14 +185,6 @@ function SubmitDealForm() {
       >
         Submit
       </button>
-
-      <p className="flex justify-center text-sm font-medium text-gray-500 mt-6">
-        <LockClosedIcon
-          className="w-5 h-5 text-gray-400 mr-1.5"
-          aria-hidden="true"
-        />
-        Payment details stored in plain text
-      </p>
     </form>
   );
 }
