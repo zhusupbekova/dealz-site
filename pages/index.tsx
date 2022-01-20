@@ -41,7 +41,7 @@ function Gallery() {
     new Set()
   );
   const router = useRouter();
-  const { featured, categories, search, sort } = router.query;
+  const { featured, categories, dealType, search, sort } = router.query;
 
   const featuredFilterQuery = qs.stringify(
     {
@@ -65,6 +65,25 @@ function Gallery() {
               ? isArray(categories)
                 ? categories
                 : (categories as string).split(",")
+              : [],
+          },
+        },
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+
+  const dealLifetimeFilterQuery = qs.stringify(
+    {
+      filters: {
+        deal_lifetime: {
+          slug: {
+            $in: dealType
+              ? isArray(dealType)
+                ? dealType
+                : (dealType as string).split(",")
               : [],
           },
         },
@@ -108,10 +127,10 @@ function Gallery() {
 
   const { data: deals, error }: SWRResponse<IDeals, Error> = useSWR(
     `/api/deals?${dealsQuery}${categories ? `&${categoryFilterQuery}` : ""}${
-      search ? `&${searchFilterQuery}` : ""
-    }${sort ? `&${sortFilterQuery}` : ""}${
-      featured ? `&${featuredFilterQuery}` : ""
-    }`,
+      dealType ? `&${dealLifetimeFilterQuery}` : ""
+    }${search ? `&${searchFilterQuery}` : ""}${
+      sort ? `&${sortFilterQuery}` : ""
+    }${featured ? `&${featuredFilterQuery}` : ""}`,
     fetcher
   );
 
