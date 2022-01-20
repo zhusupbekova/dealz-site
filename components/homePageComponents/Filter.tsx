@@ -273,7 +273,11 @@ export function Filter({
 
 function FilterSection({ name, type, options }: IFilterSectionProps) {
   const router = useRouter();
+<<<<<<< HEAD
   const { featured, search, sort, categories } = router.query;
+=======
+  const { categories } = router.query;
+>>>>>>> 69b320344de1650c9d056ac5039bee5fe165f0e0
 
   return (
     <Disclosure as="div" key={name} className="border-t border-gray-200 py-6">

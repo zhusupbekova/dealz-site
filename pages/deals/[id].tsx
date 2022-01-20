@@ -24,7 +24,7 @@ interface IDealDetailPageProps {
 export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(deal);
+
   return (
     <Layout>
       {deal ? (

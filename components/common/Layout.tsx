@@ -18,7 +18,7 @@ export function Layout({ children }: PropsWithChildren<{}>) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main className="mt-16 mx-auto w-full max-w-screen-2xl px-4 sm:mt-24">
+      <main className="mt-16 flex-1 mx-auto w-full max-w-screen-2xl px-4 sm:mt-24">
         {children}
       </main>
 
