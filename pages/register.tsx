@@ -1,0 +1,107 @@
+import { KeyIcon, MailIcon } from "@heroicons/react/solid";
+import Link from "next/link";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+} from "react-social-login-buttons";
+import { Button } from "../components/common/Button";
+import { Divider } from "../components/common/Divider";
+import { Layout } from "../components/common/Layout";
+
+export default function RegisterPage() {
+  return (
+    <Layout>
+      <div className="space-y-2 mx-auto max-w-lg h-full">
+        <div>
+          <GoogleLoginButton
+            style={{ background: "#eaeaea", boxShadow: "none" }}
+          />
+        </div>
+
+        <div>
+          <FacebookLoginButton
+            style={{ background: "#1776f2", boxShadow: "none" }}
+          />
+        </div>
+
+        <p className="text-gray-400 text-sm px-2 pt-2">
+          Signing up with social is super quick. Don’t worry, we’d never share
+          any of your data or post anything on your behalf.
+        </p>
+
+        <Divider>or</Divider>
+
+        <form className="flex flex-col space-y-2">
+          <div>
+            <label
+              htmlFor="email"
+              className="hidden text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+
+            <div className="mt-1 relative rounded-md shadow-sm">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <MailIcon className="h-5 w-5 text-gray-400" />
+              </div>
+
+              <input
+                type="email"
+                name="email"
+                id="email"
+                className="focus:ring-primary focus:border-primary block w-full pl-10 h-12 sm:text-sm border-gray-300 rounded-md"
+                placeholder="you@example.com"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="hidden text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+
+            <div className="mt-1 relative rounded-md shadow-sm">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <KeyIcon className="h-5 w-5 text-gray-400" />
+              </div>
+
+              <input
+                type="password"
+                name="password"
+                id="password"
+                className="focus:ring-primary focus:primary block w-full pl-10 h-12 sm:text-sm border-gray-300 rounded-md"
+                placeholder="*******"
+              />
+            </div>
+          </div>
+
+          <p className="text-sm text-gray-400 px-2 pb-4">
+            By creating your account, you agree to our{" "}
+            <a
+              target="_blank"
+              href="/terms-and-conditions"
+              className="underline"
+            >
+              Terms and Conditions
+            </a>{" "}
+            &{" "}
+            <a target="_blank" href="/privacy-policy" className="underline">
+              Privacy Policy
+            </a>{" "}
+          </p>
+
+          <Button.Primary>Sign up now</Button.Primary>
+        </form>
+
+        <Link href="/login">
+          <a className="text-center block text-gray-400 underline">
+            Already have an account? Login here.
+          </a>
+        </Link>
+      </div>
+    </Layout>
+  );
+}

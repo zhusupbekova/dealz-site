@@ -257,7 +257,7 @@ function FilterSection({
 }: IFilterSectionProps) {
   const router = useRouter();
   const { categories } = router.query;
-  console.log({ categories });
+
   return (
     <Disclosure as="div" key={name} className="border-t border-gray-200 py-6">
       {({ open }) => (

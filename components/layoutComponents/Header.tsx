@@ -1,26 +1,18 @@
-import React, { Fragment, PropsWithChildren, useEffect } from "react";
+import React, { Fragment } from "react";
 import useSWR, { SWRResponse } from "swr";
 import qs from "qs";
 
 import { Popover, Transition } from "@headlessui/react";
-import {
-  MenuIcon,
-  PhoneIcon,
-  PlayIcon,
-  RefreshIcon,
-  ShieldCheckIcon,
-  SupportIcon,
-  ViewGridIcon,
-  XIcon,
-} from "@heroicons/react/outline";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 
 import { classNames } from "../../utils/style";
 import { brand, navigation } from "../../config";
-import { ICategories, IFilterStats } from "../../utils/schema";
+import { IFilterStats } from "../../utils/schema";
 import { fetcher } from "../../utils/fetcher";
 import { Loading } from "../common/LoadingComponent";
 import { Button } from "../common/Button";
+import Link from "next/link";
 
 const query = qs.stringify(
   {
@@ -47,7 +39,7 @@ export function Header() {
 
   return (
     <Popover className="relative bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 w-full">
         <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <a href="/">
@@ -140,16 +132,19 @@ export function Header() {
           </Popover.Group>
 
           <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-            <a
-              href="#"
-              className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
-            >
-              Sign in
-            </a>
+            <Link href="/login" passHref>
+              <a className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+                Sign in
+              </a>
+            </Link>
 
-            <Button.Primary href={"#"} className="ml-8">
-              Sign up
-            </Button.Primary>
+            <Link href="/register" passHref>
+              <a>
+                <Button.Primary href={"#"} className="ml-8">
+                  Sign up
+                </Button.Primary>
+              </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -260,17 +255,16 @@ export function Header() {
             </div>
             <div className="py-6 px-5 space-y-6">
               <div>
-                <a
-                  href="#"
-                  className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primaryHover"
-                >
-                  Sign up
-                </a>
+                <Link href="/register" passHref>
+                  <a className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primaryHover">
+                    Sign up
+                  </a>
+                </Link>
                 <p className="mt-6 text-center text-base font-medium text-gray-500">
                   Existing customer?{" "}
-                  <a href="#" className="text-primary hover:text-primary">
-                    Sign in
-                  </a>
+                  <Link href="/login" passHref>
+                    <a className="text-primary hover:text-primary">Sign in</a>
+                  </Link>
                 </p>
               </div>
             </div>
