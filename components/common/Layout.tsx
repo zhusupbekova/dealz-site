@@ -1,16 +1,10 @@
-import React, { PropsWithChildren, useEffect } from "react";
+import React, { PropsWithChildren } from "react";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import useSWR, { SWRResponse } from "swr";
 
-import { fetcher } from "../../utils/fetcher";
-import { ICategories } from "../../utils/schema";
 import { Footer } from "../layoutComponents/Footer";
 import { Header } from "../layoutComponents/Header";
 
 export function Layout({ children }: PropsWithChildren<{}>) {
-  const router = useRouter();
-
   return (
     <div className="h-screen flex flex-col justify-between">
       <Head>

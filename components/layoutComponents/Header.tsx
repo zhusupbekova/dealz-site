@@ -38,7 +38,7 @@ export function Header() {
   );
 
   return (
-    <Popover className="relative bg-white">
+    <Popover className="relative bg-white z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 w-full">
         <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
@@ -62,13 +62,13 @@ export function Header() {
           <Popover.Group as="nav" className="hidden md:flex space-x-10">
             {navigation.map((item) =>
               item.name.toLowerCase().includes("categories") ? (
-                <Popover className="relative" key={`header_item_${item.name}`}>
+                <Popover key={`header_item_${item.name}`}>
                   {({ open }) => (
                     <>
                       <Popover.Button
                         className={classNames(
                           open ? "text-gray-900" : "text-gray-500",
-                          "group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                          "group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-0 focus:ring-offset-2 focus:ring-primary"
                         )}
                       >
                         <span>Categories</span>
@@ -84,24 +84,24 @@ export function Header() {
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-200"
-                        enterFrom="opacity-0 translate-y-1"
-                        enterTo="opacity-100 translate-y-0"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100 "
                         leave="transition ease-in duration-150"
-                        leaveFrom="opacity-100 translate-y-0"
-                        leaveTo="opacity-0 translate-y-1"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
                       >
-                        <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
+                        <Popover.Panel className="absolute z-10 bottom-0 transform px-2 w-full max-w-3xl sm:px-0 lg:ml-0 left-1/2 -translate-x-1/2 translate-y-full">
                           <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                            <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 lg:grid-cols-2">
+                            <div className="relative grid gap-2 gap-x-4 bg-white px-5 py-6 grid-cols-4">
                               {filterData ? (
                                 filterData.categoryStats.map((item) => (
                                   <a
                                     key={`category_name_${item.title}`}
                                     href={`/categories/${item.slug}`}
-                                    className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
+                                    className="rounded-lg hover:bg-gray-50"
                                   >
-                                    <div className="flex">
-                                      <p className="text-base font-medium text-gray-900">
+                                    <div className="flex min-w-0 items-center">
+                                      <p className="text-sm flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis font-medium text-gray-700">
                                         {item.title}
                                       </p>
                                       <p className="ml-1 text-sm text-gray-500">
@@ -160,7 +160,7 @@ export function Header() {
       >
         <Popover.Panel
           focus
-          className="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden"
+          className="absolute left-0 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden"
         >
           <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
             <div className="pt-5 pb-6 px-5">
@@ -183,16 +183,13 @@ export function Header() {
                 <nav className="grid gap-y-8">
                   {navigation.map((item) =>
                     item.name.toLowerCase().includes("categories") ? (
-                      <Popover
-                        className="relative"
-                        key={`header_item_${item.name}`}
-                      >
+                      <Popover key={`header_item_${item.name}`}>
                         {({ open }) => (
                           <>
                             <Popover.Button
                               className={classNames(
                                 open ? "text-gray-500" : "text-gray-900",
-                                "group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                                "group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-0 focus:ring-offset-2 focus:ring-primary"
                               )}
                             >
                               <span>Categories</span>
@@ -214,20 +211,21 @@ export function Header() {
                               leaveFrom="opacity-100 translate-y-0"
                               leaveTo="opacity-0 translate-y-1"
                             >
-                              <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
-                                <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                                  <div className="relative grid gap-4 bg-white px-5 py-6 sm:gap-8 sm:p-8 grid-cols-2">
+                              <Popover.Panel className="absolute z-50 left-0 mt-3 transform px-2 w-screen">
+                                <div className="rounded-lg shadow-lg z-50 bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+                                  <div className="grid gap-2 gap-x-6 bg-white p-4 grid-cols-2">
                                     {filterData.categoryStats?.map((item) => (
                                       <a
                                         key={`category_name_${item.title}`}
                                         href={`/categories/${item.slug}`}
-                                        className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
+                                        className="flex items-start rounded-lg hover:bg-gray-50"
                                       >
-                                        <div className="flex">
-                                          <p className="text-base font-medium text-gray-900">
+                                        <div className="flex w-full min-w-0">
+                                          <p className="text-base font-medium flex-1 text-gray-700 whitespace-nowrap overflow-hidden overflow-ellipsis">
                                             {item.title}
                                           </p>
-                                          <p className="ml-1 text-sm text-gray-500">
+
+                                          <p className="ml-1 text-sm text-gray-500 shrink-0">
                                             {item.dealsCount}
                                           </p>
                                         </div>
