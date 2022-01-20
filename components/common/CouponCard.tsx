@@ -53,7 +53,7 @@ export function CouponCard({ item }: { item: IDeal }) {
           </p>
           <div className="flex-1 flex flex-col justify-end">
             <p className="text-sm italic text-gray-500">
-              {item.attributes.used_times ?? "0"} used
+              {item.usageCount.count ?? "0"} used
             </p>
           </div>
         </div>

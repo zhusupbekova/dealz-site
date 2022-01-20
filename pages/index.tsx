@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Head from "next/head";
 import useSWR, { SWRResponse } from "swr";
 import { fetcher } from "../utils/fetcher";
@@ -19,6 +19,7 @@ import { ICategories, IDeals } from "../utils/schema";
 import { Filter, FilterMobile } from "../components/homePageComponents/Filter";
 import { Loading } from "../components/common/LoadingComponent";
 import { dealsQuery } from "../utils/queries";
+import { useRouter } from "next/router";
 
 export default function Home() {
   return (
@@ -30,10 +31,72 @@ export default function Home() {
   );
 }
 
+function isArray(item) {
+  return Array.isArray(item);
+}
+
 function Gallery() {
   // const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [categoriesFilter, setCategoriesFilter] = useState<Set<string>>(
+    new Set()
+  );
+  const router = useRouter();
+  const { categories, search, sort } = router.query;
+
+  const categoryFilterQuery = qs.stringify(
+    {
+      filters: {
+        categories: {
+          slug: {
+            $in: categories
+              ? isArray(categories)
+                ? categories
+                : (categories as string).split(",")
+              : [],
+          },
+        },
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+
+  const searchFilterQuery = qs.stringify(
+    {
+      filters: {
+        $or: [
+          {
+            title: {
+              $containsi: search,
+            },
+          },
+          {
+            brand: {
+              name: { $containsi: search },
+            },
+          },
+        ],
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+
+  const sortFilterQuery = qs.stringify(
+    {
+      sort: [sort],
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+
   const { data: deals, error }: SWRResponse<IDeals, Error> = useSWR(
-    `/api/deals?${dealsQuery}`,
+    `/api/deals?${dealsQuery}${categories ? `&${categoryFilterQuery}` : ""}${
+      search ? `&${searchFilterQuery}` : ""
+    }${sort ? `&${sortFilterQuery}` : ""}`,
     fetcher
   );
 
@@ -45,7 +108,10 @@ function Gallery() {
         <main className="mx-auto">
           <div className="pt-12 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
             <div>
-              <Filter />
+              <Filter
+                categoriesFilter={categoriesFilter}
+                setCategoriesFilter={setCategoriesFilter}
+              />
             </div>
 
             <section

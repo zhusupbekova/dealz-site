@@ -12,12 +12,15 @@ import {
 } from "@heroicons/react/outline";
 
 import { fetcher } from "../../utils/fetcher";
-import { ICategories, ICategoryStats } from "../../utils/schema";
+import { ICategories, IFilterStat, IFilterStats } from "../../utils/schema";
 import { classNames } from "../../utils/style";
+import { useRouter } from "next/router";
 
 interface IFilterProps {
   mobileFiltersOpen?: boolean;
   setMobileFiltersOpen?: Dispatch<SetStateAction<boolean>>;
+  categoriesFilter?: Set<string>;
+  setCategoriesFilter?: Dispatch<SetStateAction<Set<string>>>;
 }
 
 const dealTypes = {
@@ -47,32 +50,18 @@ const mostUsed = {
 export function FilterMobile({
   mobileFiltersOpen,
   setMobileFiltersOpen,
+  categoriesFilter,
+  setCategoriesFilter,
 }: IFilterProps) {
   //   const {
   //     data: categories,
   //     error: categoriesError,
   //   }: SWRResponse<ICategories, Error> = useSWR(`/api/categories`, fetcher);
 
-  const {
-    data: categories,
-    error: categoriesError,
-  }: SWRResponse<ICategoryStats[], Error> = useSWR(
+  const { data: categories, error: categoriesError } = useSWR(
     `/api/c/categories/stats`,
     fetcher
   );
-
-  const categoriesFilter = {
-    id: "categories",
-    name: "Categories",
-    type: "checkbox",
-    options:
-      categories?.map((category) => ({
-        ...category,
-        value: category.title,
-        label: category.title,
-        checked: false,
-      })) ?? [],
-  };
 
   return (
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -139,9 +128,9 @@ export function FilterMobile({
                   className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary float-right"
                 />
               </div>
-              <FilterSectionMobile section={categoriesFilter} />
+              {/* <FilterSectionMobile section={categoriesFilter} />
               <FilterSectionMobile section={dealTypes} />
-              <FilterSectionMobile section={mostUsed} />
+              <FilterSectionMobile section={mostUsed} /> */}
             </form>
           </div>
         </Transition.Child>
@@ -150,79 +139,74 @@ export function FilterMobile({
   );
 }
 
-function FilterSectionMobile({ section }) {
-  return (
-    <Disclosure
-      as="div"
-      key={section.name}
-      className="border-t border-gray-200 pt-4 pb-4"
-    >
-      {({ open }) => (
-        <fieldset>
-          <legend className="w-full px-2">
-            <Disclosure.Button className="w-full p-2 flex items-center justify-between text-gray-400 hover:text-gray-500">
-              <span className="text-base font-medium text-gray-900">
-                {section.name}
-              </span>
-              <span className="ml-6 h-7 flex items-center">
-                <ChevronDownIcon
-                  className={classNames(
-                    open ? "-rotate-180" : "rotate-0",
-                    "h-5 w-5 transform"
-                  )}
-                  aria-hidden="true"
-                />
-              </span>
-            </Disclosure.Button>
-          </legend>
-          <Disclosure.Panel className="pt-4 pb-2 px-4">
-            <div className="space-y-6">
-              {section.options.map((option, optionIdx) => (
-                <div key={option.value} className="flex items-center">
-                  <input
-                    id={`${section.id}-${optionIdx}-mobile`}
-                    name={`${section.id}[]`}
-                    defaultValue={option.value}
-                    type={section.type}
-                    className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
-                  />
-                  <label
-                    htmlFor={`${section.id}-${optionIdx}-mobile`}
-                    className="ml-3 text-base text-gray-500"
-                  >
-                    {option.label}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </Disclosure.Panel>
-        </fieldset>
-      )}
-    </Disclosure>
-  );
+interface IFilterSectionProps {
+  name: string;
+  type: string;
+  options: IFilterStat[];
+  categoriesFilter?: Set<string>;
+  setCategoriesFilter?: Dispatch<SetStateAction<Set<string>>>;
 }
 
-export function Filter({}: IFilterProps) {
-  const {
-    data: categories,
-    error: categoriesError,
-  }: SWRResponse<ICategoryStats[], Error> = useSWR(
+// function FilterSectionMobile({ section }) {
+//   return (
+//     <Disclosure
+//       as="div"
+//       key={section.name}
+//       className="border-t border-gray-200 pt-4 pb-4"
+//     >
+//       {({ open }) => (
+//         <fieldset>
+//           <legend className="w-full px-2">
+//             <Disclosure.Button className="w-full p-2 flex items-center justify-between text-gray-400 hover:text-gray-500">
+//               <span className="text-base font-medium text-gray-900">
+//                 {section.name}
+//               </span>
+//               <span className="ml-6 h-7 flex items-center">
+//                 <ChevronDownIcon
+//                   className={classNames(
+//                     open ? "-rotate-180" : "rotate-0",
+//                     "h-5 w-5 transform"
+//                   )}
+//                   aria-hidden="true"
+//                 />
+//               </span>
+//             </Disclosure.Button>
+//           </legend>
+//           <Disclosure.Panel className="pt-4 pb-2 px-4">
+//             <div className="space-y-6">
+//               {section.options.map((option, optionIdx) => (
+//                 <div key={option.value} className="flex items-center">
+//                   <input
+//                     id={`${section.id}-${optionIdx}-mobile`}
+//                     name={`${section.id}[]`}
+//                     defaultValue={option.value}
+//                     type={section.type}
+//                     className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
+//                   />
+//                   <label
+//                     htmlFor={`${section.id}-${optionIdx}-mobile`}
+//                     className="ml-3 text-base text-gray-500"
+//                   >
+//                     {option.label}
+//                   </label>
+//                 </div>
+//               ))}
+//             </div>
+//           </Disclosure.Panel>
+//         </fieldset>
+//       )}
+//     </Disclosure>
+//   );
+// }
+
+export function Filter({
+  categoriesFilter,
+  setCategoriesFilter,
+}: IFilterProps) {
+  const { data, error }: SWRResponse<IFilterStats, Error> = useSWR(
     `/api/c/categories/stats`,
     fetcher
   );
-
-  const categoriesFilter = {
-    id: "categories",
-    name: "Categories",
-    type: "checkbox",
-    options:
-      categories?.map((category) => ({
-        ...category,
-        value: category.title,
-        label: category.title,
-        checked: false,
-      })) ?? [],
-  };
 
   return (
     <div className="sticky top-12 hidden lg:block bg-gray-100 p-4 border rounded">
@@ -246,28 +230,41 @@ export function Filter({}: IFilterProps) {
             className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
           />
         </div>
-        <FilterSection section={categoriesFilter} />
-        <FilterSection section={dealTypes} />
-        <FilterSection section={mostUsed} />
+        <FilterSection
+          name={"Categories"}
+          type={"checkbox"}
+          options={data?.categoryStats}
+          categoriesFilter={categoriesFilter}
+          setCategoriesFilter={setCategoriesFilter}
+        />
+        <FilterSection
+          name={"Deal types"}
+          type={"checkbox"}
+          options={data?.dealLifetimeStats}
+        />
+        {/* <FilterSection section={mostUsed} /> */}
       </form>
     </div>
   );
 }
 
-function FilterSection({ section }) {
+function FilterSection({
+  name,
+  type,
+  options,
+  categoriesFilter,
+  setCategoriesFilter,
+}: IFilterSectionProps) {
+  const router = useRouter();
+  const { categories } = router.query;
+  console.log({ categories });
   return (
-    <Disclosure
-      as="div"
-      key={section.id}
-      className="border-t border-gray-200 py-6"
-    >
+    <Disclosure as="div" key={name} className="border-t border-gray-200 py-6">
       {({ open }) => (
         <>
           <h3 className="-my-3 flow-root">
             <Disclosure.Button className="py-3 w-full flex items-center justify-between text-base text-gray-400 hover:text-gray-500">
-              <span className="font-medium text-lg text-gray-900">
-                {section.name}
-              </span>
+              <span className="font-medium text-lg text-gray-900">{name}</span>
               <span className="ml-6 flex items-center">
                 {open ? (
                   <MinusSmIcon className="h-5 w-5" aria-hidden="true" />
@@ -279,21 +276,50 @@ function FilterSection({ section }) {
           </h3>
           <Disclosure.Panel className="pt-6">
             <div className="space-y-4">
-              {section.options.map((option, optionIdx) => (
-                <div key={option.value} className="flex items-center">
+              {options?.map((option, optionIdx) => (
+                <div key={option.slug} className="flex items-center">
                   <input
-                    id={`filter-${section.id}-${optionIdx}`}
-                    name={`${section.id}[]`}
-                    defaultValue={option.value}
-                    type={section.type}
-                    defaultChecked={option.checked}
+                    id={`filter-${name}-${optionIdx}`}
+                    name={`${name}[]`}
+                    defaultValue={option.slug}
+                    type={type}
+                    defaultChecked={false}
+                    onClick={() =>
+                      categories?.includes(option.slug)
+                        ? router.push(
+                            {
+                              query: {
+                                categories: (
+                                  (categories as string).split(",") as string[]
+                                ).filter((i) => i !== option.slug),
+                              },
+                            },
+                            undefined,
+                            { shallow: true }
+                          )
+                        : router.push(
+                            {
+                              query: {
+                                categories: [
+                                  ...(categories
+                                    ? (categories as string).split(",")
+                                    : []),
+                                  option.slug,
+                                  // categories ? (categories as string[]).join(',') : option.slug
+                                ].join(","),
+                              },
+                            },
+                            undefined,
+                            { shallow: true }
+                          )
+                    }
                     className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
                   />
                   <label
-                    htmlFor={`filter-${section.id}-${optionIdx}`}
+                    htmlFor={`filter-${name}-${optionIdx}`}
                     className="ml-3 text-lg text-gray-600"
                   >
-                    {option.label}
+                    {option.title}
                   </label>
                   <p className="flex-1 ml-1 font-semibold text-primary text-right">
                     {option.dealsCount}

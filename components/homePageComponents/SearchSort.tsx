@@ -5,17 +5,37 @@ import {
   PlusSmIcon,
   SearchIcon,
 } from "@heroicons/react/outline";
+import * as _ from "lodash";
+
+import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { classNames } from "../../utils/style";
 import { FilterMobile } from "./Filter";
 
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Latest", href: "#", current: false },
+  { name: "Most Popular", current: false },
+  { name: "Latest", current: false },
 ];
 
 export function SearchSort() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [currentSortOption, setCurrentSortOption] = useState("");
+  const router = useRouter();
+  const { categories, search, sort } = router.query;
+
+  function onSort(sort: string) {
+    router.push(
+      {
+        query: {
+          categories,
+          search,
+          sort: sort,
+        },
+      },
+      undefined,
+      { shallow: true }
+    );
+  }
 
   return (
     <div className="items-center justify-between border-b border-gray-200 pt-24 pb-4 grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
@@ -27,37 +47,37 @@ export function SearchSort() {
       </button>
 
       <div className="flex h-full col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-5">
-        <form
-          className="w-full h-full flex md:ml-0 border rounded-sm px-4 py-2"
-          action="#"
-          method="GET"
-        >
-          <label htmlFor="desktop-search-field" className="sr-only">
-            Search deals
-          </label>
-          <div className="relative w-full h-full text-gray-400 focus-within:text-gray-600">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-              <SearchIcon
-                className="flex-shrink-0 h-5 w-5"
-                aria-hidden="true"
-              />
-            </div>
-            <input
-              name="mobile-search-field"
-              id="mobile-search-field"
-              className="h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400"
-              placeholder="Search"
-              type="search"
-            />
-          </div>
-        </form>
+        <div className="relative w-full h-full flex items-center md:ml-0 border rounded-sm px-4 py-2 text-gray-400 focus-within:text-gray-600">
+          {/* <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center"> */}
+          <SearchIcon
+            className="flex-shrink-0 h-5 w-5 m-l-3"
+            aria-hidden="true"
+          />
+          <input
+            name="mobile-search-field"
+            id="mobile-search-field"
+            className="h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400"
+            placeholder="Search"
+            type="search"
+            onChange={_.debounce((e) =>
+              router.push(
+                {
+                  query: {
+                    categories,
+                    search: e.target.value,
+                  },
+                },
+                undefined,
+                { shallow: true }
+              )
+            )}
+          />
+        </div>
       </div>
       <FilterMobile
         mobileFiltersOpen={mobileFiltersOpen}
         setMobileFiltersOpen={setMobileFiltersOpen}
       />
-      {/* <aside>
-        <h2 className="sr-only">Filters</h2> */}
 
       <button
         type="button"
@@ -97,24 +117,38 @@ export function SearchSort() {
         >
           <Menu.Items className="origin-top-left absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="py-1">
-              {sortOptions.map((option) => (
-                <Menu.Item key={option.name}>
-                  {({ active }) => (
-                    <a
-                      href={option.href}
-                      className={classNames(
-                        option.current
-                          ? "font-medium text-gray-900"
-                          : "text-gray-500",
-                        active ? "bg-gray-100" : "",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      {option.name}
-                    </a>
-                  )}
-                </Menu.Item>
-              ))}
+              <Menu.Item key="most-popular">
+                {({ active }) => (
+                  <button
+                    onClick={() => onSort("deal_usages.length:desc")}
+                    className={classNames(
+                      currentSortOption === "most-popular"
+                        ? "font-medium text-gray-900"
+                        : "text-gray-500",
+                      active ? "bg-gray-100" : "",
+                      "block px-4 py-2 text-sm"
+                    )}
+                  >
+                    Most popular
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item key="latest">
+                {({ active }) => (
+                  <button
+                    onClick={() => onSort("createdAt:desc")}
+                    className={classNames(
+                      currentSortOption === "latest"
+                        ? "font-medium text-gray-900"
+                        : "text-gray-500",
+                      active ? "bg-gray-100" : "",
+                      "block px-4 py-2 text-sm"
+                    )}
+                  >
+                    Latest
+                  </button>
+                )}
+              </Menu.Item>
             </div>
           </Menu.Items>
         </Transition>

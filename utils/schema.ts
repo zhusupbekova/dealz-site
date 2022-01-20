@@ -10,11 +10,16 @@ export interface ICategory {
   };
 }
 
-export interface ICategoryStats {
+export interface IFilterStat {
   id: number;
   dealsCount: string;
   title: string;
   slug: string;
+}
+
+export interface IFilterStats {
+  categoryStats: IFilterStat[];
+  dealLifetimeStats: IFilterStat[];
 }
 
 export interface ICategories {
@@ -68,7 +73,11 @@ export interface IDeal {
     title: string;
     description: string;
     slug: string;
-    used_times: null | number;
+    deal_usages: {
+      data:
+        | null
+        | { attributes: { createdAt: Date; updatedAt: Date }; id: number }[];
+    };
     createdAt: Date;
     updatedAt: Date;
     publishedAt: Date;
@@ -80,6 +89,7 @@ export interface IDeal {
     banner: IMedia;
     brand: IBrand;
   };
+  usageCount: { count: string };
 }
 
 export interface IDeals {

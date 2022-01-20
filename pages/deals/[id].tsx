@@ -16,15 +16,15 @@ import { CategoryTag } from "../../components/common/CategoryTag";
 import { CouponModal } from "../../components/couponCardComponents/CouponModal";
 import { CouponBrandLogo } from "../../components/couponCardComponents/CouponBrandLogo";
 
-interface IDealDetailResponse {
-  data: IDeal;
-  meta: {};
+interface IDealDetailPageProps {
+  deal: { data: IDeal; usageCount: { count: string } };
+  href: string;
 }
 
-export default function DealDetailPage({ deal, href }) {
+export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  console.log(deal);
   return (
     <Layout>
       {deal ? (
@@ -35,7 +35,9 @@ export default function DealDetailPage({ deal, href }) {
               <div className="bg-gray-100 p-4 border rounded space-y-8">
                 <h1 className="  text-2xl font-bold text-primary">42% Off</h1>
                 <div>
-                  <h1 className="text-2xl font-bold text-primary">1</h1>
+                  <h1 className="text-2xl font-bold text-primary">
+                    {deal.usageCount.count}
+                  </h1>
                   <p className="text-gray-500">people used this deal</p>
                 </div>
                 <div className="flex flex-col items-center">

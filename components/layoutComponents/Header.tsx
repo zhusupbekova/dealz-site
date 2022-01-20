@@ -17,7 +17,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 
 import { classNames } from "../../utils/style";
 import { brand, navigation } from "../../config";
-import { ICategories, ICategoryStats } from "../../utils/schema";
+import { ICategories, IFilterStats } from "../../utils/schema";
 import { fetcher } from "../../utils/fetcher";
 import { Loading } from "../common/LoadingComponent";
 import { Button } from "../common/Button";
@@ -38,9 +38,9 @@ export function Header() {
   // );
 
   const {
-    data: categories,
-    error: categoriesError,
-  }: SWRResponse<ICategoryStats[], Error> = useSWR(
+    data: filterData,
+    error: filterError,
+  }: SWRResponse<IFilterStats, Error> = useSWR(
     `/api/c/categories/stats`,
     fetcher
   );
@@ -101,8 +101,8 @@ export function Header() {
                         <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
                           <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                             <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 lg:grid-cols-2">
-                              {categories ? (
-                                categories.map((item) => (
+                              {filterData ? (
+                                filterData.categoryStats.map((item) => (
                                   <a
                                     key={`category_name_${item.title}`}
                                     href={`/categories/${item.slug}`}
@@ -222,7 +222,7 @@ export function Header() {
                               <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
                                 <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                                   <div className="relative grid gap-4 bg-white px-5 py-6 sm:gap-8 sm:p-8 grid-cols-2">
-                                    {categories?.map((item) => (
+                                    {filterData.categoryStats?.map((item) => (
                                       <a
                                         key={`category_name_${item.title}`}
                                         href={`/categories/${item.slug}`}
