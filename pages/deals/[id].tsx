@@ -24,6 +24,9 @@ interface IDealDetailPageProps {
 export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+
+  console.log({ asPath: router.asPath });
 
   return (
     <Layout>
@@ -147,7 +150,6 @@ export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-
   const res = await fetcher(`/api/deals/${id}?${dealsQuery}`);
 
   if (!res.data) {
@@ -156,7 +158,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  let href = context.req.protocol + "://" + context.req.host + "/deals/" + id;
+  let href = context.req.headers.referer;
 
   return {
     props: { deal: res, href },

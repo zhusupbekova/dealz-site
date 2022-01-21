@@ -71,7 +71,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+            <div className="inline-block align-bottom bg-white rounded-lg px-8 md:px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
               <div>
                 <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full ">
                   <img
@@ -80,24 +80,22 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                     alt={brand.name}
                   />
                 </div>
-                <div className="mt-3 mb-3 text-center sm:mt-14 sm:mb-10 sm:mx-4">
+                <div className="relative mt-3 mb-3 text-center sm:mt-14 sm:mb-10 sm:mx-4">
+                  <CouponBrandLogo
+                    url={
+                      item.attributes.brand?.data?.attributes.logo?.data
+                        .attributes.url
+                    }
+                    name={item.attributes.brand.data?.attributes.name}
+                    className={
+                      "absolute z-10 translate-x-1/2 -translate-y-1/3 top-0 right-0 "
+                    }
+                  />
                   <Dialog.Title
                     as="h3"
-                    className="relative text-gray-900 py-6 border rounded-md"
+                    className="relative text-gray-900 py-6 px-4 text-xl leading-6 font-medium border rounded-md"
                   >
-                    <CouponBrandLogo
-                      url={
-                        item.attributes.brand?.data?.attributes.logo?.data
-                          .attributes.url
-                      }
-                      name={item.attributes.brand.data?.attributes.name}
-                      className={
-                        "absolute translate-x-1/2 -translate-y-1/3 top-0 right-0 "
-                      }
-                    />
-                    <h2 className="text-xl leading-6 font-medium">
-                      {item.attributes.title}
-                    </h2>
+                    {item.attributes.title}
                   </Dialog.Title>
                   <div className="flex flex-col items-center mt-6">
                     {item.attributes.type === "deal" ? (
@@ -136,7 +134,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                   </div>
                 </div>
               </div>
-              <div className="px-4">
+              <div className="md:px-4">
                 <a
                   href="#_"
                   onClick={() => onUseDeal()}

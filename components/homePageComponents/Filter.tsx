@@ -50,18 +50,11 @@ const mostUsed = {
 export function FilterMobile({
   mobileFiltersOpen,
   setMobileFiltersOpen,
-  categoriesFilter,
-  setCategoriesFilter,
 }: IFilterProps) {
-  //   const {
-  //     data: categories,
-  //     error: categoriesError,
-  //   }: SWRResponse<ICategories, Error> = useSWR(`/api/categories`, fetcher);
+  const router = useRouter();
+  const { featured, search, sort, categories } = router.query;
 
-  const { data: categories, error: categoriesError } = useSWR(
-    `/api/c/categories/stats`,
-    fetcher
-  );
+  const { data, error } = useSWR(`/api/c/categories/stats`, fetcher);
 
   return (
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -123,14 +116,48 @@ export function FilterMobile({
                 <input
                   id="featured"
                   name={`featured[]`}
-                  defaultValue={"true"}
+                  checked={featured === "true"}
                   type="checkbox"
                   className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary float-right"
+                  onChange={(e) =>
+                    e.target.checked
+                      ? router.push(
+                          {
+                            query: {
+                              ...(categories ? { categories } : null),
+                              ...(search ? { search } : null),
+                              ...(sort ? { sort } : null),
+                              featured: true,
+                            },
+                          },
+                          undefined,
+                          { shallow: true }
+                        )
+                      : router.push(
+                          {
+                            query: {
+                              ...(categories ? { categories } : null),
+                              ...(search ? { search } : null),
+                              ...(sort ? { sort } : null),
+                            },
+                          },
+                          undefined,
+                          { shallow: true }
+                        )
+                  }
                 />
               </div>
-              {/* <FilterSectionMobile section={categoriesFilter} />
-              <FilterSectionMobile section={dealTypes} />
-              <FilterSectionMobile section={mostUsed} /> */}
+              <FilterSectionMobile
+                name={"Categories"}
+                type={"checkbox"}
+                options={data?.categoryStats}
+              />
+              <FilterSectionMobile
+                name={"Deal types"}
+                type={"checkbox"}
+                options={data?.dealLifetimeStats}
+              />
+              {/* <FilterSection section={mostUsed} /> */}
             </form>
           </div>
         </Transition.Child>
@@ -145,62 +172,138 @@ interface IFilterSectionProps {
   options: IFilterStat[];
 }
 
-// function FilterSectionMobile({ section }) {
-//   return (
-//     <Disclosure
-//       as="div"
-//       key={section.name}
-//       className="border-t border-gray-200 pt-4 pb-4"
-//     >
-//       {({ open }) => (
-//         <fieldset>
-//           <legend className="w-full px-2">
-//             <Disclosure.Button className="w-full p-2 flex items-center justify-between text-gray-400 hover:text-gray-500">
-//               <span className="text-base font-medium text-gray-900">
-//                 {section.name}
-//               </span>
-//               <span className="ml-6 h-7 flex items-center">
-//                 <ChevronDownIcon
-//                   className={classNames(
-//                     open ? "-rotate-180" : "rotate-0",
-//                     "h-5 w-5 transform"
-//                   )}
-//                   aria-hidden="true"
-//                 />
-//               </span>
-//             </Disclosure.Button>
-//           </legend>
-//           <Disclosure.Panel className="pt-4 pb-2 px-4">
-//             <div className="space-y-6">
-//               {section.options.map((option, optionIdx) => (
-//                 <div key={option.value} className="flex items-center">
-//                   <input
-//                     id={`${section.id}-${optionIdx}-mobile`}
-//                     name={`${section.id}[]`}
-//                     defaultValue={option.value}
-//                     type={section.type}
-//                     className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
-//                   />
-//                   <label
-//                     htmlFor={`${section.id}-${optionIdx}-mobile`}
-//                     className="ml-3 text-base text-gray-500"
-//                   >
-//                     {option.label}
-//                   </label>
-//                 </div>
-//               ))}
-//             </div>
-//           </Disclosure.Panel>
-//         </fieldset>
-//       )}
-//     </Disclosure>
-//   );
-// }
+function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
+  const router = useRouter();
+  const { featured, search, sort, categories, dealType } = router.query;
 
-export function Filter({
-  categoriesFilter,
-  setCategoriesFilter,
-}: IFilterProps) {
+  function onFilterItemClick(sectionName: string, slug: string) {
+    if (sectionName === "Categories") {
+      categories?.includes(slug)
+        ? router.push(
+            {
+              query: {
+                categories: (
+                  (categories as string).split(",") as string[]
+                ).filter((i) => i !== slug),
+                ...(search ? { search } : null),
+                ...(sort ? { sort } : null),
+                ...(featured ? { featured } : null),
+              },
+            },
+            undefined,
+            { shallow: true }
+          )
+        : router.push(
+            {
+              query: {
+                categories: [
+                  ...(categories ? (categories as string).split(",") : []),
+                  slug,
+                ].join(","),
+                ...(search ? { search } : null),
+                ...(sort ? { sort } : null),
+                ...(featured ? { featured } : null),
+              },
+            },
+            undefined,
+            { shallow: true }
+          );
+    }
+
+    if (sectionName === "Deal types") {
+      dealType?.includes(slug)
+        ? router.push(
+            {
+              query: {
+                dealType: ((dealType as string).split(",") as string[]).filter(
+                  (i) => i !== slug
+                ),
+                ...(categories ? { categories } : null),
+                ...(search ? { search } : null),
+                ...(sort ? { sort } : null),
+                ...(featured ? { featured } : null),
+              },
+            },
+            undefined,
+            { shallow: true }
+          )
+        : router.push(
+            {
+              query: {
+                dealType: [
+                  ...(dealType ? (dealType as string).split(",") : []),
+                  slug,
+                ].join(","),
+                ...(categories ? { categories } : null),
+                ...(search ? { search } : null),
+                ...(sort ? { sort } : null),
+                ...(featured ? { featured } : null),
+              },
+            },
+            undefined,
+            { shallow: true }
+          );
+    }
+  }
+
+  return (
+    <Disclosure
+      as="div"
+      key={`${name}-mobile`}
+      className="border-t border-gray-200 pt-4 pb-4"
+    >
+      {({ open }) => (
+        <fieldset>
+          <legend className="w-full px-2">
+            <Disclosure.Button className="w-full p-2 flex items-center justify-between text-gray-400 hover:text-gray-500">
+              <span className="text-base font-medium text-gray-900">
+                {name}
+              </span>
+              <span className="ml-6 h-7 flex items-center">
+                <ChevronDownIcon
+                  className={classNames(
+                    open ? "-rotate-180" : "rotate-0",
+                    "h-5 w-5 transform"
+                  )}
+                  aria-hidden="true"
+                />
+              </span>
+            </Disclosure.Button>
+          </legend>
+          <Disclosure.Panel className="pt-4 pb-2 px-4">
+            <div className="space-y-6">
+              {options?.map((option, optionIdx) => (
+                <div
+                  key={`${option.slug}-mobile`}
+                  className="flex items-center"
+                >
+                  <input
+                    id={`filter-${name}-${optionIdx}`}
+                    name={`${name}[]`}
+                    type={type}
+                    className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
+                    onClick={() => onFilterItemClick(name, option.slug)}
+                  />
+                  <label
+                    htmlFor={`filter-${name}-${optionIdx}-mobile`}
+                    className="ml-3 text-base text-gray-500"
+                  >
+                    {option.title}
+                  </label>
+                  <p className="flex-1 ml-1 font-semibold text-primary text-right">
+                    {option.dealsCount}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Disclosure.Panel>
+        </fieldset>
+      )}
+    </Disclosure>
+  );
+}
+
+export function Filter({}: IFilterProps) {
   const router = useRouter();
   const { featured, search, sort, categories } = router.query;
   const { data, error }: SWRResponse<IFilterStats, Error> = useSWR(
@@ -273,7 +376,77 @@ export function Filter({
 
 function FilterSection({ name, type, options }: IFilterSectionProps) {
   const router = useRouter();
-  const { featured, search, sort, categories } = router.query;
+  const { featured, search, sort, categories, dealType } = router.query;
+
+  function onFilterItemClick(sectionName: string, slug: string) {
+    if (sectionName === "Categories") {
+      categories?.includes(slug)
+        ? router.push(
+            {
+              query: {
+                categories: (
+                  (categories as string).split(",") as string[]
+                ).filter((i) => i !== slug),
+                ...(search ? { search } : null),
+                ...(sort ? { sort } : null),
+                ...(featured ? { featured } : null),
+              },
+            },
+            undefined,
+            { shallow: true }
+          )
+        : router.push(
+            {
+              query: {
+                categories: [
+                  ...(categories ? (categories as string).split(",") : []),
+                  slug,
+                ].join(","),
+                ...(search ? { search } : null),
+                ...(sort ? { sort } : null),
+                ...(featured ? { featured } : null),
+              },
+            },
+            undefined,
+            { shallow: true }
+          );
+    }
+
+    if (sectionName === "Deal types") {
+      dealType?.includes(slug)
+        ? router.push(
+            {
+              query: {
+                dealType: ((dealType as string).split(",") as string[]).filter(
+                  (i) => i !== slug
+                ),
+                ...(categories ? { categories } : null),
+                ...(search ? { search } : null),
+                ...(sort ? { sort } : null),
+                ...(featured ? { featured } : null),
+              },
+            },
+            undefined,
+            { shallow: true }
+          )
+        : router.push(
+            {
+              query: {
+                dealType: [
+                  ...(dealType ? (dealType as string).split(",") : []),
+                  slug,
+                ].join(","),
+                ...(categories ? { categories } : null),
+                ...(search ? { search } : null),
+                ...(sort ? { sort } : null),
+                ...(featured ? { featured } : null),
+              },
+            },
+            undefined,
+            { shallow: true }
+          );
+    }
+  }
 
   return (
     <Disclosure as="div" key={name} className="border-t border-gray-200 py-6">
@@ -299,41 +472,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                     id={`filter-${name}-${optionIdx}`}
                     name={`${name}[]`}
                     type={type}
-                    checked={featured === "true"}
-                    onClick={() =>
-                      categories?.includes(option.slug)
-                        ? router.push(
-                            {
-                              query: {
-                                categories: (
-                                  (categories as string).split(",") as string[]
-                                ).filter((i) => i !== option.slug),
-                                ...(search ? { search } : null),
-                                ...(sort ? { sort } : null),
-                                ...(featured ? { featured } : null),
-                              },
-                            },
-                            undefined,
-                            { shallow: true }
-                          )
-                        : router.push(
-                            {
-                              query: {
-                                categories: [
-                                  ...(categories
-                                    ? (categories as string).split(",")
-                                    : []),
-                                  option.slug,
-                                ].join(","),
-                                ...(search ? { search } : null),
-                                ...(sort ? { sort } : null),
-                                ...(featured ? { featured } : null),
-                              },
-                            },
-                            undefined,
-                            { shallow: true }
-                          )
-                    }
+                    onClick={() => onFilterItemClick(name, option.slug)}
                     className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
                   />
                   <label
