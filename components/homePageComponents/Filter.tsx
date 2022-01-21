@@ -52,7 +52,15 @@ export function FilterMobile({
   setMobileFiltersOpen,
 }: IFilterProps) {
   const router = useRouter();
-  const { featured, search, sort, categories } = router.query;
+  const {
+    featured,
+    search,
+    sort,
+    categories,
+    expiringSoon,
+    expired,
+    dealType,
+  } = router.query;
 
   const { data, error } = useSWR(`/api/c/categories/stats`, fetcher);
 
@@ -124,6 +132,9 @@ export function FilterMobile({
                       ? router.push(
                           {
                             query: {
+                              ...(expiringSoon ? { expiringSoon } : null),
+                              ...(expired ? { expired } : null),
+                              ...(dealType ? { dealType } : null),
                               ...(categories ? { categories } : null),
                               ...(search ? { search } : null),
                               ...(sort ? { sort } : null),
@@ -136,6 +147,10 @@ export function FilterMobile({
                       : router.push(
                           {
                             query: {
+                              ...(expiringSoon ? { expiringSoon } : null),
+                              ...(expired ? { expired } : null),
+                              ...(dealType ? { dealType } : null),
+
                               ...(categories ? { categories } : null),
                               ...(search ? { search } : null),
                               ...(sort ? { sort } : null),
@@ -174,7 +189,15 @@ interface IFilterSectionProps {
 
 function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
   const router = useRouter();
-  const { featured, search, sort, categories, dealType } = router.query;
+  const {
+    featured,
+    search,
+    sort,
+    categories,
+    dealType,
+    expired,
+    expiringSoon,
+  } = router.query;
 
   function onFilterItemClick(sectionName: string, slug: string) {
     if (sectionName === "Categories") {
@@ -185,6 +208,8 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                 categories: (
                   (categories as string).split(",") as string[]
                 ).filter((i) => i !== slug),
+                ...(expiringSoon ? { expiringSoon } : null),
+                ...(expired ? { expired } : null),
                 ...(search ? { search } : null),
                 ...(sort ? { sort } : null),
                 ...(featured ? { featured } : null),
@@ -200,6 +225,8 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                   ...(categories ? (categories as string).split(",") : []),
                   slug,
                 ].join(","),
+                ...(expiringSoon ? { expiringSoon } : null),
+                ...(expired ? { expired } : null),
                 ...(search ? { search } : null),
                 ...(sort ? { sort } : null),
                 ...(featured ? { featured } : null),
@@ -211,41 +238,108 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
     }
 
     if (sectionName === "Deal types") {
-      dealType?.includes(slug)
-        ? router.push(
-            {
-              query: {
-                dealType: ((dealType as string).split(",") as string[]).filter(
-                  (i) => i !== slug
-                ),
-                ...(categories ? { categories } : null),
-                ...(search ? { search } : null),
-                ...(sort ? { sort } : null),
-                ...(featured ? { featured } : null),
+      if (slug === "expiring-soon") {
+        expiringSoon
+          ? router.push(
+              {
+                query: {
+                  ...(expired ? { expired } : null),
+                  ...(dealType ? { dealType } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
               },
-            },
-            undefined,
-            { shallow: true }
-          )
-        : router.push(
-            {
-              query: {
-                dealType: [
-                  ...(dealType ? (dealType as string).split(",") : []),
-                  slug,
-                ].join(","),
-                ...(categories ? { categories } : null),
-                ...(search ? { search } : null),
-                ...(sort ? { sort } : null),
-                ...(featured ? { featured } : null),
+              undefined,
+              { shallow: true }
+            )
+          : router.push(
+              {
+                query: {
+                  expiringSoon: true,
+                  ...(expired ? { expired } : null),
+                  ...(dealType ? { dealType } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
               },
-            },
-            undefined,
-            { shallow: true }
-          );
+              undefined,
+              { shallow: true }
+            );
+      } else if (slug === "expired") {
+        expired
+          ? router.push(
+              {
+                query: {
+                  ...(expiringSoon ? { expiringSoon } : null),
+                  ...(dealType ? { dealType } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
+              },
+              undefined,
+              { shallow: true }
+            )
+          : router.push(
+              {
+                query: {
+                  expired: true,
+                  ...(expiringSoon ? { expiringSoon } : null),
+                  ...(dealType ? { dealType } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
+              },
+              undefined,
+              { shallow: true }
+            );
+      } else {
+        dealType?.includes(slug)
+          ? router.push(
+              {
+                query: {
+                  dealType: (
+                    (dealType as string).split(",") as string[]
+                  ).filter((i) => i !== slug),
+                  ...(expiringSoon ? { expiringSoon } : null),
+                  ...(expired ? { expired } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
+              },
+              undefined,
+              { shallow: true }
+            )
+          : router.push(
+              {
+                query: {
+                  dealType: [
+                    ...(dealType ? (dealType as string).split(",") : []),
+                    slug,
+                  ].join(","),
+                  ...(expiringSoon ? { expiringSoon } : null),
+                  ...(expired ? { expired } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
+              },
+              undefined,
+              { shallow: true }
+            );
+      }
     }
   }
-
   return (
     <Disclosure
       as="div"
@@ -281,6 +375,12 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                     id={`filter-${name}-${optionIdx}`}
                     name={`${name}[]`}
                     type={type}
+                    checked={
+                      categories?.includes(option.slug) ||
+                      dealType?.includes(option.slug) ||
+                      (expired && option.slug === "expired") ||
+                      (expiringSoon && option.slug === "expiring-soon")
+                    }
                     className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
                     onClick={() => onFilterItemClick(name, option.slug)}
                   />
@@ -289,6 +389,10 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                     className="ml-3 text-base text-gray-500"
                   >
                     {option.title}
+                    {categories.includes(option.slug) ||
+                      dealType.includes(option.slug) ||
+                      (expired && option.slug === "expired") ||
+                      (expiringSoon && option.slug === "expiring-soon")}
                   </label>
                   <p className="flex-1 ml-1 font-semibold text-primary text-right">
                     {option.dealsCount}
@@ -305,7 +409,15 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
 
 export function Filter({}: IFilterProps) {
   const router = useRouter();
-  const { featured, search, sort, categories } = router.query;
+  const {
+    featured,
+    search,
+    sort,
+    categories,
+    dealType,
+    expired,
+    expiringSoon,
+  } = router.query;
   const { data, error }: SWRResponse<IFilterStats, Error> = useSWR(
     `/api/c/categories/stats`,
     fetcher
@@ -328,6 +440,7 @@ export function Filter({}: IFilterProps) {
           <input
             id="featured"
             name={`featured[]`}
+            checked={featured === "true"}
             type="checkbox"
             className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
             onChange={(e) =>
@@ -335,6 +448,9 @@ export function Filter({}: IFilterProps) {
                 ? router.push(
                     {
                       query: {
+                        ...(expiringSoon ? { expiringSoon } : null),
+                        ...(expired ? { expired } : null),
+                        ...(dealType ? { dealType } : null),
                         ...(categories ? { categories } : null),
                         ...(search ? { search } : null),
                         ...(sort ? { sort } : null),
@@ -347,6 +463,9 @@ export function Filter({}: IFilterProps) {
                 : router.push(
                     {
                       query: {
+                        ...(expiringSoon ? { expiringSoon } : null),
+                        ...(expired ? { expired } : null),
+                        ...(dealType ? { dealType } : null),
                         ...(categories ? { categories } : null),
                         ...(search ? { search } : null),
                         ...(sort ? { sort } : null),
@@ -366,7 +485,7 @@ export function Filter({}: IFilterProps) {
         <FilterSection
           name={"Deal types"}
           type={"checkbox"}
-          options={data?.dealLifetimeStats}
+          options={data?.lifetimeStats}
         />
         {/* <FilterSection section={mostUsed} /> */}
       </form>
@@ -376,7 +495,15 @@ export function Filter({}: IFilterProps) {
 
 function FilterSection({ name, type, options }: IFilterSectionProps) {
   const router = useRouter();
-  const { featured, search, sort, categories, dealType } = router.query;
+  const {
+    featured,
+    search,
+    sort,
+    categories,
+    dealType,
+    expired,
+    expiringSoon,
+  } = router.query;
 
   function onFilterItemClick(sectionName: string, slug: string) {
     if (sectionName === "Categories") {
@@ -390,6 +517,9 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                 ...(search ? { search } : null),
                 ...(sort ? { sort } : null),
                 ...(featured ? { featured } : null),
+                ...(expiringSoon ? { expiringSoon } : null),
+                ...(expired ? { expired } : null),
+                ...(dealType ? { dealType } : null),
               },
             },
             undefined,
@@ -405,6 +535,9 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                 ...(search ? { search } : null),
                 ...(sort ? { sort } : null),
                 ...(featured ? { featured } : null),
+                ...(expiringSoon ? { expiringSoon } : null),
+                ...(expired ? { expired } : null),
+                ...(dealType ? { dealType } : null),
               },
             },
             undefined,
@@ -413,38 +546,107 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
     }
 
     if (sectionName === "Deal types") {
-      dealType?.includes(slug)
-        ? router.push(
-            {
-              query: {
-                dealType: ((dealType as string).split(",") as string[]).filter(
-                  (i) => i !== slug
-                ),
-                ...(categories ? { categories } : null),
-                ...(search ? { search } : null),
-                ...(sort ? { sort } : null),
-                ...(featured ? { featured } : null),
+      console.log(slug);
+      if (slug === "expiring-soon") {
+        expiringSoon
+          ? router.push(
+              {
+                query: {
+                  ...(expired ? { expired } : null),
+                  ...(dealType ? { dealType } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
               },
-            },
-            undefined,
-            { shallow: true }
-          )
-        : router.push(
-            {
-              query: {
-                dealType: [
-                  ...(dealType ? (dealType as string).split(",") : []),
-                  slug,
-                ].join(","),
-                ...(categories ? { categories } : null),
-                ...(search ? { search } : null),
-                ...(sort ? { sort } : null),
-                ...(featured ? { featured } : null),
+              undefined,
+              { shallow: true }
+            )
+          : router.push(
+              {
+                query: {
+                  expiringSoon: true,
+                  ...(expired ? { expired } : null),
+                  ...(dealType ? { dealType } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
               },
-            },
-            undefined,
-            { shallow: true }
-          );
+              undefined,
+              { shallow: true }
+            );
+      } else if (slug === "expired") {
+        expired
+          ? router.push(
+              {
+                query: {
+                  ...(expiringSoon ? { expiringSoon } : null),
+                  ...(dealType ? { dealType } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
+              },
+              undefined,
+              { shallow: true }
+            )
+          : router.push(
+              {
+                query: {
+                  expired: true,
+                  ...(expiringSoon ? { expiringSoon } : null),
+                  ...(dealType ? { dealType } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
+              },
+              undefined,
+              { shallow: true }
+            );
+      } else {
+        dealType?.includes(slug)
+          ? router.push(
+              {
+                query: {
+                  dealType: (
+                    (dealType as string).split(",") as string[]
+                  ).filter((i) => i !== slug),
+                  ...(expiringSoon ? { expiringSoon } : null),
+                  ...(expired ? { expired } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
+              },
+              undefined,
+              { shallow: true }
+            )
+          : router.push(
+              {
+                query: {
+                  dealType: [
+                    ...(dealType ? (dealType as string).split(",") : []),
+                    slug,
+                  ].join(","),
+                  ...(expiringSoon ? { expiringSoon } : null),
+                  ...(expired ? { expired } : null),
+                  ...(categories ? { categories } : null),
+                  ...(search ? { search } : null),
+                  ...(sort ? { sort } : null),
+                  ...(featured ? { featured } : null),
+                },
+              },
+              undefined,
+              { shallow: true }
+            );
+      }
     }
   }
 
@@ -472,6 +674,12 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                     id={`filter-${name}-${optionIdx}`}
                     name={`${name}[]`}
                     type={type}
+                    checked={
+                      categories?.includes(option.slug) ||
+                      dealType?.includes(option.slug) ||
+                      (expired && option.slug === "expired") ||
+                      (expiringSoon && option.slug === "expiring-soon")
+                    }
                     onClick={() => onFilterItemClick(name, option.slug)}
                     className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
                   />

@@ -11,7 +11,6 @@ export interface ICategory {
 }
 
 export interface IFilterStat {
-  id: number;
   dealsCount: string;
   title: string;
   slug: string;
@@ -19,7 +18,7 @@ export interface IFilterStat {
 
 export interface IFilterStats {
   categoryStats: IFilterStat[];
-  dealLifetimeStats: IFilterStat[];
+  lifetimeStats: IFilterStat[];
 }
 
 export interface ICategories {
