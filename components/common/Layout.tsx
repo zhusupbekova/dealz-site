@@ -7,13 +7,18 @@ import { classNames } from "../../utils/style";
 
 export function Layout({
   children,
+  compact = false,
   className = "",
   containerClassName = "",
-}: PropsWithChildren<{ className?: string; containerClassName?: string }>) {
+}: PropsWithChildren<{
+  className?: string;
+  containerClassName?: string;
+  compact?: boolean;
+}>) {
   return (
     <div
       className={classNames(
-        "h-screen flex flex-col justify-between",
+        "min-h-screen flex flex-col justify-between",
         containerClassName
       )}
     >
@@ -24,7 +29,8 @@ export function Layout({
       <Header />
       <main
         className={classNames(
-          "mt-16 flex-1 mx-auto w-full max-w-screen-2xl px-4 sm:mt-24",
+          compact ? "" : "max-w-screen-2xl px-4",
+          "mt-16 flex-1 mx-auto w-full sm:mt-24",
           className
         )}
       >

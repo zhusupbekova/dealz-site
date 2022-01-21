@@ -3,7 +3,7 @@ import { footer, brand } from "../../config";
 
 export function Footer() {
   return (
-    <footer className="bg-gray-100 mt-12" aria-labelledby="footer-heading">
+    <footer className="bg-gray-100" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
