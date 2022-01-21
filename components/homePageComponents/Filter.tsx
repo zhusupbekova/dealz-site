@@ -1,4 +1,4 @@
-import { Dispatch, Fragment, SetStateAction } from "react";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import useSWR, { SWRResponse } from "swr";
 import { Transition, Dialog, Disclosure } from "@headlessui/react";
 import qs from "qs";
@@ -487,7 +487,7 @@ export function Filter({}: IFilterProps) {
           type={"checkbox"}
           options={data?.lifetimeStats}
         />
-        {/* <FilterSection section={mostUsed} /> */}
+        <MostUsedFilterSection data={data?.mostUsed} />
       </form>
     </div>
   );
@@ -690,6 +690,120 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                   </label>
                   <p className="flex-1 ml-1 font-semibold text-primary text-right">
                     {option.dealsCount}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Disclosure.Panel>
+        </>
+      )}
+    </Disclosure>
+  );
+}
+
+interface IMostUsedFilterSectionProps {
+  data: { rows: { count: string; from_day: string; title: string }[] };
+}
+
+function MostUsedFilterSection({ data }: IMostUsedFilterSectionProps) {
+  const router = useRouter();
+  const {
+    featured,
+    search,
+    sort,
+    categories,
+    dealType,
+    expired,
+    expiringSoon,
+    mostUsed,
+  } = router.query;
+  const [checked, setChecked] = useState(mostUsed ?? "");
+
+  function onFilterItemClick(slug: string, fromDay: string) {
+    mostUsed?.includes(slug)
+      ? router.push(
+          {
+            query: {
+              ...(dealType ? { dealType } : null),
+              ...(expiringSoon ? { expiringSoon } : null),
+              ...(expired ? { expired } : null),
+              ...(categories ? { categories } : null),
+              ...(search ? { search } : null),
+              ...(sort ? { sort } : null),
+              ...(featured ? { featured } : null),
+            },
+          },
+          undefined,
+          { shallow: true }
+        )
+      : router.push(
+          {
+            query: {
+              mostUsed: fromDay.split("T")[0],
+              ...(dealType ? { dealType } : null),
+              ...(expiringSoon ? { expiringSoon } : null),
+              ...(expired ? { expired } : null),
+              ...(categories ? { categories } : null),
+              ...(search ? { search } : null),
+              ...(sort ? { sort } : null),
+              ...(featured ? { featured } : null),
+            },
+          },
+          undefined,
+          { shallow: true }
+        );
+  }
+
+  return (
+    <Disclosure
+      as="div"
+      key="most-used-filter"
+      className="border-t border-gray-200 py-6"
+    >
+      {({ open }) => (
+        <>
+          <h3 className="-my-3 flow-root">
+            <Disclosure.Button className="py-3 w-full flex items-center justify-between text-base text-gray-400 hover:text-gray-500">
+              <span className="font-medium text-lg text-gray-900">
+                Most used
+              </span>
+              <span className="ml-6 flex items-center">
+                {open ? (
+                  <MinusSmIcon className="h-5 w-5" aria-hidden="true" />
+                ) : (
+                  <PlusSmIcon className="h-5 w-5" aria-hidden="true" />
+                )}
+              </span>
+            </Disclosure.Button>
+          </h3>
+          <Disclosure.Panel className="pt-6">
+            <div className="space-y-4">
+              {data?.rows?.map((row, optionIdx) => (
+                <div
+                  key={`most-used-${row.title}`}
+                  className="flex items-center"
+                >
+                  <input
+                    id={`filter-most-used-${row.title}-${optionIdx}`}
+                    name={`filter-Most-used${optionIdx}[]`}
+                    type="radio"
+                    checked={row.from_day.split("T")[0] === mostUsed}
+                    onClick={() =>
+                      onFilterItemClick(
+                        row.title.toLocaleLowerCase(),
+                        row.from_day
+                      )
+                    }
+                    className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
+                  />
+                  <label
+                    htmlFor={`filter-most-used-${row.title}-${optionIdx}`}
+                    className="ml-3 text-lg text-gray-600"
+                  >
+                    {row.title}
+                  </label>
+                  <p className="flex-1 ml-1 font-semibold text-primary text-right">
+                    {row.count}
                   </p>
                 </div>
               ))}

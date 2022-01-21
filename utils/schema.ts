@@ -19,6 +19,7 @@ export interface IFilterStat {
 export interface IFilterStats {
   categoryStats: IFilterStat[];
   lifetimeStats: IFilterStat[];
+  mostUsed: { rows: { count: string; from_day: string; title: string }[] };
 }
 
 export interface ICategories {

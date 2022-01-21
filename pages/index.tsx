@@ -38,7 +38,6 @@ function isArray(item) {
 }
 
 function Gallery() {
-  // const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [categoriesFilter, setCategoriesFilter] = useState<Set<string>>(
     new Set()
   );
@@ -51,6 +50,7 @@ function Gallery() {
     dealType,
     search,
     sort,
+    mostUsed,
   } = router.query;
 
   const featuredFilterQuery = qs.stringify(
@@ -134,6 +134,12 @@ function Gallery() {
     },
   });
 
+  const mostUsedFilterQuery = qs.stringify({
+    filters: {
+      deal_usages: { createdAt: { $gte: mostUsed } },
+    },
+  });
+
   const searchFilterQuery = qs.stringify(
     {
       filters: {
@@ -172,11 +178,14 @@ function Gallery() {
       sort ? `&${sortFilterQuery}` : ""
     }${featured ? `&${featuredFilterQuery}` : ""}${
       expired ? `&${expiredDealFilterQuery}` : ""
-    }${expiringSoon ? `&${expiringSoonFilterQuery}` : ""}`,
+    }${expiringSoon ? `&${expiringSoonFilterQuery}` : ""}${
+      mostUsed ? `&${mostUsedFilterQuery}` : ""
+    }`,
     fetcher
   );
 
-  if (error) return <div>failed to load</div>;
+  if (error)
+    return <div className="mx-auto my-12 text-lg">failed to load data</div>;
 
   return (
     <div className="bg-white">
@@ -199,13 +208,19 @@ function Gallery() {
               </h2>
 
               {deals ? (
-                <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
-                  {deals.data.map((item, idx) => (
-                    <CouponCard item={item} key={idx} />
-                  ))}
-                </div>
+                deals.data.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
+                    {deals.data.map((item, idx) => (
+                      <CouponCard item={item} key={idx} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-around w-full h-full text-lg">
+                    No such deals
+                  </div>
+                )
               ) : (
-                <div className="flex items-center justify-between w-full h-full">
+                <div className="flex items-center justify-around w-full h-full">
                   <Loading />
                 </div>
               )}
