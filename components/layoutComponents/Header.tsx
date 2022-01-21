@@ -33,7 +33,7 @@ export function Header() {
   );
 
   return (
-    <Popover className="relative bg-white z-50">
+    <Popover className="relative bg-white z-40">
       <div className="px-4 sm:px-6 w-full border-b-2 border-gray-100">
         <div className="flex justify-between max-w-6xl mx-auto  items-center py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
@@ -206,8 +206,8 @@ export function Header() {
                               leaveFrom="opacity-100 translate-y-0"
                               leaveTo="opacity-0 translate-y-1"
                             >
-                              <Popover.Panel className="absolute z-50 left-0 mt-3 transform px-2 w-screen">
-                                <div className="rounded-lg shadow-lg z-50 bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+                              <Popover.Panel className="absolute z-40 left-0 mt-3 transform px-2 w-screen">
+                                <div className="rounded-lg shadow-lg z-40 bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
                                   <div className="grid gap-2 gap-x-6 bg-white p-4 grid-cols-2">
                                     {filterData.categoryStats?.map((item) => (
                                       <a

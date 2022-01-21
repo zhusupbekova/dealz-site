@@ -217,7 +217,7 @@ const ScrollToTop = () => {
 
   return (
     <button
-      className="bg-white shadow p-2 bg-opacity-30 rounded flex flex-col items-center justify-center fixed bottom-2 right-2 transition-opacity"
+      className="bg-white shadow p-2 bg-opacity-30 hover:bg-opacity-60 rounded flex flex-col items-center justify-center fixed bottom-2 right-2 transition-opacity"
       onClick={() => scrollToTop()}
       style={{
         display: y > 200 ? "block" : "hidden",

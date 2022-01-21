@@ -68,7 +68,7 @@ export function FilterMobile({
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 flex z-40 lg:hidden"
+        className="fixed inset-0 flex z-30 lg:hidden"
         onClose={setMobileFiltersOpen}
       >
         <Transition.Child
