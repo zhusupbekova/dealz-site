@@ -39,7 +39,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed z-10 inset-0 overflow-y-auto"
+        className="fixed z-40 inset-0 overflow-y-auto"
         onClose={setOpen}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -88,7 +88,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                     }
                     name={item.attributes.brand.data?.attributes.name}
                     className={
-                      "absolute z-10 translate-x-1/2 -translate-y-1/3 top-0 right-0 "
+                      "absolute z-40 translate-x-1/2 -translate-y-1/3 top-0 right-0 "
                     }
                   />
                   <Dialog.Title
