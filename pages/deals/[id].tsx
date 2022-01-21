@@ -26,8 +26,6 @@ export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
-  console.log({ asPath: router.asPath });
-
   return (
     <Layout>
       {deal ? (

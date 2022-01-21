@@ -546,7 +546,6 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
     }
 
     if (sectionName === "Deal types") {
-      console.log(slug);
       if (slug === "expiring-soon") {
         expiringSoon
           ? router.push(
