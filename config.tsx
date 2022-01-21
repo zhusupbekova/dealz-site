@@ -14,7 +14,8 @@ export const navigation = [
 
 export const footer = {
   links: [
-    ...navigation,
+    { name: "All deals", href: "/all-deals" },
+    { name: "Browse deals", href: "/" },
     { name: "Blog", href: "/blog" },
     { name: "About", href: "/about" },
   ],

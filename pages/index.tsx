@@ -20,6 +20,7 @@ import { Filter, FilterMobile } from "../components/homePageComponents/Filter";
 import { Loading } from "../components/common/LoadingComponent";
 import { dealsQuery } from "../utils/queries";
 import { useRouter } from "next/router";
+import { Button } from "../components/common/Button";
 
 export default function Home() {
   return (
@@ -27,6 +28,7 @@ export default function Home() {
       <Hero />
       <SearchSort />
       <Gallery />
+      <Button.ScrollToTop />
     </Layout>
   );
 }

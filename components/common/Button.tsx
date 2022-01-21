@@ -1,7 +1,10 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, HeartIcon, ShareIcon } from "@heroicons/react/solid";
+import { ArrowCircleUpIcon } from "@heroicons/react/outline";
 import { Fragment } from "react";
 import { classNames } from "../../utils/style";
+import useWindowScroll from "react-use/lib/useWindowScroll";
+
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -201,4 +204,30 @@ const Share: React.FC<IButtonProps & IShareButtonProps> = ({
   );
 };
 
-export const Button = { Primary, Deal, Like, Share };
+const ScrollToTop = () => {
+  const { y } = useWindowScroll();
+
+  const scrollToTop = () => {
+    const c = document.documentElement.scrollTop || document.body.scrollTop;
+    if (c > 0) {
+      window.requestAnimationFrame(scrollToTop);
+      window.scrollTo(0, c - c / 8);
+    }
+  };
+
+  return (
+    <button
+      className="bg-white shadow p-2 bg-opacity-30 rounded flex flex-col items-center justify-center fixed bottom-2 right-2 transition-opacity"
+      onClick={() => scrollToTop()}
+      style={{
+        display: y > 200 ? "block" : "hidden",
+        opacity: y > 210 ? "1" : "0",
+      }}
+    >
+      <ArrowCircleUpIcon className="inline h-8 w-8 text-green-500" />
+      <p className="text-sm text-gray-500">Scroll to top</p>
+    </button>
+  );
+};
+
+export const Button = { Primary, Deal, Like, Share, ScrollToTop };
