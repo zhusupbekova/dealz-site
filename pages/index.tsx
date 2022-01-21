@@ -43,7 +43,15 @@ function Gallery() {
     new Set()
   );
   const router = useRouter();
-  const { featured, categories, dealType, search, sort } = router.query;
+  const {
+    expired,
+    expiringSoon,
+    featured,
+    categories,
+    dealType,
+    search,
+    sort,
+  } = router.query;
 
   const featuredFilterQuery = qs.stringify(
     {
@@ -96,6 +104,36 @@ function Gallery() {
     }
   );
 
+  const currentDate = new Date().toISOString().split("T")[0];
+
+  const expiredDealFilterQuery = qs.stringify(
+    {
+      filters: {
+        expiration_date: {
+          $lt: currentDate,
+        },
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+
+  const expiringSoonFilterQuery = qs.stringify({
+    filters: {
+      $and: [
+        { expiration_date: { $gte: currentDate } },
+        {
+          expiration_date: {
+            $lte: new Date(new Date().setDate(new Date().getDate() + 7))
+              .toISOString()
+              .split("T")[0],
+          },
+        },
+      ],
+    },
+  });
+
   const searchFilterQuery = qs.stringify(
     {
       filters: {
@@ -132,7 +170,9 @@ function Gallery() {
       dealType ? `&${dealLifetimeFilterQuery}` : ""
     }${search ? `&${searchFilterQuery}` : ""}${
       sort ? `&${sortFilterQuery}` : ""
-    }${featured ? `&${featuredFilterQuery}` : ""}`,
+    }${featured ? `&${featuredFilterQuery}` : ""}${
+      expired ? `&${expiredDealFilterQuery}` : ""
+    }${expiringSoon ? `&${expiringSoonFilterQuery}` : ""}`,
     fetcher
   );
 

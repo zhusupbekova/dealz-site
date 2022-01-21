@@ -22,13 +22,24 @@ export function SearchSort() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [currentSortOption, setCurrentSortOption] = useState("");
   const router = useRouter();
-  const { featured, categories, search, sort } = router.query;
+  const {
+    featured,
+    categories,
+    search,
+    sort,
+    dealType,
+    expiringSoon,
+    expired,
+  } = router.query;
 
   function onSort(text: string, sort: string) {
     setCurrentSortOption(text);
     router.push(
       {
         query: {
+          ...(expiringSoon ? { expiringSoon } : null),
+          ...(expired ? { expired } : null),
+          ...(dealType ? { dealType } : null),
           ...(categories ? { categories } : null),
           ...(search ? { search } : null),
           ...(featured ? { featured } : null),
@@ -79,6 +90,9 @@ export function SearchSort() {
                 {
                   query: {
                     search: e.target.value,
+                    ...(expiringSoon ? { expiringSoon } : null),
+                    ...(expired ? { expired } : null),
+                    ...(dealType ? { dealType } : null),
                     ...(categories ? { categories } : null),
                     ...(sort ? { sort } : null),
                     ...(featured ? { featured } : null),

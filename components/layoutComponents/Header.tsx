@@ -24,11 +24,6 @@ const query = qs.stringify(
 );
 
 export function Header() {
-  // const { data: categories, error }: SWRResponse<ICategories, Error> = useSWR(
-  //   `/api/categories`,
-  //   fetcher
-  // );
-
   const {
     data: filterData,
     error: filterError,
