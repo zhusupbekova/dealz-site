@@ -15,6 +15,7 @@ import { IDeal, IDeals } from "../../utils/schema";
 import { CategoryTag } from "../../components/common/CategoryTag";
 import { CouponModal } from "../../components/couponCardComponents/CouponModal";
 import { CouponBrandLogo } from "../../components/couponCardComponents/CouponBrandLogo";
+import { CheckCircleIcon } from "@heroicons/react/solid";
 
 interface IDealDetailPageProps {
   deal: { data: IDeal };
@@ -34,7 +35,9 @@ export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
             <div className="sticky top-12 w-72 text-center space-y-4 flex flex-col mr-20">
               {/* // add columns in data table */}
               <div className="bg-gray-100 p-4 border rounded space-y-8">
-                <h1 className="  text-2xl font-bold text-primary">42% Off</h1>
+                <h1 className="  text-2xl font-bold text-primary">
+                  {deal.data.attributes.deal_description}
+                </h1>
                 <div>
                   <h1 className="text-2xl font-bold text-primary">
                     {deal.data.attributes.usageCount.count}
@@ -130,6 +133,20 @@ export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
                 objectFit="cover"
               />
             </div>
+            <div className=" border rounded-md p-6 my-6">
+              <h2 className="text-center text-lg font-semibold text-primary mb-6">
+                Deal overview
+              </h2>{" "}
+              <div className="grid grid-cols-2 gap-8 w-full text-left">
+                {deal.data.attributes.overview.map((item) => (
+                  <div className="flex">
+                    <CheckCircleIcon className="h-8 w-8 mr-5 text-green-500" />
+                    {item.overview_item}
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <ReactMarkdown
               skipHtml={false}
               rehypePlugins={[rehypeRaw]}

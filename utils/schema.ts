@@ -72,7 +72,9 @@ export interface IDeal {
   attributes: {
     title: string;
     description: string;
+    overview: { overview_item: string }[];
     slug: string;
+    deal_description: string;
     deal_usages: {
       data:
         | null
