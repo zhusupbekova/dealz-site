@@ -90,9 +90,9 @@ export async function getStaticProps() {
     .valueOf();
 
   return {
+    revalidate: 60,
     props: {
       deals,
-      revalidate: 60,
     },
   };
 }
