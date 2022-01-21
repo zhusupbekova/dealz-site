@@ -73,6 +73,7 @@ export interface IDeal {
     title: string;
     description: string;
     overview: { overview_item: string }[];
+    deals: { data: IDeal[]; meta: any };
     slug: string;
     deal_description: string;
     deal_usages: {

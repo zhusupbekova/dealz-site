@@ -74,7 +74,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-gray-200 pt-8 pl-4 md:pl-0 pb-12">
+      <div className="border-t border-gray-200 py-6 pl-4 md:pl-0 ">
         <p className="text-base text-gray-400 xl:text-center">
           &copy; 2020 {brand.name}, Inc. All rights reserved.
         </p>
