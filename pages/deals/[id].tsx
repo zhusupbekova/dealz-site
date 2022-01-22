@@ -23,9 +23,12 @@ interface IDealDetailPageProps {
   href: string;
 }
 
-export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
+export default function DealDetailPage({ deal }: IDealDetailPageProps) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const href = typeof window !== "undefined" ? window.location.href : "";
+  console.log(href);
 
   return (
     <Layout compact containerClassName="bg-gray-50" className="w-full mx-auto">
@@ -257,9 +260,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  let href = context.req.headers.referer;
-
   return {
-    props: { deal: res, href },
+    props: { deal: res },
   };
 }

@@ -121,3 +121,18 @@ export interface IBrand {
     };
   };
 }
+
+export interface IDealUsages {
+  data: {
+    id: number;
+    deals: IDeal[];
+  };
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}

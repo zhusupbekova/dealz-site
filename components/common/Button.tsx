@@ -192,7 +192,7 @@ const Share: React.FC<IButtonProps & IShareButtonProps> = ({
                     //     "block px-4 py-2 text-sm"
                     //   )}
                   >
-                    {option.button({ url: dealUrl, mediaUrl: "dkgn" })}
+                    {option.button({ url: dealUrl, mediaUrl })}
                   </div>
                 )}
               </Menu.Item>
