@@ -248,7 +248,7 @@ export default function DealDetailPage({ deal }: IDealDetailPageProps) {
   );
 }
 
-export async function getStaticProps(context) {
+export async function getDynamicProps(context) {
   const { id } = context.params;
   const res = await fetcher(`/api/deals/${id}?${dealsQuery}`);
 
