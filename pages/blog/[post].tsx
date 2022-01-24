@@ -10,8 +10,8 @@ import { CouponCard } from "../../components/common/CouponCard";
 export default function PostPage({ post }: any) {
   return (
     <Layout className="sm:mt-12">
-      <div className="max-w-6xl mx-auto flex lg:space-x-4">
-        <div className="flex-1">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:space-x-4">
+        <div className="flex-1 pb-12">
           <h1 className="text-4xl font-medium">{post.title}</h1>
           <div className="flex space-x-1 text-sm text-gray-500">
             <time dateTime={post.publishedAt}>
@@ -39,8 +39,10 @@ export default function PostPage({ post }: any) {
           </ReactMarkdown>
         </div>
 
-        <div className="w-72 space-y-4">
-          <h3>Deals featured in this article</h3>
+        <div className="md:w-72 space-y-4">
+          <h3 className="text-lg font-semibold">
+            Deals featured in this article
+          </h3>
           {post.featured_deals.data.map((fd) => (
             <CouponCard compact item={fd} key={`featured_deal_${fd.id}`} />
           ))}
