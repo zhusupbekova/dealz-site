@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { footer, brand } from "../../config";
 
@@ -25,12 +26,11 @@ export function Footer() {
             <ul role="list" className="mt-4 space-y-2">
               {footer.links.map((item) => (
                 <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="text-base text-gray-500 hover:text-gray-900"
-                  >
-                    {item.name}
-                  </a>
+                  <Link href={item.href} passHref>
+                    <a className="text-base text-gray-500 hover:text-gray-900">
+                      {item.name}
+                    </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -43,12 +43,11 @@ export function Footer() {
             <ul role="list" className="mt-4 space-y-2">
               {footer.legal.map((item) => (
                 <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="text-base text-gray-500 hover:text-gray-900"
-                  >
-                    {item.name}
-                  </a>
+                  <Link href={item.href} passHref>
+                    <a className="text-base text-gray-500 hover:text-gray-900">
+                      {item.name}
+                    </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -60,14 +59,12 @@ export function Footer() {
             </h3>
             <div className="flex  mt-4 flex-col space-y-2">
               {footer.social.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-400 hover:text-gray-500 flex items-center space-x-2"
-                >
-                  <item.icon className="h-6 w-6" aria-hidden="true" />
-                  <label className="text-sm">{item.name}</label>
-                </a>
+                <Link passHref key={item.name} href={item.href}>
+                  <a className="text-gray-400 hover:text-gray-500 flex items-center space-x-2">
+                    <item.icon className="h-6 w-6" aria-hidden="true" />
+                    <label className="text-sm">{item.name}</label>
+                  </a>
+                </Link>
               ))}
             </div>
           </div>

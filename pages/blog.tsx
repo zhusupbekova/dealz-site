@@ -1,75 +1,21 @@
+import qs from "qs";
+import _ from "lodash";
+import Link from "next/link";
+import Image from "next/image";
+
+import { fetcher } from "../utils/fetcher";
 import { Layout } from "../components/common/Layout";
-import { Hero } from "../components/layoutComponents/Hero";
+import { Loading } from "../components/common/LoadingComponent";
 
-import { SearchSort } from "../components/homePageComponents/SearchSort";
-
-export default function Blog() {
+export default function Blog({ posts }: any) {
   return (
     <Layout>
-      <Posts />
+      <Posts posts={posts} />
     </Layout>
   );
 }
 
-/* This example requires Tailwind CSS v2.0+ */
-const posts = [
-  {
-    title: "Boost your conversion rate",
-    href: "#",
-    category: { name: "Article", href: "#" },
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto accusantium praesentium eius, ut atque fuga culpa, similique sequi cum eos quis dolorum.",
-    date: "Mar 16, 2020",
-    datetime: "2020-03-16",
-    imageUrl:
-      "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80",
-    readingTime: "6 min",
-    author: {
-      name: "Roel Aufderehar",
-      href: "#",
-      imageUrl:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-  },
-  {
-    title: "How to use search engine optimization to drive sales",
-    href: "#",
-    category: { name: "Video", href: "#" },
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit facilis asperiores porro quaerat doloribus, eveniet dolore. Adipisci tempora aut inventore optio animi., tempore temporibus quo laudantium.",
-    date: "Mar 10, 2020",
-    datetime: "2020-03-10",
-    imageUrl:
-      "https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80",
-    readingTime: "4 min",
-    author: {
-      name: "Brenna Goyette",
-      href: "#",
-      imageUrl:
-        "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-  },
-  {
-    title: "Improve your customer experience",
-    href: "#",
-    category: { name: "Case Study", href: "#" },
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint harum rerum voluptatem quo recusandae magni placeat saepe molestiae, sed excepturi cumque corporis perferendis hic.",
-    date: "Feb 12, 2020",
-    datetime: "2020-02-12",
-    imageUrl:
-      "https://images.unsplash.com/photo-1492724441997-5dc865305da7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80",
-    readingTime: "11 min",
-    author: {
-      name: "Daniela Metz",
-      href: "#",
-      imageUrl:
-        "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-  },
-];
-
-function Posts() {
+function Posts({ posts }: any) {
   return (
     <div className="pb-24 lg:pb-28 ">
       <div className="relative">
@@ -80,39 +26,45 @@ function Posts() {
         </div>
 
         <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-2 lg:max-w-6xl">
-          {posts.map((post) => (
-            <div
-              key={post.title}
-              className="flex flex-col rounded-lg shadow-lg overflow-hidden"
-            >
-              <div className="flex-shrink-0">
-                <img
-                  className="h-48 w-full object-cover"
-                  src={post.imageUrl}
-                  alt=""
-                />
-              </div>
+          {posts?.map((post) => (
+            <Link key={post.attributes.title} href={`/blog/${post.id}`}>
+              <a>
+                <div className="flex flex-col rounded-lg shadow-lg overflow-hidden">
+                  <div className="relative flex-shrink-0 h-48 w-full">
+                    <Image
+                      src={post.attributes.cover?.data.attributes.url}
+                      layout="fill"
+                      objectFit="cover"
+                      objectPosition="top"
+                    />
+                  </div>
 
-              <div className="flex-1 bg-white p-6 flex flex-col justify-between">
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-indigo-600">
-                    <a href={post.category.href} className="hover:underline">
-                      {post.category.name}
-                    </a>
-                  </p>
-                  <a href={post.href} className="block mt-2">
-                    <p className="text-xl font-semibold text-gray-900">
-                      {post.title}
-                    </p>
-                    <p className="mt-3 text-base text-gray-500">
-                      {post.description}
-                    </p>
-                  </a>
-                </div>
+                  <div className="flex-1 bg-white p-6 flex flex-col justify-between">
+                    <div>
+                      <div className="flex-1 flex space-x-2">
+                        {_.flatMap(
+                          post.attributes.featured_deals.data || [],
+                          (fd) => fd.attributes.categories.data
+                        ).map((df) => (
+                          <p className="text-xs p-0.5 px-1 rounded-sm border border-primary font-medium text-primary">
+                            {df.attributes.title}
+                          </p>
+                        ))}
+                      </div>
 
-                <div className="mt-6 flex items-center">
-                  <div className="flex-shrink-0">
-                    <a href={post.author.href}>
+                      <a href={post.href} className="block mt-2">
+                        <p className="text-xl font-semibold text-gray-900">
+                          {post.attributes.title}
+                        </p>
+                        <p className="mt-3 text-base text-gray-500">
+                          {post.attributes.description}
+                        </p>
+                      </a>
+                    </div>
+
+                    <div className="flex items-center">
+                      {/* <div className="flex-shrink-0">
+                        <a href={post.author.href}>
                       <span className="sr-only">{post.author.name}</span>
                       <img
                         className="h-10 w-10 rounded-full"
@@ -120,27 +72,54 @@ function Posts() {
                         alt=""
                       />
                     </a>
-                  </div>
+                      </div> */}
 
-                  <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">
-                      <a href={post.author.href} className="hover:underline">
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {/* <a href={post.author.href} className="hover:underline">
                         {post.author.name}
-                      </a>
-                    </p>
+                      </a> */}
+                        </p>
 
-                    <div className="flex space-x-1 text-sm text-gray-500">
-                      <time dateTime={post.datetime}>{post.date}</time>
-                      <span aria-hidden="true">&middot;</span>
-                      <span>{post.readingTime} read</span>
+                        <div className="flex space-x-1 text-sm text-gray-500">
+                          <time dateTime={post.attributes.publishedAt}>
+                            {
+                              new Date(post.attributes.publishedAt)
+                                .toLocaleString()
+                                .split(",")[0]
+                            }
+                          </time>
+                          <span aria-hidden="true">&middot;</span>
+                          <span>10 minutes read</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </a>
+            </Link>
           ))}
         </div>
       </div>
     </div>
   );
+}
+
+export async function getStaticProps(context) {
+  const query = qs.stringify({
+    pagination: { limit: -1 },
+    populate: [
+      "cover",
+      "featured_deals",
+      "admin_user",
+      "featured_deals.categories",
+    ],
+  });
+
+  const posts = await fetcher(`/api/blogs?${query}`);
+  return {
+    props: {
+      posts: posts.data,
+    },
+  };
 }

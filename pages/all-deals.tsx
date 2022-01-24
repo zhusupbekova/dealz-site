@@ -1,6 +1,8 @@
 import _ from "lodash";
+import Link from "next/link";
 import * as qs from "qs";
 import React from "react";
+
 import { Layout } from "../components/common/Layout";
 import { fetcher } from "../utils/fetcher";
 
@@ -31,15 +33,21 @@ export default function AllDealsPage({ deals }) {
 
                 <div className="grid gap-4 grid-cols-3">
                   {deals[letter].map((b) => (
-                    <a className="min-w-0 flex items-center space-x-2 cursor-pointer hover:text-gray-800 text-primary transition-colors">
-                      <div className="h-6 w-6 rounded-full overflow-hidden">
-                        <img src={b.logo} alt={`${b.name} logo`} height="24" />
-                      </div>
+                    <Link href={`/brand/${b.slug}`} passHref>
+                      <a className="min-w-0 flex items-center space-x-2 cursor-pointer hover:text-gray-800 text-primary transition-colors">
+                        <div className="h-6 w-6 rounded-full overflow-hidden">
+                          <img
+                            src={b.logo}
+                            alt={`${b.name} logo`}
+                            height="24"
+                          />
+                        </div>
 
-                      <p className="text-sm flex-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
-                        {b.name}
-                      </p>
-                    </a>
+                        <p className="text-sm flex-1 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                          {b.name}
+                        </p>
+                      </a>
+                    </Link>
                   ))}
                 </div>
               </div>

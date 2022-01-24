@@ -1,9 +1,10 @@
-import { useRouter } from "next/router";
+import qs from "qs";
 import Image from "next/image";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import useSWR, { SWRResponse } from "swr";
 import rehypeRaw from "rehype-raw";
+import { CheckCircleIcon } from "@heroicons/react/solid";
+import Link from "next/link";
 import * as _ from "lodash";
 
 import { Button } from "../../components/common/Button";
@@ -11,24 +12,22 @@ import { Layout } from "../../components/common/Layout";
 import { Loading } from "../../components/common/LoadingComponent";
 import { fetcher } from "../../utils/fetcher";
 import { dealsQuery } from "../../utils/queries";
-import { IDeal, IDeals } from "../../utils/schema";
+import { IDeal } from "../../utils/schema";
 import { CategoryTag } from "../../components/common/CategoryTag";
 import { CouponModal } from "../../components/couponCardComponents/CouponModal";
 import { CouponBrandLogo } from "../../components/couponCardComponents/CouponBrandLogo";
-import { CheckCircleIcon } from "@heroicons/react/solid";
-import Link from "next/link";
 
 interface IDealDetailPageProps {
   deal: { data: IDeal };
   href: string;
 }
 
-export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
+export default function DealDetailPage({ deal }: IDealDetailPageProps) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <Layout compact containerClassName="bg-gray-50" className="w-full mx-auto">
+    <Layout compact containerClassName="bg-gray-100" className="w-full mx-auto">
       {deal ? (
         <div className="max-w-6xl mx-auto flex px-4 sm:px-6">
           <div>
@@ -143,7 +142,7 @@ export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
                     ))}
                   </div>
                   <Button.Share
-                    dealUrl={href}
+                    dealUrl={"yo"}
                     mediaUrl={deal.data.attributes.banner?.data.attributes.url}
                   >
                     Share this deal
@@ -189,7 +188,7 @@ export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
             <ReactMarkdown
               skipHtml={false}
               rehypePlugins={[rehypeRaw]}
-              className="prose-lg bg-white p-4 pt-8 rounded"
+              className="prose-lg prose-p:text-gray-500 prose-li:text-gray-500 bg-white p-4 pt-8 rounded"
             >
               {deal.data.attributes.description}
             </ReactMarkdown>
@@ -198,13 +197,11 @@ export default function DealDetailPage({ deal, href }: IDealDetailPageProps) {
       ) : (
         <Loading />
       )}
-
-      {deal && <div className="bg-[#373b72] h-96 mt-12"></div>}
     </Layout>
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   const { id } = context.params;
   const res = await fetcher(`/api/deals/${id}?${dealsQuery}`);
 
@@ -214,9 +211,27 @@ export async function getServerSideProps(context) {
     };
   }
 
-  let href = context.req.headers.referer;
-
   return {
-    props: { deal: res, href },
+    props: { deal: res },
+    revalidate: 60,
+  };
+}
+
+export async function getStaticPaths() {
+  const query = qs.stringify({
+    fields: ["id"],
+    compact: true,
+    pagination: {
+      start: 0,
+      limit: 99999,
+    },
+  });
+
+  const res = await fetcher(`/api/deals?${query}`);
+  return {
+    fallback: "blocking",
+    paths: res.data.map((d) => ({
+      params: { id: d.id.toString() },
+    })),
   };
 }

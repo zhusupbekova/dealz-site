@@ -13,7 +13,7 @@ export default function FlatPage({ data }) {
       <ReactMarkdown
         skipHtml={false}
         rehypePlugins={[rehypeRaw]}
-        className="max-w-6xl mx-auto prose-lg"
+        className="max-w-6xl mx-auto prose-lg prose-p:text-gray-500 prose-li:text-gray-500 mb-12"
       >
         {data?.attributes.text}
       </ReactMarkdown>

@@ -10,7 +10,13 @@ import { CategoryTag } from "./CategoryTag";
 import { CouponModal } from "../couponCardComponents/CouponModal";
 import { CouponBrandLogo } from "../couponCardComponents/CouponBrandLogo";
 
-export function CouponCard({ item }: { item: IDeal }) {
+export function CouponCard({
+  item,
+  compact,
+}: {
+  item: IDeal;
+  compact?: boolean;
+}) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -51,21 +57,26 @@ export function CouponCard({ item }: { item: IDeal }) {
           <p className="text-sm text-gray-500">
             {item.attributes.brand?.data?.attributes.slogan}
           </p>
-          <div className="flex-1 flex flex-col justify-end">
-            <p className="text-sm italic text-gray-500">
-              {item.attributes.usageCount.count ?? "0"} used
-            </p>
-          </div>
+          {compact || (
+            <div className="flex-1 flex flex-col justify-end">
+              <p className="text-sm italic text-gray-500">
+                {item.attributes.usageCount.count ?? "0"} used
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center bg-gray-100 p-2 bottom-0">
-          <Button.Like
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsFavourite(!isFavourite);
-            }}
-            isFavourite={isFavourite}
-          />
+          {compact || (
+            <Button.Like
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFavourite(!isFavourite);
+              }}
+              isFavourite={isFavourite}
+            />
+          )}
+
           <Button.Deal
             className="flex-1"
             onClick={(e) => {
@@ -73,7 +84,6 @@ export function CouponCard({ item }: { item: IDeal }) {
               setIsModalOpen(true);
             }}
           >
-            {" "}
             Use this {item.attributes.type}
           </Button.Deal>
         </div>

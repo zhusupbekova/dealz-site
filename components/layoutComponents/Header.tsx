@@ -37,14 +37,16 @@ export function Header() {
       <div className="px-4 sm:px-6 w-full border-b-2 border-gray-100">
         <div className="flex justify-between max-w-6xl mx-auto  items-center py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <a href="/">
-              <span className="sr-only">{brand.name}</span>
-              <img
-                className="h-8 w-auto sm:h-10"
-                src={brand.logo}
-                alt={brand.name}
-              />
-            </a>
+            <Link href="/" passHref>
+              <a>
+                <span className="sr-only">{brand.name}</span>
+                <img
+                  className="h-8 w-auto sm:h-10"
+                  src={brand.logo}
+                  alt={brand.name}
+                />
+              </a>
+            </Link>
           </div>
 
           <div className="-mr-2 -my-2 md:hidden">
@@ -90,20 +92,22 @@ export function Header() {
                             <div className="relative grid gap-2 gap-x-4 bg-white px-5 py-6 grid-cols-4">
                               {filterData ? (
                                 filterData.categoryStats.map((item) => (
-                                  <a
+                                  <Link
                                     key={`category_name_${item.title}`}
-                                    href={`/categories/${item.slug}`}
-                                    className="rounded-lg hover:bg-gray-50"
+                                    href={`/?categories=${item.slug}`}
+                                    passHref
                                   >
-                                    <div className="flex min-w-0 items-center">
-                                      <p className="text-sm flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis font-medium text-gray-700">
-                                        {item.title}
-                                      </p>
-                                      <p className="ml-1 text-sm text-gray-500">
-                                        {item.dealsCount ?? null}
-                                      </p>
-                                    </div>
-                                  </a>
+                                    <a className="rounded-lg hover:bg-gray-50">
+                                      <div className="flex min-w-0 items-center">
+                                        <p className="text-sm flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis font-medium text-gray-700">
+                                          {item.title}
+                                        </p>
+                                        <p className="ml-1 text-sm text-gray-500">
+                                          {item.dealsCount ?? null}
+                                        </p>
+                                      </div>
+                                    </a>
+                                  </Link>
                                 ))
                               ) : (
                                 <Loading />
@@ -116,12 +120,11 @@ export function Header() {
                   )}
                 </Popover>
               ) : (
-                <a
-                  href={item.href}
-                  className="text-base font-medium text-gray-500 hover:text-gray-900"
-                >
-                  {item.name}
-                </a>
+                <Link href={item.href} passHref>
+                  <a className="text-base font-medium text-gray-500 hover:text-gray-900">
+                    {item.name}
+                  </a>
+                </Link>
               )
             )}
           </Popover.Group>
