@@ -73,6 +73,7 @@ export interface IDeal {
     title: string;
     description: string;
     overview: { overview_item: string }[];
+    deals: { data: IDeal[]; meta: any };
     slug: string;
     deal_description: string;
     deal_usages: {
@@ -117,6 +118,21 @@ export interface IBrand {
       updatedAt: Date;
       publishedAt: Date;
       slug: string;
+    };
+  };
+}
+
+export interface IDealUsages {
+  data: {
+    id: number;
+    deals: IDeal[];
+  };
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
     };
   };
 }

@@ -106,6 +106,11 @@ export function FilterMobile({
             </div>
 
             {/* Filters */}
+            {router.asPath !== "/" ? (
+              <div className="text-right text-gray-500 text-sm underline p-4">
+                <button onClick={() => router.push("/")}>Clear all</button>
+              </div>
+            ) : null}
             <form className="mt-4">
               <div
                 key="featured"
@@ -200,6 +205,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
   } = router.query;
 
   function onFilterItemClick(sectionName: string, slug: string) {
+    console.log(categories);
     if (sectionName === "Categories") {
       categories?.includes(slug)
         ? router.push(
@@ -389,8 +395,8 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                     className="ml-3 text-base text-gray-500"
                   >
                     {option.title}
-                    {categories.includes(option.slug) ||
-                      dealType.includes(option.slug) ||
+                    {categories?.includes(option.slug) ||
+                      dealType?.includes(option.slug) ||
                       (expired && option.slug === "expired") ||
                       (expiringSoon && option.slug === "expiring-soon")}
                   </label>
@@ -425,6 +431,11 @@ export function Filter({}: IFilterProps) {
 
   return (
     <div className="sticky top-12 hidden lg:block bg-gray-100 p-4 border rounded">
+      {router.asPath !== "/" ? (
+        <div className="text-right text-gray-500 text-sm underline">
+          <button onClick={() => router.push("/")}>Clear all</button>
+        </div>
+      ) : null}
       <form className="hidden lg:block">
         <div key="featured" className="flex items-center justify-between py-6">
           <label

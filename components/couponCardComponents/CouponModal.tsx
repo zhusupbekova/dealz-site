@@ -80,7 +80,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                     alt={brand.name}
                   />
                 </div>
-                <div className="relative mt-3 mb-3 text-center sm:mt-14 sm:mb-10 sm:mx-4">
+                <div className="relative mt-3 mb-3 text-center sm:mt-14 sm:mb-10 mx-4 sm:mx-8">
                   <CouponBrandLogo
                     url={
                       item.attributes.brand?.data?.attributes.logo?.data

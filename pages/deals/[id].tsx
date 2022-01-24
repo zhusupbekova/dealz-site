@@ -26,13 +26,15 @@ export default function DealDetailPage({ deal }: IDealDetailPageProps) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const href = typeof window !== "undefined" ? window.location.href : "";
+  console.log(href);
+
   return (
     <Layout compact containerClassName="bg-gray-100" className="w-full mx-auto">
       {deal ? (
         <div className="max-w-6xl mx-auto flex px-4 sm:px-6">
           <div>
             <div className="sticky top-12 w-72 text-center space-y-4 flex flex-col mr-8">
-              {/* // add columns in data table */}
               <div className="bg-white p-4 pt-8 rounded space-y-8">
                 {deal.data.attributes.deal_description && (
                   <h1 className="text-2xl font-bold text-primary leading-none">
@@ -159,7 +161,6 @@ export default function DealDetailPage({ deal }: IDealDetailPageProps) {
                 />
               </div>
             </div>
-
             {deal.data.attributes.overview.length > 0 && (
               <div className=" rounded my-6 overflow-hidden flex space-y-6 bg-white">
                 <h2
@@ -184,7 +185,6 @@ export default function DealDetailPage({ deal }: IDealDetailPageProps) {
                 </div>
               </div>
             )}
-
             <ReactMarkdown
               skipHtml={false}
               rehypePlugins={[rehypeRaw]}
@@ -192,6 +192,53 @@ export default function DealDetailPage({ deal }: IDealDetailPageProps) {
             >
               {deal.data.attributes.description}
             </ReactMarkdown>
+            {deal.data.attributes.deals.data.length > 0 && (
+              <div className="flex flex-col pt-24">
+                <h1 className="text-3xl text-center font-semibold my-4">
+                  You may also be interested in...
+                </h1>
+                {deal.data.attributes.deals?.data.map((recommendedDeal) => (
+                  <Link href={`/deals/${recommendedDeal.id}`}>
+                    <div className="flex justify-between p-6 shadow rounded-md my-4 bg-white cursor-pointer">
+                      <CouponBrandLogo
+                        url={
+                          recommendedDeal.attributes.brand?.data.attributes.logo
+                            ?.data.attributes.url
+                        }
+                        name={`${recommendedDeal.attributes.brand?.data?.attributes.name}-logo`}
+                        className={"relative"}
+                      />
+                      <div className="flex-1 ml-4">
+                        <h3 className="text-xl font-medium text-gray-900">
+                          {recommendedDeal.attributes.title}
+                        </h3>
+                        <p className="text-lg font-medium text-primary">
+                          Offered by{" "}
+                          {
+                            recommendedDeal.attributes.brand.data.attributes
+                              .name
+                          }
+                        </p>
+                      </div>
+                      <Button.Primary
+                        className="animate-pulse"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsModalOpen(true);
+                        }}
+                      >
+                        Use this {recommendedDeal.attributes.type}
+                      </Button.Primary>
+                      <CouponModal
+                        open={isModalOpen}
+                        setOpen={setIsModalOpen}
+                        item={recommendedDeal}
+                      />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}{" "}
           </div>
         </div>
       ) : (
@@ -213,25 +260,5 @@ export async function getStaticProps(context) {
 
   return {
     props: { deal: res },
-    revalidate: 60,
-  };
-}
-
-export async function getStaticPaths() {
-  const query = qs.stringify({
-    fields: ["id"],
-    compact: true,
-    pagination: {
-      start: 0,
-      limit: 99999,
-    },
-  });
-
-  const res = await fetcher(`/api/deals?${query}`);
-  return {
-    fallback: "blocking",
-    paths: res.data.map((d) => ({
-      params: { id: d.id.toString() },
-    })),
   };
 }

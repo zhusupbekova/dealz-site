@@ -10,6 +10,9 @@ export const dealsQuery = qs.stringify(
       "deal_lifetime",
       "deal_usages",
       "overview",
+      "deals",
+      "deals.brand",
+      "deals.brand.logo",
     ],
   },
   {
