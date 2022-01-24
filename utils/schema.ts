@@ -136,3 +136,15 @@ export interface IDealUsages {
     };
   };
 }
+
+export interface IUserProps {
+  blocked?: boolean;
+  confirmed: boolean;
+  createdAt: Date;
+  email: string;
+  id: number;
+  provider: "local" | any;
+  strapiToken: string;
+  updatedAt: Date;
+  username: string;
+}

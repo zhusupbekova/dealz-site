@@ -4,16 +4,19 @@ import Head from "next/head";
 import { Footer } from "../layoutComponents/Footer";
 import { Header } from "../layoutComponents/Header";
 import { classNames } from "../../utils/style";
+import { IUserProps } from "../../utils/schema";
 
 export function Layout({
   children,
   compact = false,
   className = "",
   containerClassName = "",
+  user,
 }: PropsWithChildren<{
   className?: string;
   containerClassName?: string;
   compact?: boolean;
+  user?: IUserProps;
 }>) {
   return (
     <div
@@ -26,7 +29,7 @@ export function Layout({
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+      <Header user={user} />
       <main
         className={classNames(
           compact ? "" : "max-w-screen-2xl px-4",
