@@ -425,6 +425,11 @@ export function Filter({}: IFilterProps) {
 
   return (
     <div className="sticky top-12 hidden lg:block bg-gray-100 p-4 border rounded">
+      {router.asPath !== "/" ? (
+        <div className="text-right text-gray-500 text-sm underline">
+          <button onClick={() => router.push("/")}>Clear all</button>
+        </div>
+      ) : null}
       <form className="hidden lg:block">
         <div key="featured" className="flex items-center justify-between py-6">
           <label
