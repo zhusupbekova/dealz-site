@@ -27,7 +27,6 @@ export default function DealDetailPage({ deal }: IDealDetailPageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const href = typeof window !== "undefined" ? window.location.href : "";
-  console.log(href);
 
   return (
     <Layout compact containerClassName="bg-gray-100" className="w-full mx-auto">
@@ -248,7 +247,7 @@ export default function DealDetailPage({ deal }: IDealDetailPageProps) {
   );
 }
 
-export async function getDynamicProps(context) {
+export async function getServerSideProps(context) {
   const { id } = context.params;
   const res = await fetcher(`/api/deals/${id}?${dealsQuery}`);
 
