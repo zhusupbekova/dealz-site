@@ -263,7 +263,7 @@ export async function getServerSideProps(context) {
   const related = await fetcher(
     `/api/deals?${dealsQuery}&${qs.stringify({
       pagination: { start: 0, limit: 3 },
-      sort: ["createdAt:desc"],
+      sort: ["createdAt:desc", "featured:desc"],
       filters: {
         id: { $ne: res.data.id },
         expiration_date: {
