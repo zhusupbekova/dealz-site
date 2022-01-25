@@ -3,29 +3,23 @@ import Head from "next/head";
 import useSWR, { SWRResponse } from "swr";
 import { fetcher } from "../utils/fetcher";
 import qs from "qs";
-import ReactMarkdown from "react-markdown";
 import * as _ from "lodash";
-import axios from "axios";
-import { supabase } from "../utils/supabaseClient";
 import { Layout } from "../components/common/Layout";
-import { brand } from "../config";
 import { Hero } from "../components/layoutComponents/Hero";
 
-import { PlusSmIcon } from "@heroicons/react/solid";
 import { SearchSort } from "../components/homePageComponents/SearchSort";
 import { CouponCard } from "../components/common/CouponCard";
-import { classNames } from "../utils/style";
-import { ICategories, IDeals } from "../utils/schema";
-import { Filter, FilterMobile } from "../components/homePageComponents/Filter";
+import { IDeal, IDeals } from "../utils/schema";
+import { Filter } from "../components/homePageComponents/Filter";
 import { Loading } from "../components/common/LoadingComponent";
 import { dealsQuery } from "../utils/queries";
 import { useRouter } from "next/router";
 import { Button } from "../components/common/Button";
 
-export default function Home() {
+export default function Home({ dealOfTheMonth }: { dealOfTheMonth: IDeal }) {
   return (
     <Layout>
-      <Hero />
+      <Hero dealOfTheMonth={dealOfTheMonth} />
       <SearchSort />
       <Gallery />
       <Button.ScrollToTop />
@@ -230,4 +224,19 @@ function Gallery() {
       </div>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const query = qs.stringify({
+    populate: ["deal_of_the_month.brand", "deal_of_the_month.brand.logo"],
+  });
+
+  const res = await fetcher(`/api/deal-config?${query}`);
+
+  return {
+    revalidate: 60 * 60, // 1 hour
+    props: {
+      dealOfTheMonth: res.data?.attributes.deal_of_the_month.data,
+    },
+  };
 }
