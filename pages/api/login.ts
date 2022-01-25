@@ -29,9 +29,7 @@ export default nc()
       }
 
       req.session.set("user", user);
-      console.log(req);
       await req.session.save();
-      console.log(req);
       res.redirect("/");
     } catch (error) {
       console.log(error);

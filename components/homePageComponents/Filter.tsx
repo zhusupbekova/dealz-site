@@ -205,7 +205,6 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
   } = router.query;
 
   function onFilterItemClick(sectionName: string, slug: string) {
-    console.log(categories);
     if (sectionName === "Categories") {
       categories?.includes(slug)
         ? router.push(

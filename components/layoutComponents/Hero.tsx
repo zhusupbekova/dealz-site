@@ -5,8 +5,6 @@ import { brand } from "../../config";
 import { IDeal } from "../../utils/schema";
 
 export function Hero({ dealOfTheMonth }: { dealOfTheMonth?: IDeal }) {
-  console.log(dealOfTheMonth);
-
   return (
     <div className="text-center">
       <h1

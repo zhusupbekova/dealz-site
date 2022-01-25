@@ -18,7 +18,6 @@ interface ISignInValues {
 }
 
 export default function RegisterPage({ user }) {
-  console.log(user);
   function validateEmail(value) {
     let error;
     if (!value) {
@@ -69,7 +68,6 @@ export default function RegisterPage({ user }) {
               }),
               // credentials: "include",
             }).then((res) => console.log(res));
-            console.log();
             setSubmitting(false);
             resetForm();
           }}
