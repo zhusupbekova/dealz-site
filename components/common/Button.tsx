@@ -28,6 +28,7 @@ interface IButtonProps {
   onClick?: (e?: any) => void;
   href?: string;
   className?: string;
+  type?: "button" | "reset" | "submit";
 }
 
 interface ILikeButtonProps {
@@ -44,6 +45,7 @@ const Primary: React.FC<IButtonProps> = ({
   onClick,
   href,
   className,
+  type,
 }) => {
   return (
     <button
@@ -52,6 +54,7 @@ const Primary: React.FC<IButtonProps> = ({
         "h-12 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primaryHover",
         className ? className : ""
       )}
+      type={type}
     >
       <a href={href}>{children}</a>
     </button>

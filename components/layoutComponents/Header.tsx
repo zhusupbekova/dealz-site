@@ -8,11 +8,12 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 
 import { classNames } from "../../utils/style";
 import { brand, navigation } from "../../config";
-import { IFilterStats } from "../../utils/schema";
+import { IFilterStats, IUserProps } from "../../utils/schema";
 import { fetcher } from "../../utils/fetcher";
 import { Loading } from "../common/LoadingComponent";
 import { Button } from "../common/Button";
 import Link from "next/link";
+import { withSession } from "../../middlewares/session";
 
 const query = qs.stringify(
   {
@@ -23,7 +24,18 @@ const query = qs.stringify(
   }
 );
 
-export function Header() {
+const accountLinks = [
+  {
+    name: "Profile",
+    link: "/account",
+  },
+  {
+    name: "Logout",
+    link: "/api/logout",
+  },
+];
+
+export function Header({ user }: { user: IUserProps }) {
   const {
     data: filterData,
     error: filterError,
@@ -31,6 +43,8 @@ export function Header() {
     `/api/c/categories/stats`,
     fetcher
   );
+
+  console.log(user);
 
   return (
     <Popover className="relative bg-white z-40">
@@ -50,7 +64,7 @@ export function Header() {
           </div>
 
           <div className="-mr-2 -my-2 md:hidden">
-            <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+            <Popover.Button className="bg-whitep-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
               <span className="sr-only">Open menu</span>
               <MenuIcon className="h-6 w-6" aria-hidden="true" />
             </Popover.Button>
@@ -65,7 +79,7 @@ export function Header() {
                       <Popover.Button
                         className={classNames(
                           open ? "text-gray-900" : "text-gray-500",
-                          "group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-0 focus:ring-offset-2 focus:ring-primary"
+                          "group bg-white inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-0 focus:ring-offset-2 focus:ring-primary"
                         )}
                       >
                         <span>Categories</span>
@@ -129,21 +143,74 @@ export function Header() {
             )}
           </Popover.Group>
 
-          <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-            <Link href="/login" passHref>
-              <a className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
-                Sign in
-              </a>
-            </Link>
+          {user ? (
+            <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+              {/* <Button.Primary className="ml-8">Account</Button.Primary> */}
+              <Popover key={`header_item_account`}>
+                {({ open }) => (
+                  <>
+                    <Popover.Button
+                      className={classNames(
+                        open ? "text-gray-900" : "text-gray-500",
+                        "group bg-white  inline-flex whitespace-nowrap  text-gray-500  items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-0 focus:ring-offset-2 focus:ring-primary"
+                      )}
+                    >
+                      <span>Account</span>
+                      <ChevronDownIcon
+                        className={classNames(
+                          open ? "text-gray-600" : "text-gray-400",
+                          "ml-2 h-5 w-5 group-hover:text-gray-900"
+                        )}
+                        aria-hidden="true"
+                      />
+                    </Popover.Button>
 
-            <Link href="/register" passHref>
-              <a>
-                <Button.Primary href={"#"} className="ml-8">
-                  Sign up
-                </Button.Primary>
-              </a>
-            </Link>
-          </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-200"
+                      enterFrom="opacity-0"
+                      enterTo="opacity-100 "
+                      leave="transition ease-in duration-150"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                    >
+                      <Popover.Panel className="absolute z-10 bottom-0 transform px-2sm:px-0 lg:ml-0 translate-y-full">
+                        <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+                          <div className="relative bg-white px-5 py-6 space-y-4">
+                            {accountLinks.map((item) => (
+                              <Link key={item.name} href={item.link} passHref>
+                                <a className="rounded-lg hover:bg-gray-50">
+                                  <div className="flex min-w-0 items-center my-2">
+                                    <p className="text-sm flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis font-medium text-gray-700">
+                                      {item.name}
+                                    </p>
+                                  </div>
+                                </a>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </Popover.Panel>
+                    </Transition>
+                  </>
+                )}
+              </Popover>
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+              <Link href="/login" passHref>
+                <a className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+                  Sign in
+                </a>
+              </Link>
+
+              <Link href="/register" passHref>
+                <a>
+                  <Button.Primary className="ml-8">Sign up</Button.Primary>
+                </a>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 

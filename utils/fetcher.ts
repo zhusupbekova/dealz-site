@@ -14,10 +14,10 @@ export const fetcher = (key: string) =>
  * @param key
  * @param body
  */
-export const poster = (key: string, body: any) =>
+export const poster = (key: string, body: any, headers = {}) =>
   fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${key}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...headers },
     body: JSON.stringify(body),
     // credentials: "include",
   })
