@@ -15,19 +15,20 @@ import { PlusSmIcon } from "@heroicons/react/solid";
 import { SearchSort } from "../components/homePageComponents/SearchSort";
 import { CouponCard } from "../components/common/CouponCard";
 import { classNames } from "../utils/style";
-import { ICategories, IDeals } from "../utils/schema";
+import { ICategories, IDeals, IUserProps } from "../utils/schema";
 import { Filter, FilterMobile } from "../components/homePageComponents/Filter";
 import { Loading } from "../components/common/LoadingComponent";
-import { dealsQuery } from "../utils/queries";
+import { dealsQuery, userQuery } from "../utils/queries";
 import { useRouter } from "next/router";
 import { Button } from "../components/common/Button";
+import { withSession } from "../middlewares/session";
 
-export default function Home() {
+export default function Home({ user }: { user: IUserProps }) {
   return (
-    <Layout>
+    <Layout user={user}>
       <Hero />
       <SearchSort />
-      <Gallery />
+      <Gallery user={user} />
       <Button.ScrollToTop />
     </Layout>
   );
@@ -37,10 +38,7 @@ function isArray(item) {
   return Array.isArray(item);
 }
 
-function Gallery() {
-  const [categoriesFilter, setCategoriesFilter] = useState<Set<string>>(
-    new Set()
-  );
+function Gallery({ user }: { user: IUserProps }) {
   const router = useRouter();
   const {
     expired,
@@ -181,11 +179,13 @@ function Gallery() {
     }${expiringSoon ? `&${expiringSoonFilterQuery}` : ""}${
       mostUsed ? `&${mostUsedFilterQuery}` : ""
     }`,
-    fetcher
+    fetcher(user)
   );
 
   if (error)
     return <div className="mx-auto my-12 text-lg">failed to load data</div>;
+
+  console.log(user);
 
   return (
     <div className="bg-white">
@@ -193,10 +193,7 @@ function Gallery() {
         <main className="mx-auto">
           <div className="pt-12 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
             <div>
-              <Filter
-                categoriesFilter={categoriesFilter}
-                setCategoriesFilter={setCategoriesFilter}
-              />
+              <Filter />
             </div>
 
             <section
@@ -211,7 +208,7 @@ function Gallery() {
                 deals.data.length > 0 ? (
                   <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
                     {deals.data.map((item, idx) => (
-                      <CouponCard item={item} key={idx} />
+                      <CouponCard item={item} key={idx} user={user} />
                     ))}
                   </div>
                 ) : (
@@ -231,3 +228,15 @@ function Gallery() {
     </div>
   );
 }
+
+export const getServerSideProps = withSession((context) => {
+  const { req } = context;
+
+  const user = req.session.get("user") || null;
+
+  return {
+    props: {
+      user,
+    },
+  };
+});

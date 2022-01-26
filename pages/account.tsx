@@ -1,15 +1,22 @@
 import { useState } from "react";
+import useSWR from "swr";
 import { Button } from "../components/common/Button";
 import { Layout } from "../components/common/Layout";
+import { withSession } from "../middlewares/session";
+import { fetcher } from "../utils/fetcher";
 import { classNames } from "../utils/style";
 
 const tabs = [{ name: "Saved deals" }, { name: "Used deals" }];
 
-export default function AccountPage() {
+export default function AccountPage({ user }) {
   const [tab, setTab] = useState(0);
-
+  const { data, error } = useSWR(
+    user ? "/api/c/deals/used-deals" : null,
+    fetcher(user)
+  );
+  console.log(data);
   return (
-    <Layout>
+    <Layout user={user}>
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:space-x-4">
         <Tabs onChange={setTab} current={tab} />
         <div className="flex-1">
@@ -49,3 +56,21 @@ function Tabs({ onChange, current }: any) {
     </div>
   );
 }
+
+export const getServerSideProps = withSession((context) => {
+  const { req, res } = context;
+  const user = req.session.get("user");
+  if (user) {
+    return {
+      props: {
+        user,
+      },
+    };
+  }
+  // return {
+  //   redirect: {
+  //     permanent: false,
+  //     destination: "/",
+  //   },
+  // };
+});

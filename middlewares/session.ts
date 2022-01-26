@@ -1,9 +1,14 @@
-import { withIronSession, ironSession } from "next-iron-session";
+import {
+  withIronSession,
+  ironSession,
+  SessionOptions,
+} from "next-iron-session";
 
-const sessionConfig = {
+const sessionConfig: SessionOptions = {
   password: process.env.NEXT_PUBLIC_SECRET_COOKIE_PASSWORD,
   cookieName: "next-session",
   cookieOptions: {
+    path: "/",
     secure: false,
   },
 };

@@ -17,6 +17,7 @@ import { fetcher, poster } from "../utils/fetcher";
 import { IDealUsages } from "../utils/schema";
 import { useState } from "react";
 import { classNames } from "../utils/style";
+import { validateEmail } from "../utils/validate";
 
 const pitch = [
   {
@@ -40,7 +41,7 @@ export default function SubmitDeal() {
 
   const { data, error }: SWRResponse<IDealUsages, Error> = useSWR(
     `/api/deal-usages`,
-    fetcher
+    fetcher()
   );
 
   if (!data) {
@@ -140,16 +141,6 @@ interface IFSubmitFormValues {
 }
 
 function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
-  function validateEmail(value) {
-    let error;
-    if (!value) {
-      error = "Required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-      error = "Invalid email address";
-    }
-    return error;
-  }
-
   return (
     <Formik
       initialValues={{

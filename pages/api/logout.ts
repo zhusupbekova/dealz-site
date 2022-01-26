@@ -5,33 +5,8 @@ import { poster } from "../../utils/fetcher";
 export default nc()
   .use(sessionMiddleware)
   .post(async (req: any, res: any) => {
-    const { email, password } = req.body;
-
     try {
-      const user = await poster(`/api/auth/local`, {
-        identifier: email,
-        password,
-      })
-        .then((res) => {
-          return res;
-        })
-        .then((data) => ({
-          ...data.user,
-          strapiToken: data.jwt,
-        }));
-
-      console.log(user);
-
-      if (!user.confirmed) {
-        return res.status(401).json({
-          statusCode: 401,
-          message: "User not confirmed",
-        });
-      }
-      console.log(user);
-
-      req.session.set("user", user);
-      await req.session.save();
+      await req.session.destroy();
       return res.status(200).json({ statusCode: 200, message: "ok" });
     } catch (error) {
       console.log(error);

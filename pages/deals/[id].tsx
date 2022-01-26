@@ -11,25 +11,31 @@ import { Button } from "../../components/common/Button";
 import { Layout } from "../../components/common/Layout";
 import { Loading } from "../../components/common/LoadingComponent";
 import { fetcher } from "../../utils/fetcher";
-import { dealsQuery } from "../../utils/queries";
-import { IDeal } from "../../utils/schema";
+import { dealsQuery, userQuery } from "../../utils/queries";
+import { IDeal, IUserProps } from "../../utils/schema";
 import { CategoryTag } from "../../components/common/CategoryTag";
 import { CouponModal } from "../../components/couponCardComponents/CouponModal";
 import { CouponBrandLogo } from "../../components/couponCardComponents/CouponBrandLogo";
+import { withSession } from "../../middlewares/session";
 
 interface IDealDetailPageProps {
   deal: { data: IDeal };
-  href: string;
+  user: IUserProps;
 }
 
-export default function DealDetailPage({ deal }: IDealDetailPageProps) {
+export default function DealDetailPage({ deal, user }: IDealDetailPageProps) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const href = typeof window !== "undefined" ? window.location.href : "";
 
   return (
-    <Layout compact containerClassName="bg-gray-100" className="w-full mx-auto">
+    <Layout
+      compact
+      containerClassName="bg-gray-100"
+      className="w-full mx-auto"
+      user={user}
+    >
       {deal ? (
         <div className="max-w-6xl mx-auto flex px-4 sm:px-6">
           <div>
@@ -143,7 +149,7 @@ export default function DealDetailPage({ deal }: IDealDetailPageProps) {
                     ))}
                   </div>
                   <Button.Share
-                    dealUrl={"yo"}
+                    dealUrl={href}
                     mediaUrl={deal.data.attributes.banner?.data.attributes.url}
                   >
                     Share this deal
@@ -247,9 +253,9 @@ export default function DealDetailPage({ deal }: IDealDetailPageProps) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const { id } = context.params;
-  const res = await fetcher(`/api/deals/${id}?${dealsQuery}`);
+export const getServerSideProps = withSession(async (context) => {
+  const { params, req } = context;
+  const res = await fetcher()(`/api/deals/${params.id}?${dealsQuery}`);
 
   if (!res.data) {
     return {
@@ -257,7 +263,32 @@ export async function getServerSideProps(context) {
     };
   }
 
-  return {
-    props: { deal: res },
-  };
-}
+  const user = req.session.get("user");
+  console.log(user, req.session);
+
+  if (user) {
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/me?${userQuery}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${user.strapiToken}`,
+        },
+      }
+    ).then((res) => res.json());
+    return {
+      props: {
+        deal: res,
+        user,
+      },
+    };
+    //
+  } else {
+    return {
+      props: {
+        user: null,
+        deal: res,
+      },
+    };
+  }
+});

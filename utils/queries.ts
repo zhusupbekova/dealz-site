@@ -19,3 +19,12 @@ export const dealsQuery = qs.stringify(
     encodeValuesOnly: true,
   }
 );
+
+export const userQuery = qs.stringify(
+  {
+    populate: ["deal_usages", "deals"],
+  },
+  {
+    encodeValuesOnly: true,
+  }
+);

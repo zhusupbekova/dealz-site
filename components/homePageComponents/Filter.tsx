@@ -19,8 +19,6 @@ import { useRouter } from "next/router";
 interface IFilterProps {
   mobileFiltersOpen?: boolean;
   setMobileFiltersOpen?: Dispatch<SetStateAction<boolean>>;
-  categoriesFilter?: Set<string>;
-  setCategoriesFilter?: Dispatch<SetStateAction<Set<string>>>;
 }
 
 const dealTypes = {
@@ -62,7 +60,7 @@ export function FilterMobile({
     dealType,
   } = router.query;
 
-  const { data, error } = useSWR(`/api/c/categories/stats`, fetcher);
+  const { data, error } = useSWR(`/api/c/categories/stats`, fetcher());
 
   return (
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -205,7 +203,6 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
   } = router.query;
 
   function onFilterItemClick(sectionName: string, slug: string) {
-    console.log(categories);
     if (sectionName === "Categories") {
       categories?.includes(slug)
         ? router.push(
@@ -426,7 +423,7 @@ export function Filter({}: IFilterProps) {
   } = router.query;
   const { data, error }: SWRResponse<IFilterStats, Error> = useSWR(
     `/api/c/categories/stats`,
-    fetcher
+    fetcher()
   );
 
   return (

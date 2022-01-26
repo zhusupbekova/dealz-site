@@ -1,4 +1,5 @@
 import { KeyIcon, MailIcon } from "@heroicons/react/solid";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import {
   FacebookLoginButton,
@@ -9,8 +10,8 @@ import { Formik, Field, Form, FormikHelpers } from "formik";
 import { Button } from "../components/common/Button";
 import { Divider } from "../components/common/Divider";
 import { Layout } from "../components/common/Layout";
-import { poster } from "../utils/fetcher";
 import { withSession } from "../middlewares/session";
+import { validateEmail } from "../utils/validate";
 
 interface ISignInValues {
   email: string;
@@ -18,17 +19,7 @@ interface ISignInValues {
 }
 
 export default function RegisterPage({ user }) {
-  console.log(user);
-  function validateEmail(value) {
-    let error;
-    if (!value) {
-      error = "Required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-      error = "Invalid email address";
-    }
-    return error;
-  }
-
+  const router = useRouter();
   return (
     <Layout user={user}>
       <div className="space-y-2 mx-auto max-w-lg h-full">
@@ -60,7 +51,7 @@ export default function RegisterPage({ user }) {
             values: ISignInValues,
             { setSubmitting, resetForm }: FormikHelpers<ISignInValues>
           ) => {
-            await fetch(`/api/login`, {
+            await fetch(`/api/register`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -68,8 +59,9 @@ export default function RegisterPage({ user }) {
                 password: values.password,
               }),
               // credentials: "include",
-            }).then((res) => console.log(res));
-            console.log();
+            }).then((res) =>
+              res.status === 200 ? router.push("/account") : null
+            );
             setSubmitting(false);
             resetForm();
           }}

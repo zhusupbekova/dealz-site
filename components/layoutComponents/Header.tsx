@@ -14,6 +14,7 @@ import { Loading } from "../common/LoadingComponent";
 import { Button } from "../common/Button";
 import Link from "next/link";
 import { withSession } from "../../middlewares/session";
+import { useRouter } from "next/router";
 
 const query = qs.stringify(
   {
@@ -36,15 +37,14 @@ const accountLinks = [
 ];
 
 export function Header({ user }: { user: IUserProps }) {
+  const router = useRouter();
   const {
     data: filterData,
     error: filterError,
   }: SWRResponse<IFilterStats, Error> = useSWR(
     `/api/c/categories/stats`,
-    fetcher
+    fetcher()
   );
-
-  console.log(user);
 
   return (
     <Popover className="relative bg-white z-40">
@@ -177,17 +177,34 @@ export function Header({ user }: { user: IUserProps }) {
                       <Popover.Panel className="absolute z-10 bottom-0 transform px-2sm:px-0 lg:ml-0 translate-y-full">
                         <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                           <div className="relative bg-white px-5 py-6 space-y-4">
-                            {accountLinks.map((item) => (
-                              <Link key={item.name} href={item.link} passHref>
-                                <a className="rounded-lg hover:bg-gray-50">
-                                  <div className="flex min-w-0 items-center my-2">
-                                    <p className="text-sm flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis font-medium text-gray-700">
-                                      {item.name}
-                                    </p>
-                                  </div>
-                                </a>
-                              </Link>
-                            ))}
+                            <Link key="account" href="/account" passHref>
+                              <a className="rounded-lg hover:bg-gray-50">
+                                <div className="flex min-w-0 items-center my-2">
+                                  <p className="text-sm flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis font-medium text-gray-700">
+                                    Profile
+                                  </p>
+                                </div>
+                              </a>
+                            </Link>
+                            <button
+                              className="rounded-lg hover:bg-gray-50"
+                              onClick={async () => {
+                                await fetch(`/api/logout`, {
+                                  method: "POST",
+                                  headers: {
+                                    "Content-Type": "application/json",
+                                  },
+                                }).then((res) =>
+                                  res.status === 200 ? router.push("/") : null
+                                );
+                              }}
+                            >
+                              <div className="flex min-w-0 items-center my-2">
+                                <p className="text-sm flex-1 overflow-hidden whitespace-nowrap overflow-ellipsis font-medium text-gray-700">
+                                  Logout
+                                </p>
+                              </div>
+                            </button>
                           </div>
                         </div>
                       </Popover.Panel>

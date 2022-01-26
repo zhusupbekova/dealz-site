@@ -1,4 +1,5 @@
 import nc from "next-connect";
+
 import { sessionMiddleware } from "../../middlewares/session";
 import { poster } from "../../utils/fetcher";
 
@@ -8,8 +9,9 @@ export default nc()
     const { email, password } = req.body;
 
     try {
-      const user = await poster(`/api/auth/local`, {
-        identifier: email,
+      const user = await poster(`/api/auth/local/register`, {
+        email,
+        username: email,
         password,
       })
         .then((res) => {
@@ -20,15 +22,12 @@ export default nc()
           strapiToken: data.jwt,
         }));
 
-      console.log(user);
-
       if (!user.confirmed) {
         return res.status(401).json({
           statusCode: 401,
           message: "User not confirmed",
         });
       }
-      console.log(user);
 
       req.session.set("user", user);
       await req.session.save();

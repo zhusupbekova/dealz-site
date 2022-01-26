@@ -85,7 +85,7 @@ export async function getStaticProps() {
     fields: ["name", "slug"],
   });
 
-  let deals = await fetcher(`/api/brands?${query}`).then((r) =>
+  let deals = await fetcher()(`/api/brands?${query}`).then((r) =>
     r.data.map((b) => ({
       name: b.attributes.name,
       slug: b.attributes.slug,

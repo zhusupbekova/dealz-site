@@ -3,22 +3,45 @@ import Link from "next/link";
 import { useState } from "react";
 import * as _ from "lodash";
 
-import { IDeal } from "../../utils/schema";
+import { IDeal, IUserProps } from "../../utils/schema";
 import { classNames } from "../../utils/style";
 import { Button } from "./Button";
 import { CategoryTag } from "./CategoryTag";
 import { CouponModal } from "../couponCardComponents/CouponModal";
 import { CouponBrandLogo } from "../couponCardComponents/CouponBrandLogo";
+import { ExclamationCircleIcon, XIcon } from "@heroicons/react/outline";
 
 export function CouponCard({
   item,
   compact,
+  user,
 }: {
   item: IDeal;
   compact?: boolean;
+  user: IUserProps;
 }) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showSignInRequired, setShowSignInRequired] = useState(false);
+
+  async function onLikeClick(e) {
+    e.stopPropagation();
+
+    // if (user) {
+    //   try {
+    //     await fetch(`api/users/${user.id}`, {
+    //       method: "PUT",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify({data deals: [{ lala: "lala" }] }),
+    //     }).then();
+    //     setIsFavourite(!isFavourite);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // } else {
+    //   setShowSignInRequired(true);
+    // }
+  }
 
   return (
     <Link href={`/deals/${item.id}`}>
@@ -47,7 +70,10 @@ export function CouponCard({
 
         <div className="px-4 py-3 bg-gray-100 space-x-2 flex border-t">
           {item.attributes.categories.data.map((category) => (
-            <CategoryTag category={category} />
+            <CategoryTag
+              category={category}
+              key={`${category.id}-${category.attributes.title}`}
+            />
           ))}
         </div>
         <div className="flex-1 p-4 space-y-2 flex flex-col border-t">
@@ -69,10 +95,7 @@ export function CouponCard({
         <div className="flex items-center bg-gray-100 p-2 bottom-0">
           {compact || (
             <Button.Like
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsFavourite(!isFavourite);
-              }}
+              onClick={(e) => onLikeClick(e)}
               isFavourite={isFavourite}
             />
           )}
@@ -88,6 +111,41 @@ export function CouponCard({
           </Button.Deal>
         </div>
         <CouponModal open={isModalOpen} setOpen={setIsModalOpen} item={item} />
+        <div
+          className={classNames(
+            showSignInRequired ? "" : "hidden",
+            "rounded-md bg-orange-50 p-4 absolute bottom-0"
+          )}
+        >
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <ExclamationCircleIcon
+                className="h-5 w-5 text-orange-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-orange-800">
+                You need to be signed in to save the deal
+              </p>
+            </div>
+            <div className="ml-auto pl-3">
+              <div className="-mx-1.5 -my-1.5">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowSignInRequired(false);
+                  }}
+                  className="inline-flex bg-orange-50 rounded-md p-1.5 text-orange-500 hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-50 focus:ring-orange-600"
+                >
+                  <span className="sr-only">Dismiss</span>
+                  <XIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </Link>
   );
