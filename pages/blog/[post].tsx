@@ -33,7 +33,7 @@ export default function PostPage({ post }: any) {
           <ReactMarkdown
             skipHtml={false}
             rehypePlugins={[rehypeRaw]}
-            className="prose-lg prose-p:text-gray-500 prose-li:text-gray-500 bg-white py-8 w-full max-w-none"
+            className="prose-lg prose-p:text-gray-500 prose-li:text-gray-500 prose-a:text-primary prose-a:hover:underline bg-white py-8 w-full max-w-none"
           >
             {post.content}
           </ReactMarkdown>

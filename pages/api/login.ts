@@ -20,15 +20,12 @@ export default nc()
           strapiToken: data.jwt,
         }));
 
-      console.log(user);
-
       if (!user.confirmed) {
         return res.status(401).json({
           statusCode: 401,
           message: "User not confirmed",
         });
       }
-      console.log(user);
 
       req.session.set("user", user);
       await req.session.save();

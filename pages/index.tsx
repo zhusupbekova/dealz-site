@@ -3,19 +3,14 @@ import Head from "next/head";
 import useSWR, { SWRResponse } from "swr";
 import { fetcher } from "../utils/fetcher";
 import qs from "qs";
-import ReactMarkdown from "react-markdown";
 import * as _ from "lodash";
-import axios from "axios";
-import { supabase } from "../utils/supabaseClient";
 import { Layout } from "../components/common/Layout";
-import { brand } from "../config";
 import { Hero } from "../components/layoutComponents/Hero";
 
-import { PlusSmIcon } from "@heroicons/react/solid";
 import { SearchSort } from "../components/homePageComponents/SearchSort";
 import { CouponCard } from "../components/common/CouponCard";
 import { classNames } from "../utils/style";
-import { ICategories, IDeals, IUserProps } from "../utils/schema";
+import { ICategories, IDeal, IDeals, IUserProps } from "../utils/schema";
 import { Filter, FilterMobile } from "../components/homePageComponents/Filter";
 import { Loading } from "../components/common/LoadingComponent";
 import { dealsQuery, userQuery } from "../utils/queries";
@@ -23,10 +18,16 @@ import { useRouter } from "next/router";
 import { Button } from "../components/common/Button";
 import { withSession } from "../middlewares/session";
 
-export default function Home({ user }: { user: IUserProps }) {
+export default function Home({
+  user,
+  dealOfTheMonth,
+}: {
+  user: IUserProps;
+  dealOfTheMonth: IDeal;
+}) {
   return (
     <Layout user={user}>
-      <Hero />
+      <Hero dealOfTheMonth={dealOfTheMonth} />
       <SearchSort />
       <Gallery user={user} />
       <Button.ScrollToTop />
@@ -185,8 +186,6 @@ function Gallery({ user }: { user: IUserProps }) {
   if (error)
     return <div className="mx-auto my-12 text-lg">failed to load data</div>;
 
-  console.log(user);
-
   return (
     <div className="bg-white">
       <div>
@@ -240,3 +239,18 @@ export const getServerSideProps = withSession((context) => {
     },
   };
 });
+
+export async function getStaticProps() {
+  const query = qs.stringify({
+    populate: ["deal_of_the_month.brand", "deal_of_the_month.brand.logo"],
+  });
+
+  const res = await fetcher()(`/api/deal-config?${query}`);
+
+  return {
+    revalidate: 60 * 60, // 1 hour
+    props: {
+      dealOfTheMonth: res.data?.attributes.deal_of_the_month.data,
+    },
+  };
+}

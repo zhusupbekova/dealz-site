@@ -21,9 +21,14 @@ import { withSession } from "../../middlewares/session";
 interface IDealDetailPageProps {
   deal: { data: IDeal };
   user: IUserProps;
+  related: { data: IDeal[] };
 }
 
-export default function DealDetailPage({ deal, user }: IDealDetailPageProps) {
+export default function DealDetailPage({
+  deal,
+  user,
+  related,
+}: IDealDetailPageProps) {
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -193,18 +198,18 @@ export default function DealDetailPage({ deal, user }: IDealDetailPageProps) {
             <ReactMarkdown
               skipHtml={false}
               rehypePlugins={[rehypeRaw]}
-              className="prose-lg prose-p:text-gray-500 prose-li:text-gray-500 bg-white p-4 pt-8 rounded"
+              className="prose-lg prose-p:text-gray-500 prose-li:text-gray-500 prose-a:text-primary prose-a:hover:underline bg-white p-4 pt-8 rounded"
             >
               {deal.data.attributes.description}
             </ReactMarkdown>
-            {deal.data.attributes.deals.data.length > 0 && (
+            {related.data?.length > 0 && (
               <div className="flex flex-col pt-24">
                 <h1 className="text-3xl text-center font-semibold my-4">
                   You may also be interested in...
                 </h1>
-                {deal.data.attributes.deals?.data.map((recommendedDeal) => (
+                {related.data?.map((recommendedDeal) => (
                   <Link href={`/deals/${recommendedDeal.id}`}>
-                    <div className="flex justify-between p-6 shadow rounded-md my-4 bg-white cursor-pointer">
+                    <div className="flex justify-between items-center p-6 shadow rounded-md my-4 bg-white cursor-pointer">
                       <CouponBrandLogo
                         url={
                           recommendedDeal.attributes.brand?.data.attributes.logo
@@ -263,6 +268,24 @@ export const getServerSideProps = withSession(async (context) => {
     };
   }
 
+  const related = await fetcher()(
+    `/api/deals?${dealsQuery}&${qs.stringify({
+      pagination: { start: 0, limit: 3 },
+      sort: ["createdAt:desc", "featured:desc"],
+      filters: {
+        id: { $ne: res.data.id },
+        expiration_date: {
+          $gt: Date.now(),
+        },
+        categories: {
+          id: {
+            $in: res.data.attributes.categories.data.map((c) => c.id),
+          },
+        },
+      },
+    })}`
+  );
+
   const user = req.session.get("user");
   console.log(user, req.session);
 
@@ -280,6 +303,7 @@ export const getServerSideProps = withSession(async (context) => {
       props: {
         deal: res,
         user,
+        related,
       },
     };
     //
@@ -288,6 +312,7 @@ export const getServerSideProps = withSession(async (context) => {
       props: {
         user: null,
         deal: res,
+        related,
       },
     };
   }
