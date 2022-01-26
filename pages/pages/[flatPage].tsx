@@ -1,7 +1,6 @@
-import { useRouter } from "next/router";
-import ReactMarkdown from "react-markdown";
-import useSWR from "swr";
+import qs from "qs";
 import rehypeRaw from "rehype-raw";
+import ReactMarkdown from "react-markdown";
 
 import { Layout } from "../../components/common/Layout";
 import { fetcher } from "../../utils/fetcher";
@@ -23,11 +22,10 @@ export default function FlatPage({ data }) {
 
 export async function getStaticProps(context) {
   const { flatPage } = context.params;
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
-  const res = await fetcher()(`/api/flat-pages?slug=${flatPage}`);
-  const data = res.data[0]; // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
+  const query = qs.stringify({ filters: { slug: { $eq: flatPage } } });
+  const res = await fetcher()(`/api/flat-pages?${query}`);
+  const data = res.data[0];
+
   return {
     revalidate: 60,
     props: {
