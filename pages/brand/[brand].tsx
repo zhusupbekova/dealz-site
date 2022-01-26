@@ -25,7 +25,7 @@ export default function BrandPage() {
   const { brand } = router.query;
   const { data: deals } = useSWR(
     `/api/deals?${query(brand as string)}`,
-    fetcher
+    fetcher()
   );
 
   return (

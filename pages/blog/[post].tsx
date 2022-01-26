@@ -65,7 +65,7 @@ export async function getStaticProps(context) {
   });
 
   const { post: _post } = context.params;
-  const post = await fetcher(`/api/blogs/${_post}?${query}`);
+  const post = await fetcher()(`/api/blogs/${_post}?${query}`);
 
   return {
     props: {
@@ -79,12 +79,13 @@ export async function getStaticPaths() {
     pagination: { limit: -1 },
   });
 
-  const post = await fetcher(`/api/blogs?${query}`);
+  const post = await fetcher()(`/api/blogs?${query}`);
 
   return {
     fallback: "blocking",
-    paths: post.data.map((p) => ({
-      params: { post: p.id.toString() },
-    })),
+    paths:
+      post.data?.map((p) => ({
+        params: { post: p.id.toString() },
+      })) ?? [],
   };
 }

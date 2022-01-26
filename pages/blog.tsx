@@ -116,7 +116,7 @@ export async function getStaticProps(context) {
     ],
   });
 
-  const posts = await fetcher(`/api/blogs?${query}`);
+  const posts = await fetcher()(`/api/blogs?${query}`);
   return {
     props: {
       posts: posts.data,

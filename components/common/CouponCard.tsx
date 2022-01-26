@@ -14,13 +14,13 @@ import { ExclamationCircleIcon, XIcon } from "@heroicons/react/outline";
 export function CouponCard({
   item,
   compact,
-  user,
+  user = {} as any,
   mutate,
 }: {
   item: IDeal;
   compact?: boolean;
-  user: IUserProps;
-  mutate: () => Promise<IDeals>;
+  user?: IUserProps;
+  mutate?: () => Promise<IDeals>;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSignInRequired, setShowSignInRequired] = useState(false);

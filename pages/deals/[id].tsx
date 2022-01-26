@@ -37,7 +37,6 @@ export default function DealDetailPage({
 }: IDealDetailPageProps) {
   const router = useRouter();
 
-  const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSignInRequired, setShowSignInRequired] = useState(false);
 
