@@ -68,6 +68,7 @@ export async function getStaticProps(context) {
   const post = await fetcher()(`/api/blogs/${_post}?${query}`);
 
   return {
+    revalidate: 60,
     props: {
       post: post.data.attributes,
     },
@@ -83,6 +84,7 @@ export async function getStaticPaths() {
 
   return {
     fallback: "blocking",
+    revalidate: 60,
     paths:
       post.data?.map((p) => ({
         params: { post: p.id.toString() },
