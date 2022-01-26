@@ -27,20 +27,21 @@ export function CouponCard({
   async function onLikeClick(e) {
     e.stopPropagation();
 
-    // if (user) {
-    //   try {
-    //     await fetch(`api/users/${user.id}`, {
-    //       method: "PUT",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({data deals: [{ lala: "lala" }] }),
-    //     }).then();
-    //     setIsFavourite(!isFavourite);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // } else {
-    //   setShowSignInRequired(true);
-    // }
+    if (user) {
+      console.log(user);
+      try {
+        await fetch(`api/users/${user.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: { deals: [{ id: item.id }] } }),
+        }).then();
+        setIsFavourite(!isFavourite);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      setShowSignInRequired(true);
+    }
   }
 
   return (

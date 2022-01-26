@@ -18,16 +18,43 @@ import { useRouter } from "next/router";
 import { Button } from "../components/common/Button";
 import { withSession } from "../middlewares/session";
 
-export default function Home({
-  user,
-  dealOfTheMonth,
-}: {
-  user: IUserProps;
-  dealOfTheMonth: IDeal;
-}) {
+const dealOfTheMonthQuery = qs.stringify(
+  {
+    populate: ["deal_of_the_month.brand", "deal_of_the_month.brand.logo"],
+  },
+  { encodeValuesOnly: true }
+);
+
+interface IDealOfTheMonth {
+  data: {
+    id: 1;
+    attributes: {
+      createdAt: Date;
+      updatedAt: Date;
+      publishedAt: Date;
+      deal_of_the_month: { data: IDeal };
+    };
+  };
+  meta: any;
+}
+
+export default function Home({ user }: { user: IUserProps }) {
+  const {
+    data: dealOfTheMonth,
+    error: dealOfTheMonthError,
+  }: SWRResponse<IDealOfTheMonth, Error> = useSWR(
+    `/api/deal-config?${dealOfTheMonthQuery}`,
+    fetcher()
+  );
+
   return (
     <Layout user={user}>
-      <Hero dealOfTheMonth={dealOfTheMonth} />
+      {dealOfTheMonth && (
+        <Hero
+          dealOfTheMonth={dealOfTheMonth.data.attributes.deal_of_the_month.data}
+        />
+      )}
+
       <SearchSort />
       <Gallery user={user} />
       <Button.ScrollToTop />
@@ -239,18 +266,3 @@ export const getServerSideProps = withSession((context) => {
     },
   };
 });
-
-export async function getStaticProps() {
-  const query = qs.stringify({
-    populate: ["deal_of_the_month.brand", "deal_of_the_month.brand.logo"],
-  });
-
-  const res = await fetcher()(`/api/deal-config?${query}`);
-
-  return {
-    revalidate: 60 * 60, // 1 hour
-    props: {
-      dealOfTheMonth: res.data?.attributes.deal_of_the_month.data,
-    },
-  };
-}

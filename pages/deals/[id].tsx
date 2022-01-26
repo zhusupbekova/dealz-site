@@ -105,7 +105,7 @@ export default function DealDetailPage({
 
           <div className="space-y-8">
             <div className="space-y-6 bg-white p-4 pt-8 rounded">
-              <div className="space-x-1 text-sm">
+              <div className="space-x-1 text-sm flex">
                 {[
                   { title: "Home", path: "/" },
                   { title: "All", path: "/" },
@@ -114,12 +114,12 @@ export default function DealDetailPage({
                     path: `/?categories=${deal.data.attributes.categories?.data[0]?.attributes.slug}`,
                   },
                 ].map((a) => (
-                  <>
+                  <p key={a.title}>
                     <Link href={a.path}>
                       <a className="text-primary">{a.title}</a>
                     </Link>
-                    <span>/</span>
-                  </>
+                    <span className="ml-1">/</span>
+                  </p>
                 ))}
                 <span>{deal.data.attributes.brand?.data.attributes.name}</span>
               </div>
