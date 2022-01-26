@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import * as _ from "lodash";
 
-import { IDeal, IUserProps } from "../../utils/schema";
+import { IDeal, IDeals, IUserProps } from "../../utils/schema";
 import { classNames } from "../../utils/style";
 import { Button } from "./Button";
 import { CategoryTag } from "./CategoryTag";
@@ -15,12 +15,13 @@ export function CouponCard({
   item,
   compact,
   user,
+  mutate,
 }: {
   item: IDeal;
   compact?: boolean;
   user: IUserProps;
+  mutate: () => Promise<IDeals>;
 }) {
-  const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSignInRequired, setShowSignInRequired] = useState(false);
 
@@ -30,12 +31,17 @@ export function CouponCard({
     if (user) {
       console.log(user);
       try {
-        await fetch(`api/users/${user.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ data: { deals: [{ id: item.id }] } }),
-        }).then();
-        setIsFavourite(!isFavourite);
+        await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/c/deals/save?deal_id=${item.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.strapiToken}`,
+            },
+          }
+        ).then();
+        await mutate();
       } catch (err) {
         console.log(err);
       }
@@ -97,7 +103,7 @@ export function CouponCard({
           {compact || (
             <Button.Like
               onClick={(e) => onLikeClick(e)}
-              isFavourite={isFavourite}
+              isFavourite={item.attributes.saved}
             />
           )}
 

@@ -197,7 +197,11 @@ function Gallery({ user }: { user: IUserProps }) {
     }
   );
 
-  const { data: deals, error }: SWRResponse<IDeals, Error> = useSWR(
+  const {
+    data: deals,
+    error,
+    mutate,
+  }: SWRResponse<IDeals, Error> = useSWR(
     `/api/deals?${dealsQuery}${categories ? `&${categoryFilterQuery}` : ""}${
       dealType ? `&${dealLifetimeFilterQuery}` : ""
     }${search ? `&${searchFilterQuery}` : ""}${
@@ -230,11 +234,16 @@ function Gallery({ user }: { user: IUserProps }) {
                 Deals
               </h2>
 
-              {deals ? (
+              {deals?.data ? (
                 deals.data.length > 0 ? (
                   <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
                     {deals.data.map((item, idx) => (
-                      <CouponCard item={item} key={idx} user={user} />
+                      <CouponCard
+                        item={item}
+                        key={idx}
+                        user={user}
+                        mutate={mutate}
+                      />
                     ))}
                   </div>
                 ) : (

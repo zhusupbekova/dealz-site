@@ -42,7 +42,7 @@ export default function AccountPage({ user }) {
           <h3 className="font-semibold text-2xl">{tabs[tab].name}</h3>
           {tabs[tab].key === "used" ? (
             <div className="mt-6">
-              {dealsStats["dealUsageByUser"].map((deal) => (
+              {dealsStats?.["dealUsageByUser"].map((deal) => (
                 <Link href={`/deals/${deal.id}`}>
                   <a>
                     <DealStatCard item={deal} />
@@ -52,7 +52,7 @@ export default function AccountPage({ user }) {
             </div>
           ) : (
             <div className="mt-6">
-              {dealsStats["savedDealsByUser"].map((deal) => (
+              {dealsStats?.["savedDealsByUser"].map((deal) => (
                 <Link href={`/deals/${deal.id}`}>
                   <a>
                     <DealStatCard item={deal} />
@@ -69,7 +69,7 @@ export default function AccountPage({ user }) {
 
 function DealStatCard({ item }: { item: IDealStat }) {
   return (
-    <div className="grid grid-cols-6 gap-4 items-center h-24 px-6 rounded-md border shadow">
+    <div className="grid grid-cols-6 gap-4 items-center h-24 px-6 rounded-md border shadow mb-4">
       <div className="relative w-12 h-12 sm:w-16 sm:h-16 mr-4 col-span-1">
         <CouponBrandLogo
           url={item.url}
@@ -117,7 +117,7 @@ function Tabs({ onChange, current }: any) {
 
 export const getServerSideProps = withSession((context) => {
   const { req, res } = context;
-  const user = req.session.get("user");
+  const user = req.session.get("user") || null;
   if (user) {
     return {
       props: {

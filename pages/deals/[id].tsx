@@ -3,7 +3,11 @@ import Image from "next/image";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import { CheckCircleIcon } from "@heroicons/react/solid";
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  XIcon,
+} from "@heroicons/react/solid";
 import Link from "next/link";
 import * as _ from "lodash";
 
@@ -17,6 +21,8 @@ import { CategoryTag } from "../../components/common/CategoryTag";
 import { CouponModal } from "../../components/couponCardComponents/CouponModal";
 import { CouponBrandLogo } from "../../components/couponCardComponents/CouponBrandLogo";
 import { withSession } from "../../middlewares/session";
+import { classNames } from "../../utils/style";
+import { useRouter } from "next/router";
 
 interface IDealDetailPageProps {
   deal: { data: IDeal };
@@ -29,10 +35,41 @@ export default function DealDetailPage({
   user,
   related,
 }: IDealDetailPageProps) {
+  const router = useRouter();
+
   const [isFavourite, setIsFavourite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showSignInRequired, setShowSignInRequired] = useState(false);
 
   const href = typeof window !== "undefined" ? window.location.href : "";
+
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
+
+  async function onLikeClick(e) {
+    e.stopPropagation();
+
+    if (user) {
+      try {
+        await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/c/deals/save?deal_id=${deal?.data.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.strapiToken}`,
+            },
+          }
+        );
+        refreshData();
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      setShowSignInRequired(true);
+    }
+  }
 
   return (
     <Layout
@@ -87,14 +124,47 @@ export default function DealDetailPage({
 
               <Button.Like
                 onClick={(e) => {
-                  e.stopPropagation();
-                  setIsFavourite(!isFavourite);
+                  onLikeClick(e);
                 }}
-                isFavourite={isFavourite}
+                isFavourite={deal.data.attributes.saved}
               >
-                Save{isFavourite ? "d" : ""} for later
+                Save{deal.data.attributes.saved ? "d" : ""} for later
               </Button.Like>
-
+              <div
+                className={classNames(
+                  showSignInRequired ? "" : "hidden",
+                  "rounded-md bg-orange-50 p-4 absolute bottom-0"
+                )}
+              >
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <ExclamationCircleIcon
+                      className="h-5 w-5 text-orange-400"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-medium text-orange-800">
+                      You need to be signed in to save the deal
+                    </p>
+                  </div>
+                  <div className="ml-auto pl-3">
+                    <div className="-mx-1.5 -my-1.5">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowSignInRequired(false);
+                        }}
+                        className="inline-flex bg-orange-50 rounded-md p-1.5 text-orange-500 hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-50 focus:ring-orange-600"
+                      >
+                        <span className="sr-only">Dismiss</span>
+                        <XIcon className="h-5 w-5" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <CouponModal
                 open={isModalOpen}
                 setOpen={setIsModalOpen}
@@ -260,7 +330,8 @@ export default function DealDetailPage({
 
 export const getServerSideProps = withSession(async (context) => {
   const { params, req } = context;
-  const res = await fetcher()(`/api/deals/${params.id}?${dealsQuery}`);
+  const user = req.session.get("user") || null;
+  const res = await fetcher(user)(`/api/deals/${params.id}?${dealsQuery}`);
 
   if (!res.data) {
     return {
@@ -286,34 +357,11 @@ export const getServerSideProps = withSession(async (context) => {
     })}`
   );
 
-  const user = req.session.get("user");
-  console.log(user, req.session);
-
-  if (user) {
-    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/me?${userQuery}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${user.strapiToken}`,
-        },
-      }
-    ).then((res) => res.json());
-    return {
-      props: {
-        deal: res,
-        user,
-        related,
-      },
-    };
-    //
-  } else {
-    return {
-      props: {
-        user: null,
-        deal: res,
-        related,
-      },
-    };
-  }
+  return {
+    props: {
+      deal: res,
+      user,
+      related,
+    },
+  };
 });

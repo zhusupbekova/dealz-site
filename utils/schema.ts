@@ -74,6 +74,7 @@ export interface IDeal {
     description: string;
     overview: { overview_item: string }[];
     deals: { data: IDeal[]; meta: any };
+    saved?: boolean;
     slug: string;
     deal_description: string;
     deal_usages: {
