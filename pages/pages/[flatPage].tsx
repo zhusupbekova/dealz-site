@@ -29,6 +29,7 @@ export async function getStaticProps(context) {
   const data = res.data[0]; // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
   return {
+    revalidate: 60,
     props: {
       data,
     },
@@ -41,6 +42,7 @@ export async function getStaticPaths() {
   const data = await fetcher()(`/api/flat-pages`);
 
   return {
+    revalidate: 60,
     paths: data.data.map((flatPage) => ({
       params: { flatPage: flatPage.attributes.slug },
     })),
