@@ -42,10 +42,9 @@ export async function getStaticPaths() {
   const data = await fetcher()(`/api/flat-pages`);
 
   return {
-    revalidate: 60,
     paths: data.data.map((flatPage) => ({
       params: { flatPage: flatPage.attributes.slug },
     })),
-    fallback: true, // false or 'blocking'
+    fallback: "blocking", // false or 'blocking'
   };
 }

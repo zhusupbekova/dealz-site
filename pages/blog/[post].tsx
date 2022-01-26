@@ -84,7 +84,6 @@ export async function getStaticPaths() {
 
   return {
     fallback: "blocking",
-    revalidate: 60,
     paths:
       post.data?.map((p) => ({
         params: { post: p.id.toString() },
