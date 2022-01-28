@@ -6,6 +6,7 @@ import qs from "qs";
 import * as _ from "lodash";
 import { Layout } from "../components/common/Layout";
 import { Hero } from "../components/layoutComponents/Hero";
+import ReactPaginate from "react-paginate";
 
 import { SearchSort } from "../components/homePageComponents/SearchSort";
 import { CouponCard } from "../components/common/CouponCard";
@@ -17,6 +18,7 @@ import { dealsQuery, userQuery } from "../utils/queries";
 import { useRouter } from "next/router";
 import { Button } from "../components/common/Button";
 import { withSession } from "../middlewares/session";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 
 const dealOfTheMonthQuery = qs.stringify(
   {
@@ -77,6 +79,7 @@ function Gallery({ user }: { user: IUserProps }) {
     search,
     sort,
     mostUsed,
+    page = 1,
   } = router.query;
 
   const featuredFilterQuery = qs.stringify(
@@ -197,6 +200,18 @@ function Gallery({ user }: { user: IUserProps }) {
     }
   );
 
+  const paginationQuery = qs.stringify(
+    {
+      pagination: {
+        page,
+        pageSize: 2,
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+
   const {
     data: deals,
     error,
@@ -210,9 +225,11 @@ function Gallery({ user }: { user: IUserProps }) {
       expired ? `&${expiredDealFilterQuery}` : ""
     }${expiringSoon ? `&${expiringSoonFilterQuery}` : ""}${
       mostUsed ? `&${mostUsedFilterQuery}` : ""
-    }`,
+    }&${paginationQuery}`,
     fetcher(user)
   );
+
+  console.log(router.asPath);
 
   if (error)
     return <div className="mx-auto my-12 text-lg">failed to load data</div>;
@@ -236,16 +253,65 @@ function Gallery({ user }: { user: IUserProps }) {
 
               {deals?.data ? (
                 deals.data.length > 0 ? (
-                  <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
-                    {deals.data.map((item, idx) => (
-                      <CouponCard
-                        item={item}
-                        key={idx}
-                        user={user}
-                        mutate={mutate}
+                  <>
+                    <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
+                      {deals.data.map((item, idx) => (
+                        <CouponCard
+                          item={item}
+                          key={idx}
+                          user={user}
+                          mutate={mutate}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex items-center justify-around w-full  mt-6">
+                      <ReactPaginate
+                        breakLabel="..."
+                        nextLabel={
+                          <ChevronRightIcon
+                            className="h-5 w-5"
+                            aria-hidden="true"
+                          />
+                        }
+                        onPageChange={(e) =>
+                          router.push(
+                            {
+                              query: {
+                                ...(expiringSoon ? { expiringSoon } : null),
+                                ...(expired ? { expired } : null),
+                                ...(dealType ? { dealType } : null),
+                                ...(categories ? { categories } : null),
+                                ...(search ? { search } : null),
+                                ...(sort ? { sort } : null),
+                                ...(featured ? { featured } : null),
+                                page: e.selected + 1,
+                              },
+                            },
+                            undefined,
+                            { shallow: true }
+                          )
+                        }
+                        pageRangeDisplayed={5}
+                        pageCount={deals.meta.pagination.pageCount}
+                        previousLabel={
+                          <ChevronLeftIcon
+                            className="h-5 w-5"
+                            aria-hidden="true"
+                          />
+                        }
+                        renderOnZeroPageCount={null}
+                        containerClassName="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                        activeClassName="z-10 bg-primaryLight border-primary"
+                        activeLinkClassName="text-primary"
+                        pageClassName={
+                          "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                        }
+                        previousClassName="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                        nextClassName="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                        forcePage={deals.meta.pagination.page - 1}
                       />
-                    ))}
-                  </div>
+                    </div>
+                  </>
                 ) : (
                   <div className="flex items-center justify-around w-full h-full text-lg">
                     No such deals

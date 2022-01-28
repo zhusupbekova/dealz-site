@@ -15,6 +15,7 @@ import { fetcher } from "../../utils/fetcher";
 import { ICategories, IFilterStat, IFilterStats } from "../../utils/schema";
 import { classNames } from "../../utils/style";
 import { useRouter } from "next/router";
+import _ from "lodash";
 
 interface IFilterProps {
   mobileFiltersOpen?: boolean;
@@ -58,6 +59,7 @@ export function FilterMobile({
     expiringSoon,
     expired,
     dealType,
+    pageSize,
   } = router.query;
 
   const { data, error } = useSWR(`/api/c/categories/stats`, fetcher());
@@ -130,7 +132,7 @@ export function FilterMobile({
                   checked={featured === "true"}
                   type="checkbox"
                   className="h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary float-right"
-                  onChange={(e) =>
+                  onChange={_.debounce((e) =>
                     e.target.checked
                       ? router.push(
                           {
@@ -142,6 +144,7 @@ export function FilterMobile({
                               ...(search ? { search } : null),
                               ...(sort ? { sort } : null),
                               featured: true,
+                              ...(pageSize ? { pageSize } : null),
                             },
                           },
                           undefined,
@@ -153,16 +156,16 @@ export function FilterMobile({
                               ...(expiringSoon ? { expiringSoon } : null),
                               ...(expired ? { expired } : null),
                               ...(dealType ? { dealType } : null),
-
                               ...(categories ? { categories } : null),
                               ...(search ? { search } : null),
                               ...(sort ? { sort } : null),
+                              ...(pageSize ? { pageSize } : null),
                             },
                           },
                           undefined,
                           { shallow: true }
                         )
-                  }
+                  )}
                 />
               </div>
               <FilterSectionMobile
@@ -200,6 +203,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
     dealType,
     expired,
     expiringSoon,
+    pageSize,
   } = router.query;
 
   function onFilterItemClick(sectionName: string, slug: string) {
@@ -216,6 +220,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                 ...(search ? { search } : null),
                 ...(sort ? { sort } : null),
                 ...(featured ? { featured } : null),
+                ...(pageSize ? { pageSize } : null),
               },
             },
             undefined,
@@ -233,6 +238,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                 ...(search ? { search } : null),
                 ...(sort ? { sort } : null),
                 ...(featured ? { featured } : null),
+                ...(pageSize ? { pageSize } : null),
               },
             },
             undefined,
@@ -252,6 +258,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -267,6 +274,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -283,6 +291,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -298,6 +307,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -317,6 +327,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -335,6 +346,7 @@ function FilterSectionMobile({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -420,6 +432,7 @@ export function Filter({}: IFilterProps) {
     dealType,
     expired,
     expiringSoon,
+    pageSize,
   } = router.query;
   const { data, error }: SWRResponse<IFilterStats, Error> = useSWR(
     `/api/c/categories/stats`,
@@ -463,6 +476,7 @@ export function Filter({}: IFilterProps) {
                         ...(search ? { search } : null),
                         ...(sort ? { sort } : null),
                         featured: true,
+                        ...(pageSize ? { pageSize } : null),
                       },
                     },
                     undefined,
@@ -477,6 +491,7 @@ export function Filter({}: IFilterProps) {
                         ...(categories ? { categories } : null),
                         ...(search ? { search } : null),
                         ...(sort ? { sort } : null),
+                        ...(pageSize ? { pageSize } : null),
                       },
                     },
                     undefined,
@@ -511,6 +526,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
     dealType,
     expired,
     expiringSoon,
+    pageSize,
   } = router.query;
 
   function onFilterItemClick(sectionName: string, slug: string) {
@@ -528,6 +544,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                 ...(expiringSoon ? { expiringSoon } : null),
                 ...(expired ? { expired } : null),
                 ...(dealType ? { dealType } : null),
+                ...(pageSize ? { pageSize } : null),
               },
             },
             undefined,
@@ -546,6 +563,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                 ...(expiringSoon ? { expiringSoon } : null),
                 ...(expired ? { expired } : null),
                 ...(dealType ? { dealType } : null),
+                ...(pageSize ? { pageSize } : null),
               },
             },
             undefined,
@@ -565,6 +583,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -580,6 +599,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -596,6 +616,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -611,6 +632,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -630,6 +652,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -648,6 +671,7 @@ function FilterSection({ name, type, options }: IFilterSectionProps) {
                   ...(search ? { search } : null),
                   ...(sort ? { sort } : null),
                   ...(featured ? { featured } : null),
+                  ...(pageSize ? { pageSize } : null),
                 },
               },
               undefined,
@@ -724,6 +748,7 @@ function MostUsedFilterSection({ data }: IMostUsedFilterSectionProps) {
     expired,
     expiringSoon,
     mostUsed,
+    pageSize,
   } = router.query;
   const [checked, setChecked] = useState(mostUsed ?? "");
 
@@ -739,6 +764,7 @@ function MostUsedFilterSection({ data }: IMostUsedFilterSectionProps) {
               ...(search ? { search } : null),
               ...(sort ? { sort } : null),
               ...(featured ? { featured } : null),
+              ...(pageSize ? { pageSize } : null),
             },
           },
           undefined,
@@ -755,6 +781,7 @@ function MostUsedFilterSection({ data }: IMostUsedFilterSectionProps) {
               ...(search ? { search } : null),
               ...(sort ? { sort } : null),
               ...(featured ? { featured } : null),
+              ...(pageSize ? { pageSize } : null),
             },
           },
           undefined,
