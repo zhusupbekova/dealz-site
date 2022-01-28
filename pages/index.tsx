@@ -217,7 +217,7 @@ function Gallery({ user }: { user: IUserProps }) {
     {
       pagination: {
         page,
-        pageSize: 2,
+        pageSize: 20,
       },
     },
     {
