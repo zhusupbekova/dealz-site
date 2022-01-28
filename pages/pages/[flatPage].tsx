@@ -6,9 +6,9 @@ import { Layout } from "../../components/common/Layout";
 import { fetcher } from "../../utils/fetcher";
 import { Loading } from "../../components/common/LoadingComponent";
 
-export default function FlatPage({ data }) {
+export default function FlatPage({ data, slug }) {
   return (
-    <Layout>
+    <Layout head={slug} metaDescription="">
       <ReactMarkdown
         skipHtml={false}
         rehypePlugins={[rehypeRaw]}
@@ -30,6 +30,7 @@ export async function getStaticProps(context) {
     revalidate: 60,
     props: {
       data,
+      slug: flatPage,
     },
   };
 }
