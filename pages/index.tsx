@@ -59,10 +59,12 @@ export default function Home({ user }: { user: IUserProps }) {
     fetcher()
   );
 
-  console.log(trendingDeal);
-
   return (
-    <Layout user={user}>
+    <Layout
+      user={user}
+      head="Money saving deals"
+      metaDescription="Find money saving deals from various brands"
+    >
       {dealOfTheMonth && (
         <Hero
           dealOfTheMonth={dealOfTheMonth.data.attributes.deal_of_the_month.data}
@@ -241,8 +243,6 @@ function Gallery({ user }: { user: IUserProps }) {
     }&${paginationQuery}`,
     fetcher(user)
   );
-
-  console.log(router.asPath);
 
   if (error)
     return <div className="mx-auto my-12 text-lg">failed to load data</div>;

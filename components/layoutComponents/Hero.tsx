@@ -38,6 +38,7 @@ export function Hero({
               <Image
                 layout="fill"
                 objectFit="cover"
+                alt={dealOfTheMonth?.attributes.brand.data.attributes.name}
                 src={
                   dealOfTheMonth?.attributes.brand.data.attributes.logo.data
                     .attributes.url
@@ -65,6 +66,7 @@ export function Hero({
               <Image
                 layout="fill"
                 objectFit="cover"
+                alt={trendingDeal?.attributes.brand.data.attributes.name}
                 src={
                   trendingDeal?.attributes.brand.data.attributes.logo.data
                     .attributes.url

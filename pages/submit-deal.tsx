@@ -46,13 +46,13 @@ export default function SubmitDeal() {
 
   if (!data) {
     return (
-      <Layout>
+      <Layout head="Submit deal" metaDescription="Submit deals to get featured">
         <Loading />
       </Layout>
     );
   }
   return (
-    <Layout>
+    <Layout head="Submit deal" metaDescription="Submit deals to get featured">
       <div className="flex flex-col md:grid grid-cols-2 max-w-6xl mx-auto px-4 sm:px-6 gap-x-10">
         <div className="flex relative aspect-1 col-span-1">
           <Image src="/money-saving-1.jpg" layout="fill" objectFit="cover" />

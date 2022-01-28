@@ -31,7 +31,11 @@ export default function RegisterPage({ user }) {
   }
 
   return (
-    <Layout user={user}>
+    <Layout
+      user={user}
+      head="Register"
+      metaDescription="Register to save deals and coupons"
+    >
       <div className="space-y-2 mx-auto max-w-lg h-full">
         <div>
           <GoogleLoginButton
@@ -157,7 +161,6 @@ export default function RegisterPage({ user }) {
 
 export const getServerSideProps = withSession((context) => {
   const { req } = context;
-  console.log(context);
   return {
     props: {
       user: req.session.get("user") || null,

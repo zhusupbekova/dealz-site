@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import Image from "next/image";
 import useSWR, { SWRResponse } from "swr";
 import qs from "qs";
 
@@ -50,14 +51,16 @@ export function Header({ user }: { user: IUserProps }) {
     <Popover className="relative bg-white z-40">
       <div className="px-4 sm:px-6 w-full border-b-2 border-gray-100">
         <div className="flex justify-between max-w-6xl mx-auto  items-center py-6 md:justify-start md:space-x-10">
-          <div className="flex justify-start lg:w-0 lg:flex-1">
+          <div className="relative h-10 w-10 flex justify-start lg:w-0 lg:flex-1">
             <Link href="/" passHref>
               <a>
                 <span className="sr-only">{brand.name}</span>
-                <img
+                <Image
                   className="h-8 w-auto sm:h-10"
                   src={brand.logo}
                   alt={brand.name}
+                  layout="fill"
+                  objectFit="contain"
                 />
               </a>
             </Link>
@@ -248,10 +251,11 @@ export function Header({ user }: { user: IUserProps }) {
             <div className="pt-5 pb-6 px-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <img
+                  <Image
                     className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-mark-primary.svg"
-                    alt="Workflow"
+                    src={brand.logo}
+                    alt={brand.name}
+                    layout="fill"
                   />
                 </div>
                 <div className="-mr-2">

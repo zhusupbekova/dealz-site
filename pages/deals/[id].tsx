@@ -16,7 +16,7 @@ import { Layout } from "../../components/common/Layout";
 import { Loading } from "../../components/common/LoadingComponent";
 import { fetcher } from "../../utils/fetcher";
 import { dealsQuery, userQuery } from "../../utils/queries";
-import { IDeal, IUserProps } from "../../utils/schema";
+import { IDeal, IDeals, IUserProps } from "../../utils/schema";
 import { CategoryTag } from "../../components/common/CategoryTag";
 import { CouponModal } from "../../components/couponCardComponents/CouponModal";
 import { CouponBrandLogo } from "../../components/couponCardComponents/CouponBrandLogo";
@@ -76,101 +76,19 @@ export default function DealDetailPage({
       containerClassName="bg-gray-100"
       className="w-full mx-auto"
       user={user}
+      head={deal.data.attributes.title}
+      metaDescription={deal.data.attributes.overview
+        .map((item) => `- ${item.overview_item}`)
+        .join(",")}
     >
       {deal ? (
         <div className="max-w-6xl mx-auto flex px-4 sm:px-6">
-          <div>
-            <div className="sticky top-12 w-72 text-center space-y-4 flex flex-col mr-8">
-              <div className="bg-white p-4 pt-8 rounded space-y-8">
-                {deal.data.attributes.deal_description && (
-                  <h1 className="text-2xl font-bold text-primary leading-none">
-                    {deal.data.attributes.deal_description}
-                  </h1>
-                )}
-
-                <div>
-                  <h1 className="text-2xl font-bold text-primary">
-                    {deal.data.attributes.usageCount.count}
-                  </h1>
-                  <p className="text-gray-500">people used this deal</p>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <CouponBrandLogo
-                    url={
-                      deal.data.attributes.brand?.data.attributes.logo?.data
-                        .attributes.url
-                    }
-                    name={`${deal.data.attributes.brand?.data?.attributes.name}-logo`}
-                    className={"relative"}
-                  />
-                  <p className="text-gray-500">
-                    Offered by{" "}
-                    {deal.data.attributes.brand?.data.attributes.name}
-                  </p>
-                </div>
-              </div>
-
-              <Button.Primary
-                className="animate-pulse w-full "
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsModalOpen(true);
-                }}
-              >
-                Use this {deal.data.attributes.type}
-              </Button.Primary>
-
-              <Button.Like
-                onClick={(e) => {
-                  onLikeClick(e);
-                }}
-                isFavourite={deal.data.attributes.saved}
-              >
-                Save{deal.data.attributes.saved ? "d" : ""} for later
-              </Button.Like>
-              <div
-                className={classNames(
-                  showSignInRequired ? "" : "hidden",
-                  "rounded-md bg-orange-50 p-4 absolute bottom-0"
-                )}
-              >
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <ExclamationCircleIcon
-                      className="h-5 w-5 text-orange-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-medium text-orange-800">
-                      You need to be signed in to save the deal
-                    </p>
-                  </div>
-                  <div className="ml-auto pl-3">
-                    <div className="-mx-1.5 -my-1.5">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowSignInRequired(false);
-                        }}
-                        className="inline-flex bg-orange-50 rounded-md p-1.5 text-orange-500 hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-50 focus:ring-orange-600"
-                      >
-                        <span className="sr-only">Dismiss</span>
-                        <XIcon className="h-5 w-5" aria-hidden="true" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <CouponModal
-                open={isModalOpen}
-                setOpen={setIsModalOpen}
-                item={deal.data}
-              />
-            </div>
-          </div>
+          <SideComponent
+            data={deal.data}
+            onLikeClick={onLikeClick}
+            isSider={true}
+            className="hidden lg:block"
+          />
 
           <div className="space-y-8">
             <div className="space-y-6 bg-white p-4 pt-8 rounded">
@@ -190,23 +108,50 @@ export default function DealDetailPage({
                     <span className="ml-1">/</span>
                   </p>
                 ))}
-                <span>{deal.data.attributes.brand?.data.attributes.name}</span>
+                <Link
+                  href={`/brand/${deal.data.attributes.brand?.data.attributes.slug}`}
+                >
+                  <a className="text-primary">
+                    {deal.data.attributes.brand?.data.attributes.name}
+                  </a>
+                </Link>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="block  md:flex items-center justify-between">
+                <div className="block md:hidden text-right space-x-2 mb-2">
+                  {deal.data.attributes.categories.data.map((category) => (
+                    <CategoryTag
+                      category={category}
+                      key={`catrgory_tag_${category.attributes.slug}`}
+                    />
+                  ))}
+                </div>
                 <div className="w-full flex items-center">
-                  <CouponBrandLogo
-                    url={
-                      deal.data.attributes.brand.data.attributes.logo?.data
-                        .attributes.url
-                    }
-                    name={`${deal.data.attributes.brand?.data?.attributes.name}-logo`}
-                    className={"relative mr-4"}
-                  />
-
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 mr-4">
+                    <Link
+                      href={`/brand/${deal.data.attributes.brand?.data.attributes.slug}`}
+                    >
+                      <a>
+                        <CouponBrandLogo
+                          url={
+                            deal.data.attributes.brand.data.attributes.logo
+                              ?.data.attributes.url
+                          }
+                          name={`${deal.data.attributes.brand?.data?.attributes.name}-logo`}
+                          className={"relative"}
+                        />
+                      </a>
+                    </Link>
+                  </div>
                   <div>
                     <h3 className="text-xl font-medium text-gray-900">
                       Latest Money-Saving Deals for{" "}
-                      {deal.data.attributes.brand.data.attributes.name}
+                      <Link
+                        href={`/brand/${deal.data.attributes.brand?.data.attributes.slug}`}
+                      >
+                        <a className="text-primary">
+                          {deal.data.attributes.brand.data.attributes.name}
+                        </a>
+                      </Link>
                     </h3>
                     <h3 className="text-lg font-medium text-primary">
                       {deal.data.attributes.title}
@@ -214,7 +159,7 @@ export default function DealDetailPage({
                   </div>
                 </div>
                 <div>
-                  <div className="text-right space-x-2 mb-2">
+                  <div className="hidden md:block text-right space-x-2 mb-2">
                     {deal.data.attributes.categories.data.map((category) => (
                       <CategoryTag
                         category={category}
@@ -231,15 +176,22 @@ export default function DealDetailPage({
                 </div>
               </div>
 
-              <div className="relative w-full h-96 bg-gray-100">
+              <div className="relative w-full h-48 sm:h-96 ">
                 <Image
                   src={deal.data.attributes.banner?.data.attributes.url}
                   alt={deal.data.attributes.title}
                   layout="fill"
-                  objectFit="cover"
+                  objectFit="contain"
+                  className="my-auto"
                 />
               </div>
             </div>
+            <SideComponent
+              data={deal.data}
+              onLikeClick={onLikeClick}
+              isSider={false}
+              className="block lg:hidden"
+            />
             {deal.data.attributes.overview.length > 0 && (
               <div className=" rounded my-6 overflow-hidden flex space-y-6 bg-white">
                 <h2
@@ -324,6 +276,129 @@ export default function DealDetailPage({
         <Loading />
       )}
     </Layout>
+  );
+}
+
+function SideComponent({
+  data,
+  onLikeClick,
+  isSider,
+  className,
+}: {
+  data: IDeal;
+  onLikeClick: (e) => void;
+  isSider: boolean;
+  className: string;
+}) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showSignInRequired, setShowSignInRequired] = useState(false);
+
+  return (
+    <div className={className}>
+      <div
+        className={classNames(
+          isSider ? "sticky top-12 w-72" : "w-full top-8",
+          "text-center space-y-4 flex flex-col mr-8"
+        )}
+      >
+        <div className="bg-white p-4 pt-8 rounded space-y-8">
+          {data.attributes.deal_description && (
+            <h1 className="text-2xl font-bold text-primary leading-none">
+              {data.attributes.deal_description}
+            </h1>
+          )}
+
+          <div>
+            <h1 className="text-2xl font-bold text-primary">
+              {data.attributes.usageCount.count}
+            </h1>
+            <p className="text-gray-500">people used this deal</p>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <Link
+              href={`/brand/${data.attributes.brand?.data.attributes.slug}`}
+            >
+              <a>
+                <CouponBrandLogo
+                  url={
+                    data.attributes.brand?.data.attributes.logo?.data.attributes
+                      .url
+                  }
+                  name={`${data.attributes.brand?.data?.attributes.name}-logo`}
+                  className={"relative"}
+                />
+              </a>
+            </Link>
+            <p className="text-gray-500">
+              Offered by{" "}
+              <Link
+                href={`/brand/${data.attributes.brand?.data.attributes.slug}`}
+              >
+                <a className="text-primary">
+                  {data.attributes.brand?.data.attributes.name}
+                </a>
+              </Link>
+            </p>
+          </div>
+        </div>
+
+        <Button.Primary
+          className="animate-pulse w-full "
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsModalOpen(true);
+          }}
+        >
+          Use this {data.attributes.type}
+        </Button.Primary>
+
+        <Button.Like
+          onClick={(e) => {
+            onLikeClick(e);
+          }}
+          isFavourite={data.attributes.saved}
+        >
+          Save{data.attributes.saved ? "d" : ""} for later
+        </Button.Like>
+        <div
+          className={classNames(
+            showSignInRequired ? "" : "hidden",
+            "rounded-md bg-orange-50 p-4 absolute bottom-0"
+          )}
+        >
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <ExclamationCircleIcon
+                className="h-5 w-5 text-orange-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-orange-800">
+                You need to be signed in to save the deal
+              </p>
+            </div>
+            <div className="ml-auto pl-3">
+              <div className="-mx-1.5 -my-1.5">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowSignInRequired(false);
+                  }}
+                  className="inline-flex bg-orange-50 rounded-md p-1.5 text-orange-500 hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-orange-50 focus:ring-orange-600"
+                >
+                  <span className="sr-only">Dismiss</span>
+                  <XIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <CouponModal open={isModalOpen} setOpen={setIsModalOpen} item={data} />
+      </div>
+    </div>
   );
 }
 

@@ -1,5 +1,6 @@
 import { Transition, Dialog } from "@headlessui/react";
 import * as _ from "lodash";
+import Image from "next/image";
 import { ExclamationIcon } from "@heroicons/react/outline";
 import { CheckCircleIcon, CheckIcon } from "@heroicons/react/solid";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
@@ -74,10 +75,11 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
             <div className="inline-block align-bottom bg-white rounded-lg px-8 md:px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
               <div>
                 <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full ">
-                  <img
+                  <Image
                     className="h-8 w-auto sm:h-10"
                     src={brand.logo}
                     alt={brand.name}
+                    layout="fill"
                   />
                 </div>
                 <div className="relative mt-3 mb-3 text-center sm:mt-14 sm:mb-10 mx-4 sm:mx-8">

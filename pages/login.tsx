@@ -20,7 +20,10 @@ interface ISignInValues {
 export default function RegisterPage() {
   const router = useRouter();
   return (
-    <Layout>
+    <Layout
+      head="Log in"
+      metaDescription="Log in to your accaunt to check saved and used deals and coupons"
+    >
       <div className="space-y-2 mx-auto max-w-lg">
         <div>
           <GoogleLoginButton

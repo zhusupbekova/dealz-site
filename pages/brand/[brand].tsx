@@ -29,7 +29,10 @@ export default function BrandPage() {
   );
 
   return (
-    <Layout>
+    <Layout
+      head={brand as string}
+      metaDescription={`Money saving deals and coupons for ${brand as string}`}
+    >
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl">Biggest Deals for {brand}</h1>
         <div className="py-10 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">

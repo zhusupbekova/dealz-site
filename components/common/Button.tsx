@@ -164,7 +164,10 @@ const Share: React.FC<IButtonProps & IShareButtonProps> = ({
   mediaUrl,
 }) => {
   return (
-    <Menu as="div" className="relative inline-block text-left ml-8">
+    <Menu
+      as="div"
+      className="relative inline-block text-left mt-4 md:mt-0 md:ml-8"
+    >
       <Menu.Button className="whitespace-nowrap group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
         <ShareIcon
           className={classNames("flex-shrink-0 h-6 w-6 mx-2 text-gray-500")}

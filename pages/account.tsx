@@ -35,7 +35,11 @@ export default function AccountPage({ user }) {
   );
 
   return (
-    <Layout user={user}>
+    <Layout
+      user={user}
+      head="Account"
+      metaDescription="Saved and used deals and coupons"
+    >
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:space-x-4">
         <Tabs onChange={setTab} current={tab} />
         <div className="flex-1">

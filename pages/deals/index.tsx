@@ -1,14 +1,20 @@
-import _ from "lodash";
-import Link from "next/link";
-import * as qs from "qs";
 import React from "react";
+import _ from "lodash";
+import * as qs from "qs";
+import Link from "next/link";
+import Image from "next/image";
 
-import { Layout } from "../components/common/Layout";
-import { fetcher } from "../utils/fetcher";
+import { Layout } from "../../components/common/Layout";
+import { fetcher } from "../../utils/fetcher";
 
 export default function AllDealsPage({ deals }) {
   return (
-    <Layout containerClassName="bg-gray-100" className="sm:mt-4">
+    <Layout
+      containerClassName="bg-gray-100"
+      className="sm:mt-4"
+      head="All deals and coupons"
+      metaDescription="Find money saving deals and coupons from various brands."
+    >
       <div className="mx-auto max-w-6xl md:space-x-4 flex flex-col-reverse md:flex-row">
         <div className="flex-1 rounded bg-white p-6 space-y-6">
           <div className="pb-4">
@@ -33,13 +39,14 @@ export default function AllDealsPage({ deals }) {
 
                 <div className="grid gap-4 grid-cols-3">
                   {deals[letter].map((b) => (
-                    <Link href={`/brand/${b.slug}`} passHref>
+                    <Link href={`/brand/${b.slug}`} key={b.slug} passHref>
                       <a className="min-w-0 flex items-center space-x-2 cursor-pointer hover:text-gray-800 text-primary transition-colors">
-                        <div className="h-6 w-6 rounded-full overflow-hidden">
-                          <img
+                        <div className="relative h-6 w-6 rounded-full overflow-hidden">
+                          <Image
                             src={b.logo}
                             alt={`${b.name} logo`}
-                            height="24"
+                            objectFit="contain"
+                            layout="fill"
                           />
                         </div>
 
@@ -57,7 +64,7 @@ export default function AllDealsPage({ deals }) {
 
         <div className="md:w-48 flex-1 md:flex-none space-y-2 rounded bg-white p-6">
           {_.sortBy(Object.keys(deals)).map((letter, idx) => (
-            <React.Fragment>
+            <React.Fragment key={`${idx}-${letter}`}>
               {idx > 0 && (
                 <div className="inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300" />
@@ -86,7 +93,8 @@ export async function getStaticProps() {
   });
 
   let deals = await fetcher()(`/api/brands?${query}`).then((r) =>
-    r.data.map((b) => ({
+    r.data.map((b, idx) => ({
+      key: `${idx}-${b.attributes.slug}`,
       name: b.attributes.name,
       slug: b.attributes.slug,
       logo: b.attributes.logo?.data.attributes.url || null,

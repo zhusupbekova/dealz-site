@@ -3,13 +3,16 @@ import _ from "lodash";
 import Link from "next/link";
 import Image from "next/image";
 
-import { fetcher } from "../utils/fetcher";
-import { Layout } from "../components/common/Layout";
-import { Loading } from "../components/common/LoadingComponent";
+import { fetcher } from "../../utils/fetcher";
+import { Layout } from "../../components/common/Layout";
+import { Loading } from "../../components/common/LoadingComponent";
 
 export default function Blog({ posts }: any) {
   return (
-    <Layout>
+    <Layout
+      head="Blog"
+      metaDescription="Find posts about saving money using deals and coupons"
+    >
       <Posts posts={posts} />
     </Layout>
   );

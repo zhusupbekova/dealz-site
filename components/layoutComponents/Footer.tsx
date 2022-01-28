@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
 import { footer, brand } from "../../config";
 
@@ -12,7 +13,15 @@ export function Footer() {
       <div className=" max-w-5xl mx-auto pt-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="space-y-8">
-            <img className="h-10" src={brand.logo} alt={brand.name} />
+            <div className="relative h-10 w-10">
+              <Image
+                className="h-10"
+                src={brand.logo}
+                alt={brand.name}
+                layout="fill"
+                objectFit="contain"
+              />
+            </div>
             <p
               className="text-gray-500 text-base max-w-sm"
               dangerouslySetInnerHTML={{ __html: brand.slogan }}

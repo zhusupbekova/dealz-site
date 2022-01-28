@@ -29,7 +29,6 @@ export function CouponCard({
     e.stopPropagation();
 
     if (user) {
-      console.log(user);
       try {
         await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/c/deals/save?deal_id=${item.id}`,
@@ -64,14 +63,21 @@ export function CouponCard({
               layout="fill"
               objectFit="cover"
             />
-            <CouponBrandLogo
-              className="absolute right-2 bottom-0 translate-y-2/4 cursor-pointer"
-              url={
-                item.attributes.brand?.data?.attributes.logo?.data?.attributes
-                  .url
-              }
-              name={`${item.attributes.brand?.data?.attributes.name}-logo`}
-            />
+
+            <Link
+              href={`/brand/${item.attributes.brand?.data.attributes.slug}`}
+            >
+              <a>
+                <CouponBrandLogo
+                  className="absolute right-2 bottom-0 translate-y-2/4 cursor-pointer"
+                  url={
+                    item.attributes.brand?.data?.attributes.logo?.data
+                      ?.attributes.url
+                  }
+                  name={`${item.attributes.brand?.data?.attributes.name}-logo`}
+                />
+              </a>
+            </Link>
           </div>
         </div>
 

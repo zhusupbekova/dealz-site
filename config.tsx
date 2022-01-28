@@ -6,7 +6,7 @@ export const brand = {
 };
 
 export const navigation = [
-  { name: "All deals", href: "/all-deals" },
+  { name: "All deals", href: "/deals" },
   { name: "Submit a deal", href: "/submit-deal" },
   { name: "Top 10", href: "/top10" },
   { name: "Categories", href: "/categories" },
@@ -14,7 +14,7 @@ export const navigation = [
 
 export const footer = {
   links: [
-    { name: "All deals", href: "/all-deals" },
+    { name: "All deals", href: "/deals" },
     { name: "Browse deals", href: "/" },
     { name: "Blog", href: "/blog" },
     { name: "About", href: "/about" },

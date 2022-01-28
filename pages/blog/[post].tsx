@@ -9,7 +9,11 @@ import { CouponCard } from "../../components/common/CouponCard";
 
 export default function PostPage({ post }: any) {
   return (
-    <Layout className="sm:mt-12">
+    <Layout
+      className="sm:mt-12"
+      head={post.title}
+      metaDescription={`${post.content.slice(0, 150)}...`}
+    >
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:space-x-4">
         <div className="flex-1 pb-12">
           <h1 className="text-4xl font-medium">{post.title}</h1>

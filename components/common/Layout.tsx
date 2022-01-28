@@ -5,6 +5,7 @@ import { Footer } from "../layoutComponents/Footer";
 import { Header } from "../layoutComponents/Header";
 import { classNames } from "../../utils/style";
 import { IUserProps } from "../../utils/schema";
+import { brand } from "../../config";
 
 export function Layout({
   children,
@@ -12,11 +13,15 @@ export function Layout({
   className = "",
   containerClassName = "",
   user,
+  head = "",
+  metaDescription = "",
 }: PropsWithChildren<{
   className?: string;
   containerClassName?: string;
   compact?: boolean;
   user?: IUserProps;
+  head: string;
+  metaDescription: string;
 }>) {
   return (
     <div
@@ -26,14 +31,17 @@ export function Layout({
       )}
     >
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>
+          {head}-Save money with {brand.name}
+        </title>
+        <link rel="icon" href={brand.logo} />
+        <meta name="description" content={metaDescription}></meta>
       </Head>
       <Header user={user} />
       <main
         className={classNames(
           compact ? "" : "max-w-screen-2xl px-4",
-          "mt-16 flex-1 mx-auto w-full sm:mt-24",
+          "mt-10 flex-1 mx-auto w-full sm:mt-24",
           className
         )}
       >
