@@ -10,11 +10,10 @@ import ReactPaginate from "react-paginate";
 
 import { SearchSort } from "../components/homePageComponents/SearchSort";
 import { CouponCard } from "../components/common/CouponCard";
-import { classNames } from "../utils/style";
-import { ICategories, IDeal, IDeals, IUserProps } from "../utils/schema";
-import { Filter, FilterMobile } from "../components/homePageComponents/Filter";
+import { IDeal, IDeals, IUserProps } from "../utils/schema";
+import { Filter } from "../components/homePageComponents/Filter";
 import { Loading } from "../components/common/LoadingComponent";
-import { dealsQuery, userQuery } from "../utils/queries";
+import { dealsQuery } from "../utils/queries";
 import { useRouter } from "next/router";
 import { Button } from "../components/common/Button";
 import { withSession } from "../middlewares/session";
@@ -23,6 +22,15 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 const dealOfTheMonthQuery = qs.stringify(
   {
     populate: ["deal_of_the_month.brand", "deal_of_the_month.brand.logo"],
+  },
+  { encodeValuesOnly: true }
+);
+
+const trendingDealQuery = qs.stringify(
+  {
+    sort: ["used_times:desc"],
+    pagination: { limit: 1 },
+    populate: ["brand", "brand.logo"],
   },
   { encodeValuesOnly: true }
 );
@@ -41,19 +49,24 @@ interface IDealOfTheMonth {
 }
 
 export default function Home({ user }: { user: IUserProps }) {
-  const {
-    data: dealOfTheMonth,
-    error: dealOfTheMonthError,
-  }: SWRResponse<IDealOfTheMonth, Error> = useSWR(
+  const { data: dealOfTheMonth }: SWRResponse<IDealOfTheMonth, Error> = useSWR(
     `/api/deal-config?${dealOfTheMonthQuery}`,
     fetcher()
   );
+
+  const { data: trendingDeal }: SWRResponse<IDealOfTheMonth, Error> = useSWR(
+    `/api/deals?${trendingDealQuery}`,
+    fetcher()
+  );
+
+  console.log(trendingDeal);
 
   return (
     <Layout user={user}>
       {dealOfTheMonth && (
         <Hero
           dealOfTheMonth={dealOfTheMonth.data.attributes.deal_of_the_month.data}
+          trendingDeal={trendingDeal?.data[0]}
         />
       )}
 
