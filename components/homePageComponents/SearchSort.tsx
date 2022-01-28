@@ -127,7 +127,7 @@ export function SearchSort() {
         as="div"
         className="relative h-full inline-block col-span-1 md:col-span-2 lg:col-span-1"
       >
-        <Menu.Button className="rounded-sm group inline-flex h-full w-full border border-gray-200 items-center pl-4 text-sm font-medium text-gray-700 hover:text-gray-900">
+        <Menu.Button className="rounded-sm group inline-flex justify-end lg:justify-around h-full w-full lg:border border-gray-200 items-center px-4 font-medium text-gray-700 hover:text-gray-900">
           {sort ? `Sort by: ${sortToScreen(sort as string)}` : "Sort by"}
           <ChevronDownIcon
             className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"

@@ -19,9 +19,9 @@ export function Hero({
         dangerouslySetInnerHTML={{ __html: brand.slogan }}
       />
 
-      <div className="mt-5  mx-auto sm:flex sm:justify-center md:mt-8 space-x-4">
+      <div className="mt-5 sm:mx-auto sm:flex sm:justify-center md:mt-8 sm:space-x-4">
         {dealOfTheMonth ? (
-          <div className="group relative pr-8 w-1/2 xl:w-1/4 cursor-pointer">
+          <div className="group relative sm:pr-8 sm:w-1/2 xl:w-1/4 cursor-pointer">
             <div className="rounded-md shadow-inner group-hover:shadow border w-full bg-gray-50 group-hover:bg-white transition-shadow">
               <Link href={`/deals/${dealOfTheMonth?.id}`} passHref>
                 <a className="relative w-full flex items-center justify-center pr-8 md:pr-10 pl-6 py-3 border border-transparent text-base font-medium  md:py-4 md:text-lg ">
@@ -48,7 +48,7 @@ export function Hero({
         ) : null}
 
         {trendingDeal ? (
-          <div className="group relative pr-8 w-1/2 xl:w-1/4 cursor-pointer">
+          <div className="group relative mt-6 sm:mt-0 sm:pr-8 sm:w-1/2 xl:w-1/4 cursor-pointer">
             <div className="rounded-md shadow-inner group-hover:shadow border w-full bg-gray-50 group-hover:bg-white transition-shadow">
               <Link href={`/deals/${trendingDeal?.id}`} passHref>
                 <a className="relative w-full flex items-center justify-center pr-8 md:pr-10 pl-6 py-3 border border-transparent text-base font-medium  md:py-4 md:text-lg ">
