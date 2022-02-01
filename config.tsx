@@ -1,6 +1,6 @@
 export const brand = {
   name: "SellerDeals",
-  logo: "/public/sdlogo.png",
+  logo: "/sdlogo.png",
   slogan:
     "<span class='text-primary'>Save Money</span> with Exclusive Deals and Coupon Codes for Ecommerce Sellers",
 };
