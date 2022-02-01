@@ -34,10 +34,10 @@ export function Hero({
               </Link>
             </div>
 
-            <div className="absolute h-16 w-16 rounded-full overflow-hidden right-0 top-1/2 transform -translate-y-1/2 group-hover:shadow-lg">
+            <div className="absolute h-16 w-16 rounded-full overflow-hidden bg-gray-100 right-0 top-1/2 transform -translate-y-1/2 group-hover:shadow-lg">
               <Image
                 layout="fill"
-                objectFit="cover"
+                objectFit="contain"
                 alt={dealOfTheMonth?.attributes.brand.data.attributes.name}
                 src={
                   dealOfTheMonth?.attributes.brand.data.attributes.logo.data
@@ -62,10 +62,10 @@ export function Hero({
               </Link>
             </div>
 
-            <div className="absolute h-16 w-16 rounded-full overflow-hidden right-0 top-1/2 transform -translate-y-1/2 group-hover:shadow-lg">
+            <div className="absolute h-16 w-16 rounded-full overflow-hidden bg-gray-100 right-0 top-1/2 transform -translate-y-1/2 group-hover:shadow-lg">
               <Image
                 layout="fill"
-                objectFit="cover"
+                objectFit="contain"
                 alt={trendingDeal?.attributes.brand.data.attributes.name}
                 src={
                   trendingDeal?.attributes.brand.data.attributes.logo.data

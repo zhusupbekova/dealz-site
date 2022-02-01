@@ -13,13 +13,14 @@ export function Footer() {
       <div className=" max-w-5xl mx-auto pt-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="space-y-8">
-            <div className="relative h-10 w-10">
+            <div className="relative h-10">
               <Image
                 className="h-10"
                 src={brand.logo}
                 alt={brand.name}
                 layout="fill"
                 objectFit="contain"
+                objectPosition="left"
               />
             </div>
             <p
