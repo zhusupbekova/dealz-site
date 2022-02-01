@@ -1,8 +1,8 @@
 export const brand = {
-  name: "DealZ",
-  logo: "https://tailwindui.com/img/logos/workflow-mark-gray-300.svg",
+  name: "SellerDeals",
+  logo: "/public/sdlogo.png",
   slogan:
-    "<span class='text-primary'>Save Money</span> with Exclusive Internet Marketing Deals and Coupon Codes",
+    "<span class='text-primary'>Save Money</span> with Exclusive Deals and Coupon Codes for Ecommerce Sellers",
 };
 
 export const navigation = [
