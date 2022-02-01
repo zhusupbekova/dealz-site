@@ -31,8 +31,8 @@ export default function ContactUs({ user }) {
     >
       <div className="flex flex-col items-center space-y-4 my-8 max-w-2xl mx-auto">
         <div className=" text-center">
-          <h2 className="text-2xl">Contact Us</h2>
-          <p className="text-gray-500 text=lg">
+          <h2 className=" text-2xl sm:text-4xl">Contact Us</h2>
+          <p className="text-gray-500 sm:text-lg">
             If you'd like to get your deal listed then please visit{" "}
             <Link href={"/submit-deal"}>
               <a className="text-primary underline">this page </a>

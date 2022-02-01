@@ -56,8 +56,10 @@ export default function SubmitDeal() {
             </span>{" "}
             deals used by our customers
           </p>
-          <h1 className="font-bold text-4xl">Submit your deal today</h1>
-          <p className="text-gray-500 text-xl">
+          <h1 className="font-bold text-2xl sm:text-4xl">
+            Submit your deal today
+          </h1>
+          <p className="text-gray-500 text-lg sm:text-xl">
             Get listed on Internet Marketing Deals and get in front of thousands
             of potential new customers.
           </p>
@@ -160,7 +162,7 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
         <div>
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm mb-2 font-medium text-gray-700"
           >
             Name
           </label>
@@ -178,7 +180,7 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
         <div>
           <label
             htmlFor="company_name"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm mb-2 font-medium text-gray-700"
           >
             Company Name
           </label>
@@ -196,7 +198,7 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm mb-2 font-medium text-gray-700"
           >
             Email address
           </label>
@@ -215,7 +217,7 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
         <div>
           <label
             htmlFor="deal_description"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm mb-2 font-medium text-gray-700"
           >
             Deal description
           </label>

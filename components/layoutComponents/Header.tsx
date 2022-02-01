@@ -250,13 +250,15 @@ export function Header({ user }: { user: IUserProps }) {
         >
           <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
             <div className="pt-5 pb-6 px-5">
-              <div className="flex items-center justify-between">
-                <div>
+              <div className=" flex items-center justify-between">
+                <div className="relative h-10 w-10">
                   <Image
-                    className="h-8 w-auto"
+                    className="h-8 w-auto sm:h-10"
                     src={brand.logo}
                     alt={brand.name}
                     layout="fill"
+                    objectFit="contain"
+                    objectPosition="left"
                   />
                 </div>
                 <div className="-mr-2">
