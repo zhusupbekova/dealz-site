@@ -208,7 +208,7 @@ function Gallery({ user }: { user: IUserProps }) {
 
   const sortFilterQuery = qs.stringify(
     {
-      sort: [sort],
+      sort: [sort || "createdAt"],
     },
     {
       encodeValuesOnly: true,
@@ -234,13 +234,11 @@ function Gallery({ user }: { user: IUserProps }) {
   }: SWRResponse<IDeals, Error> = useSWR(
     `/api/deals?${dealsQuery}${categories ? `&${categoryFilterQuery}` : ""}${
       dealType ? `&${dealLifetimeFilterQuery}` : ""
-    }${search ? `&${searchFilterQuery}` : ""}${
-      sort ? `&${sortFilterQuery}` : ""
-    }${featured ? `&${featuredFilterQuery}` : ""}${
-      expired ? `&${expiredDealFilterQuery}` : ""
-    }${expiringSoon ? `&${expiringSoonFilterQuery}` : ""}${
-      mostUsed ? `&${mostUsedFilterQuery}` : ""
-    }&${paginationQuery}`,
+    }${search ? `&${searchFilterQuery}` : ""}${`&${sortFilterQuery}`}${
+      featured ? `&${featuredFilterQuery}` : ""
+    }${expired ? `&${expiredDealFilterQuery}` : ""}${
+      expiringSoon ? `&${expiringSoonFilterQuery}` : ""
+    }${mostUsed ? `&${mostUsedFilterQuery}` : ""}&${paginationQuery}`,
     fetcher(user)
   );
 

@@ -140,7 +140,9 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
               </div>
               <div className="md:px-4">
                 <a
-                  href="#_"
+                  target="_blank"
+                  rel="noreferrer"
+                  href={item.attributes.affiliate_link}
                   onClick={() => onUseDeal()}
                   className="relative w-full inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-white bg-primary transition duration-300 ease-out border-2 border-primary rounded-md shadow-md group"
                 >
