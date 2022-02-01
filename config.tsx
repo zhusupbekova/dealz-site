@@ -8,7 +8,7 @@ export const brand = {
 export const navigation = [
   { name: "All deals", href: "/deals" },
   { name: "Submit a deal", href: "/submit-deal" },
-  { name: "Top 10", href: "/top10" },
+  { name: "Top 10", href: "/top-10" },
   { name: "Categories", href: "/categories" },
 ];
 

@@ -61,12 +61,16 @@ export function SearchSort() {
     }
   }
 
+  // +11 others each day.
+  const init = 1643703491373;
+  const others = Math.ceil((Date.now() - init) / (1000 * 60 * 60 * 24)) * 11;
+
   return (
     <div className="items-center justify-between border-b z-30 border-gray-200 pt-10 pb-4 grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-      <Link href="/login" passHref>
+      <Link href="/register" passHref>
         <a className="cursor-pointer inline-flex justify-between items-center h-full md:ml-0 border rounded px-6 py-2 col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-2 text-white bg-primary">
           <p className="text-left text-lg font-semibold leading-tight">
-            Join 3248 others <br /> getting deals alert
+            Join {3218 + others} others <br /> getting deals alert
           </p>{" "}
           <BellIcon className="h-10 w-10" />
         </a>

@@ -17,3 +17,11 @@ html {
 body {
   background: var(--background);
 }
+
+.slick-next::before {
+  color: #aaa !important;
+}
+
+.slick-prev::before {
+  color: #aaa !important;
+}

@@ -61,6 +61,7 @@ export function Header({ user }: { user: IUserProps }) {
                   alt={brand.name}
                   layout="fill"
                   objectFit="contain"
+                  objectPosition="left"
                 />
               </a>
             </Link>
