@@ -18,6 +18,7 @@ export const footer = {
     { name: "Browse deals", href: "/" },
     { name: "Blog", href: "/blog" },
     { name: "About", href: "/pages/about" },
+    { name: "Contact us", href: "/contact-us" },
   ],
   legal: [
     { name: "Terms and Condition", href: "/pages/terms-and-conditions" },

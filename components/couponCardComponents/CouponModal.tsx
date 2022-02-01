@@ -9,6 +9,7 @@ import { IDeal } from "../../utils/schema";
 import { CouponBrandLogo } from "./CouponBrandLogo";
 import { poster } from "../../utils/fetcher";
 import { mutate } from "swr";
+import Link from "next/link";
 
 interface ICouponnModal {
   open?: boolean;
@@ -177,8 +178,14 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
                 </div>
               </div>
               <div className="w-full bg-gray-100 absolute bottom-0 left-0 p-6 flex items-center justify-between text-xs text-gray-400">
-                <a>{_.capitalize(item.attributes.type)} not working?</a>
-                <a>Terms & Conditions</a>
+                <Link
+                  href={`/contact-us?brand=${item.attributes.brand.data?.attributes.name}&deal_description=${item.attributes.title}&deal_id=${item.id}`}
+                >
+                  <a>{_.capitalize(item.attributes.type)} not working?</a>
+                </Link>
+                <Link href={"/pages/terms-and-conditions"}>
+                  <a>Terms & Conditions</a>
+                </Link>
               </div>
             </div>
           </Transition.Child>
