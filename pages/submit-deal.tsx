@@ -1,7 +1,5 @@
 import {
   CheckCircleIcon,
-  HandIcon,
-  LockClosedIcon,
   ReceiptTaxIcon,
   TagIcon,
   TicketIcon,
@@ -12,7 +10,7 @@ import useSWR, { SWRResponse } from "swr";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 
 import { Layout } from "../components/common/Layout";
-import { Loading } from "../components/common/LoadingComponent";
+import { LoadingInline } from "../components/common/LoadingComponent";
 import { fetcher, poster } from "../utils/fetcher";
 import { IDealUsages } from "../utils/schema";
 import { useState } from "react";
@@ -31,7 +29,7 @@ const pitch = [
     text: "This deal must be obtained via unique coupon or affiliate link.",
   },
   {
-    title: "Comission",
+    title: "Commission",
     icon: <ReceiptTaxIcon className="h-10 w-10 text-primary mr-6" />,
     text: "You must provide us with an affiliate commission per sale.",
   },
@@ -44,13 +42,6 @@ export default function SubmitDeal() {
     fetcher()
   );
 
-  if (!data) {
-    return (
-      <Layout head="Submit deal" metaDescription="Submit deals to get featured">
-        <Loading />
-      </Layout>
-    );
-  }
   return (
     <Layout head="Submit deal" metaDescription="Submit deals to get featured">
       <div className="flex flex-col md:grid grid-cols-2 max-w-6xl mx-auto px-4 sm:px-6 gap-x-10">
@@ -61,7 +52,7 @@ export default function SubmitDeal() {
           <p className="text-gray-500">
             Over{" "}
             <span className="font-semibold text-primary">
-              {data?.meta.pagination.total}
+              {data?.meta.pagination.total ?? <LoadingInline size={4} />}
             </span>{" "}
             deals used by our customers
           </p>
@@ -135,9 +126,8 @@ export default function SubmitDeal() {
 interface IFSubmitFormValues {
   email: string;
   name: string;
+  company_name: string;
   deal_description: string;
-  comission_structure: string;
-  additional_comments: string;
 }
 
 function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
@@ -146,9 +136,8 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
       initialValues={{
         email: "",
         name: "",
+        company_name: "",
         deal_description: "",
-        comission_structure: "",
-        additional_comments: "",
       }}
       onSubmit={async (
         values: IFSubmitFormValues,
@@ -158,9 +147,8 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
           data: {
             email: values.email,
             name: values.name,
+            company_name: values.company_name,
             deal_description: values.deal_description,
-            comission_structure: values.comission_structure,
-            additional_comments: values.additional_comments,
           },
         });
         setShowSuccessAlert(true);
@@ -169,6 +157,42 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
       }}
     >
       <Form className="py-6 max-w-xl w-full space-y-4">
+        <div>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Name
+          </label>
+          <div className="mt-1">
+            <Field
+              type="text"
+              id="name"
+              name="name"
+              autoComplete="cc-name"
+              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="company_name"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Company Name
+          </label>
+          <div className="mt-1">
+            <Field
+              type="text"
+              id="company_name"
+              name="company_name"
+              autoComplete="off"
+              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+        </div>
+
         <div>
           <label
             htmlFor="email"
@@ -190,24 +214,6 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
 
         <div>
           <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Name
-          </label>
-          <div className="mt-1">
-            <Field
-              type="text"
-              id="name"
-              name="name"
-              autoComplete="cc-name"
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label
             htmlFor="deal_description"
             className="block text-sm font-medium text-gray-700"
           >
@@ -218,44 +224,6 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
               as="textarea"
               id="deal_description"
               name="deal_description"
-              rows={3}
-              className="shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"
-              defaultValue={""}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="comission_structure"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Comission structure{" "}
-          </label>
-          <div>
-            <Field
-              as="textarea"
-              id="comission_structure"
-              name="comission_structure"
-              rows={3}
-              className="shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"
-              defaultValue={""}
-            />
-          </div>
-        </div>
-
-        <div className="col-span-full">
-          <label
-            htmlFor="additional_comments"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Additional comments
-          </label>
-          <div className="mt-1">
-            <Field
-              as="textarea"
-              id="additional_comments"
-              name="additional_comments"
               rows={3}
               className="shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"
               defaultValue={""}

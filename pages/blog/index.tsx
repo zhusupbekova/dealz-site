@@ -5,7 +5,6 @@ import Image from "next/image";
 
 import { fetcher } from "../../utils/fetcher";
 import { Layout } from "../../components/common/Layout";
-import { Loading } from "../../components/common/LoadingComponent";
 
 export default function Blog({ posts }: any) {
   return (
@@ -30,9 +29,12 @@ function Posts({ posts }: any) {
 
         <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-2 lg:max-w-6xl">
           {posts?.map((post) => (
-            <Link key={post.attributes.title} href={`/blog/${post.id}`}>
-              <a>
-                <div className="flex flex-col rounded-lg shadow-lg overflow-hidden">
+            <Link
+              key={post.attributes.title}
+              href={`/blog/${post.attributes.slug}`}
+            >
+              <a className="h-full">
+                <div className="flex flex-col h-full rounded-lg shadow-lg overflow-hidden">
                   <div className="relative flex-shrink-0 h-48 w-full">
                     <Image
                       src={post.attributes.cover?.data.attributes.url}
@@ -48,11 +50,20 @@ function Posts({ posts }: any) {
                         {_.flatMap(
                           post.attributes.featured_deals.data || [],
                           (fd) => fd.attributes.categories.data
-                        ).map((df) => (
-                          <p className="text-xs p-0.5 px-1 rounded-sm border border-primary font-medium text-primary">
-                            {df.attributes.title}
+                        ).length > 0 ? (
+                          _.flatMap(
+                            post.attributes.featured_deals.data || [],
+                            (fd) => fd.attributes.categories.data
+                          ).map((df) => (
+                            <p className="text-xs p-0.5 px-1 rounded-sm border border-primary font-medium text-primary">
+                              {df.attributes.title}
+                            </p>
+                          ))
+                        ) : (
+                          <p className="text-xs p-0.5 px-1 font-medium text-white">
+                            {"No categories"}
                           </p>
-                        ))}
+                        )}
                       </div>
 
                       <a href={post.href} className="block mt-2">
@@ -66,22 +77,27 @@ function Posts({ posts }: any) {
                     </div>
 
                     <div className="flex items-center">
-                      {/* <div className="flex-shrink-0">
-                        <a href={post.author.href}>
-                      <span className="sr-only">{post.author.name}</span>
-                      <img
-                        className="h-10 w-10 rounded-full"
-                        src={post.author.imageUrl}
-                        alt=""
-                      />
-                    </a>
-                      </div> */}
+                      <div className="flex-shrink-0">
+                        <a href="#">
+                          <span className="sr-only">
+                            {post.attributes.author.data?.attributes.name}
+                          </span>
+
+                          <img
+                            className="h-10 w-10 rounded-full mr-2"
+                            src={
+                              post.attributes.author.data?.attributes
+                                .profile_photo.data?.attributes.formats.small
+                                .url
+                            }
+                            alt=""
+                          />
+                        </a>
+                      </div>
 
                       <div>
                         <p className="text-sm font-medium text-gray-900">
-                          {/* <a href={post.author.href} className="hover:underline">
-                        {post.author.name}
-                      </a> */}
+                          {post.attributes.author.data?.attributes.name}
                         </p>
 
                         <div className="flex space-x-1 text-sm text-gray-500">
@@ -111,15 +127,18 @@ function Posts({ posts }: any) {
 export async function getStaticProps(context) {
   const query = qs.stringify({
     pagination: { limit: -1 },
+    sort: ["createdAt:desc"],
     populate: [
       "cover",
       "featured_deals",
-      "admin_user",
       "featured_deals.categories",
+      "author",
+      "author.profile_photo",
     ],
   });
 
   const posts = await fetcher()(`/api/blogs?${query}`);
+  console.log(JSON.stringify(posts.data, null, 4));
   return {
     revalidate: 60,
     props: {
