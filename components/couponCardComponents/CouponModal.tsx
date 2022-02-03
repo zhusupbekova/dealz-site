@@ -28,11 +28,15 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
   };
 
   async function onUseDeal() {
-    await poster("/api/deal-usages", {
-      data: {
-        deal: item.id,
+    await poster(
+      "/api/deal-usages",
+      {
+        data: {
+          deal: item.id,
+        },
       },
-    });
+      { Authorization: `Bearer ${user.strapiToken}` }
+    );
 
     await mutate(`/deals/${item.id}`);
   }
