@@ -88,6 +88,7 @@ export default function DealDetailPage({
             onLikeClick={onLikeClick}
             isSider={true}
             className="hidden lg:block"
+            user={user}
           />
 
           <div className="space-y-8">
@@ -191,6 +192,7 @@ export default function DealDetailPage({
               onLikeClick={onLikeClick}
               isSider={false}
               className="block lg:hidden"
+              user={user}
             />
             {deal.data.attributes.overview.length > 0 && (
               <div className=" rounded my-6 overflow-hidden flex space-y-6 bg-white">
@@ -264,6 +266,7 @@ export default function DealDetailPage({
                         open={isModalOpen}
                         setOpen={setIsModalOpen}
                         item={recommendedDeal}
+                        user={user}
                       />
                     </div>
                   </Link>
@@ -284,11 +287,13 @@ function SideComponent({
   onLikeClick,
   isSider,
   className,
+  user,
 }: {
   data: IDeal;
   onLikeClick: (e) => void;
   isSider: boolean;
   className: string;
+  user: IUserProps;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSignInRequired, setShowSignInRequired] = useState(false);
@@ -396,7 +401,12 @@ function SideComponent({
             </div>
           </div>
         </div>
-        <CouponModal open={isModalOpen} setOpen={setIsModalOpen} item={data} />
+        <CouponModal
+          open={isModalOpen}
+          setOpen={setIsModalOpen}
+          item={data}
+          user={user}
+        />
       </div>
     </div>
   );

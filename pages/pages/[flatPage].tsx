@@ -53,7 +53,6 @@ export async function getStaticPaths() {
   // Call an external API endpoint to get posts.
   // You can use any data fetching library
   const data = await fetcher()(`/api/flat-pages`);
-  console.log(JSON.stringify(data, null, 4));
 
   return {
     paths: data.data.map((flatPage) => ({

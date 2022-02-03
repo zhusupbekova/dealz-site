@@ -74,7 +74,7 @@ export default function Home({ user }: { user: IUserProps }) {
 
       <SearchSort />
       <Gallery user={user} />
-      <Button.ScrollToTop />
+      {/* <Button.ScrollToTop /> */}
     </Layout>
   );
 }

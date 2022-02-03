@@ -5,19 +5,22 @@ import { ExclamationIcon } from "@heroicons/react/outline";
 import { CheckCircleIcon, CheckIcon } from "@heroicons/react/solid";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { brand } from "../../config";
-import { IDeal } from "../../utils/schema";
+import { IDeal, IUserProps } from "../../utils/schema";
 import { CouponBrandLogo } from "./CouponBrandLogo";
 import { poster } from "../../utils/fetcher";
 import { mutate } from "swr";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface ICouponnModal {
   open?: boolean;
   setOpen?: Dispatch<SetStateAction<boolean>>;
   item: IDeal;
+  user: IUserProps;
 }
 
-export function CouponModal({ open, setOpen, item }: ICouponnModal) {
+export function CouponModal({ open, setOpen, item, user }: ICouponnModal) {
+  const router = useRouter();
   const [copyButtonText, setCopyButtonText] = useState("Copy");
   const copyMeOnClipboard = () => {
     var copyText = document.getElementById("couponCode").innerText;
@@ -35,7 +38,7 @@ export function CouponModal({ open, setOpen, item }: ICouponnModal) {
           deal: item.id,
         },
       },
-      { Authorization: `Bearer ${user.strapiToken}` }
+      user && { Authorization: `Bearer ${user.strapiToken}` }
     );
 
     await mutate(`/deals/${item.id}`);

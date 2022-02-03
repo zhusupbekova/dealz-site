@@ -123,7 +123,12 @@ export function CouponCard({
             Use this {item.attributes.type}
           </Button.Deal>
         </div>
-        <CouponModal open={isModalOpen} setOpen={setIsModalOpen} item={item} />
+        <CouponModal
+          open={isModalOpen}
+          setOpen={setIsModalOpen}
+          item={item}
+          user={user}
+        />
         <div
           className={classNames(
             showSignInRequired ? "" : "hidden",

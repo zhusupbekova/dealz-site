@@ -105,7 +105,6 @@ export async function getStaticProps(context) {
   });
 
   const post = await fetcher()(`/api/blogs?${query}`);
-  console.log(JSON.stringify(post.data[0].attributes, null, 4));
 
   return {
     revalidate: 60,

@@ -199,7 +199,9 @@ export function Header({ user }: { user: IUserProps }) {
                                     "Content-Type": "application/json",
                                   },
                                 }).then((res) =>
-                                  res.status === 200 ? router.push("/") : null
+                                  res.status === 200
+                                    ? router.replace("/")
+                                    : null
                                 );
                               }}
                             >

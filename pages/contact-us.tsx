@@ -22,7 +22,6 @@ export default function ContactUs({ user }) {
   const router = useRouter();
   const { brand = "", deal_description = "", deal_id = "" } = router.query;
 
-  console.log(user);
   return (
     <Layout
       user={user}
