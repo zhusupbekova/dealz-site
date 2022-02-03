@@ -27,6 +27,7 @@ export default function BrandPage({ deals }) {
 
 export async function getStaticProps() {
   const fromDate = subDays(new Date(), 7).toISOString().split("T")[0];
+  const today = new Date().toISOString().split("T")[0];
 
   const query = qs.stringify({
     pagination: { start: 0, limit: 10 },
@@ -34,6 +35,10 @@ export async function getStaticProps() {
     sort: ["used_times:desc"],
     filters: {
       deal_usages: { createdAt: { $gte: fromDate } },
+      $or: [
+        { expiration_date: { $gte: today } },
+        { expiration_date: { $null: true } },
+      ],
     },
   });
 
