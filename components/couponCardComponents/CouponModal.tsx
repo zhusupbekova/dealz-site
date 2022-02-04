@@ -20,7 +20,6 @@ interface ICouponnModal {
 }
 
 export function CouponModal({ open, setOpen, item, user }: ICouponnModal) {
-  const router = useRouter();
   const [copyButtonText, setCopyButtonText] = useState("Copy");
   const copyMeOnClipboard = () => {
     var copyText = document.getElementById("couponCode").innerText;

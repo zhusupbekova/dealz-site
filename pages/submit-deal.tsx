@@ -145,17 +145,22 @@ function SubmitDealForm({ showSuccessAlert, setShowSuccessAlert }) {
         values: IFSubmitFormValues,
         { setSubmitting, resetForm }: FormikHelpers<IFSubmitFormValues>
       ) => {
-        await poster("/api/submitteds", {
-          data: {
-            email: values.email,
-            name: values.name,
-            company_name: values.company_name,
-            deal_description: values.deal_description,
-          },
-        });
-        setShowSuccessAlert(true);
+        setSubmitting(true);
+        try {
+          await poster("/api/submitteds", {
+            data: {
+              email: values.email,
+              name: values.name,
+              company_name: values.company_name,
+              deal_description: values.deal_description,
+            },
+          });
+          setShowSuccessAlert(true);
+          resetForm();
+        } catch (err) {
+          console.log(err);
+        }
         setSubmitting(false);
-        resetForm();
       }}
     >
       <Form className="py-6 max-w-xl w-full space-y-4">

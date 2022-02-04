@@ -107,7 +107,7 @@ export function Header({ user }: { user: IUserProps }) {
                       >
                         <Popover.Panel className="absolute z-10 bottom-0 transform px-2 w-full max-w-3xl sm:px-0 lg:ml-0 left-1/2 -translate-x-1/2 translate-y-full">
                           <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                            <div className="relative grid gap-2 gap-x-4 bg-white px-5 py-6 grid-cols-4">
+                            <div className="relative grid gap-2 gap-x-6 bg-white px-5 py-6 grid-cols-4">
                               {filterData ? (
                                 filterData.categoryStats.map((item) => (
                                   <Link
@@ -149,7 +149,6 @@ export function Header({ user }: { user: IUserProps }) {
 
           {user ? (
             <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-              {/* <Button.Primary className="ml-8">Account</Button.Primary> */}
               <Popover key={`header_item_account`}>
                 {({ open }) => (
                   <>
@@ -191,6 +190,7 @@ export function Header({ user }: { user: IUserProps }) {
                               </a>
                             </Link>
                             <button
+                              type="button"
                               className="rounded-lg hover:bg-gray-50"
                               onClick={async () => {
                                 await fetch(`/api/logout`, {

@@ -52,6 +52,7 @@ export default function ContactUs({ user }) {
             values: IFSubmitFormValues,
             { setSubmitting, resetForm }: FormikHelpers<IFSubmitFormValues>
           ) => {
+            setSubmitting(true);
             try {
               await poster("/api/contact-requests", {
                 data: {
@@ -61,14 +62,25 @@ export default function ContactUs({ user }) {
                   deal_description: values.deal_description,
                   brand_name: values.brand_name,
                   comments: values.comments,
+                  issue: deal_id ? "deal_or_coupon" : "other",
                 },
               });
+
               setShowSuccessAlert(true);
-              setSubmitting(false);
-              resetForm();
+              resetForm({
+                values: {
+                  email: user ? user.email : "",
+                  name: "",
+                  deal_description: "",
+                  brand_name: "",
+                  comments: "",
+                },
+              });
+              setTimeout(() => router.push("/contact-us"), 1000);
             } catch (err) {
               console.log(err);
             }
+            setSubmitting(false);
           }}
         >
           <Form className="py-6 max-w-xl w-full space-y-6">
@@ -142,7 +154,6 @@ export default function ContactUs({ user }) {
                       name="deal_description"
                       rows={3}
                       className="shadow-sm block w-full focus:ring-primary focus:border-primary sm:text-sm border border-gray-300 rounded-md"
-                      defaultValue={""}
                     />
                   </div>
                 </div>
@@ -163,12 +174,14 @@ export default function ContactUs({ user }) {
                   name="comments"
                   rows={3}
                   className="shadow-sm block w-full focus:ring-primary focus:border-primary sm:text-sm border border-gray-300 rounded-md"
-                  defaultValue={""}
                 />
               </div>
             </div>
 
-            <button className="w-full mt-6 bg-primary border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            <button
+              type="submit"
+              className="w-full mt-6 bg-primary border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            >
               Submit
             </button>
           </Form>
