@@ -1,11 +1,12 @@
 import React, { PropsWithChildren } from "react";
 import Head from "next/head";
+import Script from "next/script";
 
-import { Footer } from "../layoutComponents/Footer";
-import { Header } from "../layoutComponents/Header";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
 import { classNames } from "../../utils/style";
 import { IUserProps } from "../../utils/schema";
-import { brand } from "../../config";
+import { brand, GOOGLE_ANALYTICS_ID } from "../../config";
 
 export function Layout({
   children,
@@ -49,6 +50,20 @@ export function Layout({
       </main>
 
       <Footer />
+
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'GA_MEASUREMENT_ID');
+        `}
+      </Script>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import subDays from "date-fns/subDays";
 import { fetcher } from "../utils/fetcher";
 import { dealsQuery } from "../utils/queries";
 
-import { Layout } from "../components/common/Layout";
+import { Layout } from "../components/layoutComponents/Layout";
 import { CouponCard } from "../components/common/CouponCard";
 
 export default function BrandPage({ deals }) {

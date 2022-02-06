@@ -8,7 +8,7 @@ import { Formik, Field, Form, FormikHelpers } from "formik";
 
 import { Button } from "../components/common/Button";
 import { Divider } from "../components/common/Divider";
-import { Layout } from "../components/common/Layout";
+import { Layout } from "../components/layoutComponents/Layout";
 import { validateEmail } from "../utils/validate";
 import { useRouter } from "next/router";
 

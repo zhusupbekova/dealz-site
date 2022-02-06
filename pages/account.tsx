@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useState } from "react";
 import useSWR, { SWRResponse } from "swr";
 import { Button } from "../components/common/Button";
-import { Layout } from "../components/common/Layout";
+import { Layout } from "../components/layoutComponents/Layout";
 import { CouponBrandLogo } from "../components/couponCardComponents/CouponBrandLogo";
 import { withSession } from "../middlewares/session";
 import { fetcher } from "../utils/fetcher";
@@ -12,6 +12,7 @@ interface IDealStat {
   id: number;
   name: string;
   title: string;
+  slug: string;
   url: string;
 }
 export interface IDealsStats {
@@ -47,7 +48,7 @@ export default function AccountPage({ user }) {
           {tabs[tab].key === "used" ? (
             <div className="mt-6">
               {dealsStats?.["dealUsageByUser"].map((deal) => (
-                <Link href={`/deals/${deal.id}`}>
+                <Link href={`/deals/${deal.id}-${deal.slug}`}>
                   <a>
                     <DealStatCard item={deal} />
                   </a>
@@ -57,7 +58,7 @@ export default function AccountPage({ user }) {
           ) : (
             <div className="mt-6">
               {dealsStats?.["savedDealsByUser"].map((deal) => (
-                <Link href={`/deals/${deal.id}`}>
+                <Link href={`/deals/${deal.id}-${deal.slug}`}>
                   <a>
                     <DealStatCard item={deal} />
                   </a>

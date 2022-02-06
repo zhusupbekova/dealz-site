@@ -1,10 +1,11 @@
 import { Fragment, useEffect, useState } from "react";
 import Head from "next/head";
+
 import useSWR, { SWRResponse } from "swr";
 import { fetcher } from "../utils/fetcher";
 import qs from "qs";
 import * as _ from "lodash";
-import { Layout } from "../components/common/Layout";
+import { Layout } from "../components/layoutComponents/Layout";
 import { Hero } from "../components/layoutComponents/Hero";
 import ReactPaginate from "react-paginate";
 

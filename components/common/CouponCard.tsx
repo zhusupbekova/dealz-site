@@ -50,7 +50,7 @@ export function CouponCard({
   }
 
   return (
-    <Link href={`/deals/${item.id}`}>
+    <Link href={`/deals/${item.id}-${item.attributes.slug}`}>
       <div
         key={item.id}
         className="transition  hover:-translate-y-1 hover:scale-100  duration-200 relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"

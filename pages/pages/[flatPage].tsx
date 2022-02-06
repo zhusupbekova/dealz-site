@@ -6,7 +6,7 @@ import { MDXRemote } from "next-mdx-remote";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { Layout } from "../../components/common/Layout";
+import { Layout } from "../../components/layoutComponents/Layout";
 import { fetcher } from "../../utils/fetcher";
 
 function Testimonial({ quote, who, avatar }) {

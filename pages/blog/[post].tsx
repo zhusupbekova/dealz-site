@@ -3,7 +3,7 @@ import Image from "next/image";
 import rehypeRaw from "rehype-raw";
 import ReactMarkdown from "react-markdown";
 
-import { Layout } from "../../components/common/Layout";
+import { Layout } from "../../components/layoutComponents/Layout";
 import { fetcher } from "../../utils/fetcher";
 import { CouponCard } from "../../components/common/CouponCard";
 

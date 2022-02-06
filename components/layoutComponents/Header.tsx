@@ -4,12 +4,12 @@ import useSWR, { SWRResponse } from "swr";
 import qs from "qs";
 
 import { Popover, Transition } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import { MenuIcon, SparklesIcon, XIcon } from "@heroicons/react/outline";
+import { ChevronDownIcon, CurrencyDollarIcon } from "@heroicons/react/solid";
 
 import { classNames } from "../../utils/style";
-import { brand, navigation } from "../../config";
-import { IFilterStats, IUserProps } from "../../utils/schema";
+import { announcementBar, brand, navigation } from "../../config";
+import { IAnnouncementBar, IFilterStats, IUserProps } from "../../utils/schema";
 import { fetcher } from "../../utils/fetcher";
 import { Loading } from "../common/LoadingComponent";
 import { Button } from "../common/Button";
@@ -47,11 +47,39 @@ export function Header({ user }: { user: IUserProps }) {
     fetcher()
   );
 
+  const {
+    data: announcementData,
+    error: announcementError,
+  }: SWRResponse<IAnnouncementBar, Error> = useSWR(
+    `/api/deal-config`,
+    fetcher()
+  );
+
+  if (announcementError || filterError) {
+    return (
+      <pre>{JSON.stringify(announcementError || filterError, null, 2)}</pre>
+    );
+  }
+
   return (
     <Popover className="relative bg-white z-40">
+      {announcementData && (
+        <div className="w-full flex flex-col sm:flex-row items-center justify-center bg-primary text-white font-semibold p-3 text-sm sm:text-base">
+          {announcementData.data.attributes.announcement_text}{" "}
+          <span className="flex">
+            <a
+              href={announcementData.data.attributes.announcement_link}
+              className="underline mx-2"
+            >
+              {announcementData.data.attributes.announcement_link_text}
+            </a>
+            <SparklesIcon className="h-5 sm:h-6" />
+          </span>
+        </div>
+      )}
       <div className="px-4 sm:px-6 w-full border-b-2 border-gray-100">
         <div className="flex justify-between max-w-6xl mx-auto  items-center py-6 md:justify-start md:space-x-10">
-          <div className="relative h-10 w-10 flex justify-start lg:w-0 lg:flex-1">
+          <div className="relative h-10 w-full flex justify-start lg:flex-1">
             <Link href="/" passHref>
               <a>
                 <span className="sr-only">{brand.name}</span>
@@ -253,7 +281,7 @@ export function Header({ user }: { user: IUserProps }) {
           <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
             <div className="pt-5 pb-6 px-5">
               <div className=" flex items-center justify-between">
-                <div className="relative h-10 w-10">
+                <div className="relative h-10 w-full">
                   <Image
                     className="h-8 w-auto sm:h-10"
                     src={brand.logo}

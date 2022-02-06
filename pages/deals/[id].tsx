@@ -12,7 +12,7 @@ import Link from "next/link";
 import * as _ from "lodash";
 
 import { Button } from "../../components/common/Button";
-import { Layout } from "../../components/common/Layout";
+import { Layout } from "../../components/layoutComponents/Layout";
 import { Loading } from "../../components/common/LoadingComponent";
 import { fetcher } from "../../utils/fetcher";
 import { dealsQuery, userQuery } from "../../utils/queries";
@@ -231,7 +231,9 @@ export default function DealDetailPage({
                   You may also be interested in...
                 </h1>
                 {related.data?.map((recommendedDeal) => (
-                  <Link href={`/deals/${recommendedDeal.id}`}>
+                  <Link
+                    href={`/deals/${recommendedDeal.id}-${recommendedDeal.attributes.slug}`}
+                  >
                     <div className="flex justify-between items-center p-6 shadow rounded-md my-4 bg-white cursor-pointer">
                       <CouponBrandLogo
                         url={
@@ -415,7 +417,9 @@ function SideComponent({
 export const getServerSideProps = withSession(async (context) => {
   const { params, req } = context;
   const user = req.session.get("user") || null;
-  const res = await fetcher(user)(`/api/deals/${params.id}?${dealsQuery}`);
+  const res = await fetcher(user)(
+    `/api/deals/${params.id.split("-")[0]}?${dealsQuery}`
+  );
 
   if (!res.data) {
     return {

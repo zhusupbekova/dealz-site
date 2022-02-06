@@ -4,7 +4,7 @@ import * as qs from "qs";
 import Link from "next/link";
 import Image from "next/image";
 
-import { Layout } from "../../components/common/Layout";
+import { Layout } from "../../components/layoutComponents/Layout";
 import { fetcher } from "../../utils/fetcher";
 
 export default function AllDealsPage({ deals }) {

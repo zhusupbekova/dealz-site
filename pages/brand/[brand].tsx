@@ -1,6 +1,6 @@
 import qs from "qs";
 import { useRouter } from "next/router";
-import { Layout } from "../../components/common/Layout";
+import { Layout } from "../../components/layoutComponents/Layout";
 import useSWR from "swr";
 import { CouponCard } from "../../components/common/CouponCard";
 import { fetcher } from "../../utils/fetcher";

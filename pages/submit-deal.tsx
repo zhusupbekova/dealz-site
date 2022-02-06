@@ -9,7 +9,7 @@ import Image from "next/image";
 import useSWR, { SWRResponse } from "swr";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 
-import { Layout } from "../components/common/Layout";
+import { Layout } from "../components/layoutComponents/Layout";
 import { LoadingInline } from "../components/common/LoadingComponent";
 import { fetcher, poster } from "../utils/fetcher";
 import { IDealUsages } from "../utils/schema";

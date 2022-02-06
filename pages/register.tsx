@@ -9,7 +9,7 @@ import { Formik, Field, Form, FormikHelpers } from "formik";
 
 import { Button } from "../components/common/Button";
 import { Divider } from "../components/common/Divider";
-import { Layout } from "../components/common/Layout";
+import { Layout } from "../components/layoutComponents/Layout";
 import { withSession } from "../middlewares/session";
 import { validateEmail } from "../utils/validate";
 

@@ -3,7 +3,7 @@ import { Formik, FormikHelpers, Form, Field } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Layout } from "../components/common/Layout";
+import { Layout } from "../components/layoutComponents/Layout";
 import { withSession } from "../middlewares/session";
 import { poster } from "../utils/fetcher";
 import { classNames } from "../utils/style";

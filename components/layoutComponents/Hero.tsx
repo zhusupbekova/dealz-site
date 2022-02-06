@@ -23,7 +23,10 @@ export function Hero({
         {dealOfTheMonth ? (
           <div className="group relative sm:pr-8 sm:w-1/2 xl:w-1/4 cursor-pointer">
             <div className="rounded-md shadow-inner group-hover:shadow border w-full bg-gray-50 group-hover:bg-white transition-shadow">
-              <Link href={`/deals/${dealOfTheMonth?.id}`} passHref>
+              <Link
+                href={`/deals/${dealOfTheMonth?.id}-${dealOfTheMonth?.attributes.slug}`}
+                passHref
+              >
                 <a className="relative w-full flex items-center justify-center pr-8 md:pr-10 pl-6 py-3 border border-transparent text-base font-medium  md:py-4 md:text-lg ">
                   <CurrencyDollarIcon
                     className="flex-shrink-0 h-10 w-10 text-primary mr-2"
@@ -51,7 +54,10 @@ export function Hero({
         {trendingDeal ? (
           <div className="group relative mt-6 sm:mt-0 sm:pr-8 sm:w-1/2 xl:w-1/4 cursor-pointer">
             <div className="rounded-md shadow-inner group-hover:shadow border w-full bg-gray-50 group-hover:bg-white transition-shadow">
-              <Link href={`/deals/${trendingDeal?.id}`} passHref>
+              <Link
+                href={`/deals/${trendingDeal?.id}-${trendingDeal?.attributes.slug}`}
+                passHref
+              >
                 <a className="relative w-full flex items-center justify-center pr-8 md:pr-10 pl-6 py-3 border border-transparent text-base font-medium  md:py-4 md:text-lg ">
                   <CurrencyDollarIcon
                     className="flex-shrink-0 h-10 w-10 text-primary mr-2"

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { fetcher } from "../../utils/fetcher";
-import { Layout } from "../../components/common/Layout";
+import { Layout } from "../../components/layoutComponents/Layout";
 
 export default function Blog({ posts }: any) {
   return (

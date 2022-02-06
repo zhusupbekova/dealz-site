@@ -1,3 +1,5 @@
+export const GOOGLE_ANALYTICS_ID = "";
+
 export const brand = {
   name: "SellerDeals",
   logo: "/sdlogo.png",
@@ -11,6 +13,12 @@ export const navigation = [
   { name: "Top 10", href: "/top-10" },
   { name: "Categories", href: "/categories" },
 ];
+
+export const announcementBar = {
+  text: "How is much is your Ecommerce business worth?",
+  linkText: "Find out now!",
+  link: "https://EmpireFlippers.com/Zack",
+};
 
 export const footer = {
   links: [
