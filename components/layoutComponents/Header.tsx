@@ -72,7 +72,7 @@ export function Header({ user }: { user: IUserProps }) {
             }}
           />
 
-          <SparklesIcon className="h-5 sm:h-6 ml-2" />
+          <SparklesIcon className="h-6 ml-2" />
         </div>
       ) : null}
       <div className="px-4 sm:px-6 w-full border-b-2 border-gray-100">
