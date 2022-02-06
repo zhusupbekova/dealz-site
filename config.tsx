@@ -3,6 +3,7 @@ export const GOOGLE_ANALYTICS_ID = "";
 export const brand = {
   name: "SellerDeals",
   logo: "/sdlogo.png",
+
   slogan:
     "<span class='text-primary'>Save Money</span> with Exclusive Deals and Coupon Codes for Ecommerce Sellers",
 };

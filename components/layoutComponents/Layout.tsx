@@ -35,7 +35,7 @@ export function Layout({
         <title>
           {head}-Save money with {brand.name}
         </title>
-        <link rel="icon" href={brand.logo} />
+        <link rel="icon" href={"/favicon.ico"} />
         <meta name="description" content={metaDescription}></meta>
       </Head>
       <Header user={user} />
