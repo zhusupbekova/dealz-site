@@ -22,13 +22,13 @@ export default function PostPage({ post }: any) {
             <div className="flex-shrink-0">
               <a href="#">
                 <span className="sr-only">
-                  {post.author.data?.attributes.name}
+                  {post.author?.data?.attributes.name}
                 </span>
 
                 <img
                   className="h-10 w-10 rounded-full mr-2"
                   src={
-                    post.author.data?.attributes.profile_photo.data?.attributes
+                    post.author?.data?.attributes.profile_photo.data?.attributes
                       .formats.small.url
                   }
                   alt=""
@@ -38,7 +38,7 @@ export default function PostPage({ post }: any) {
 
             <div>
               <p className="text-sm font-medium text-gray-900">
-                {post.author.data?.attributes.name}
+                {post.author?.data?.attributes.name}
               </p>
 
               <div className="flex space-x-1 text-sm text-gray-500">
@@ -88,10 +88,6 @@ export async function getStaticProps(context) {
   const { post: _post } = context.params;
 
   const query = qs.stringify({
-    filter: {
-      slug: { $eq: _post },
-    },
-    pagination: { start: 0, limit: 1 },
     populate: [
       "cover",
       "author",
@@ -104,12 +100,12 @@ export async function getStaticProps(context) {
     ],
   });
 
-  const post = await fetcher()(`/api/blogs?${query}`);
+  const post = await fetcher()(`/api/blogs/${_post.split("-")[0]}?${query}`);
 
   return {
     revalidate: 60,
     props: {
-      post: post.data[0].attributes,
+      post: post.data.attributes,
     },
   };
 }

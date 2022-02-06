@@ -31,7 +31,7 @@ function Posts({ posts }: any) {
           {posts?.map((post) => (
             <Link
               key={post.attributes.title}
-              href={`/blog/${post.attributes.slug}`}
+              href={`/blog/${post.id}-${post.attributes.slug}`}
             >
               <a className="h-full">
                 <div className="flex flex-col h-full rounded-lg shadow-lg overflow-hidden">
@@ -66,14 +66,14 @@ function Posts({ posts }: any) {
                         )}
                       </div>
 
-                      <a href={post.href} className="block mt-2">
+                      <span className="block mt-2">
                         <p className="text-xl font-semibold text-gray-900">
                           {post.attributes.title}
                         </p>
                         <p className="mt-3 text-base text-gray-500">
                           {post.attributes.description}
                         </p>
-                      </a>
+                      </span>
                     </div>
 
                     <div className="flex items-center">

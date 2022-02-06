@@ -64,7 +64,7 @@ export function Header({ user }: { user: IUserProps }) {
   return (
     <Popover className="relative bg-white z-40">
       {announcementData &&
-      announcementData.data.attributes.announcement.length ? (
+      announcementData.data?.attributes?.announcement?.length ? (
         <div className="w-full flex items-center justify-center bg-primary text-white font-semibold p-3 text-sm sm:text-base">
           <span
             dangerouslySetInnerHTML={{
