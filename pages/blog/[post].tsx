@@ -105,7 +105,7 @@ export async function getStaticProps(context) {
   return {
     revalidate: 60,
     props: {
-      post: post.data.attributes,
+      post: post.data?.attributes,
     },
   };
 }
@@ -121,7 +121,7 @@ export async function getStaticPaths() {
     fallback: "blocking",
     paths:
       post.data?.map((p) => ({
-        params: { post: p.attributes.slug },
+        params: { post: `${p.id}-${p.attributes.slug}` },
       })) ?? [],
   };
 }
