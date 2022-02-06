@@ -2,9 +2,7 @@ export interface IAnnouncementBar {
   data: {
     id: number;
     attributes: {
-      announcement_text: string;
-      announcement_link_text: string;
-      announcement_link: string;
+      announcement: string;
     };
   };
 }

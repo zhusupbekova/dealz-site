@@ -63,20 +63,18 @@ export function Header({ user }: { user: IUserProps }) {
 
   return (
     <Popover className="relative bg-white z-40">
-      {announcementData && (
-        <div className="w-full flex flex-col sm:flex-row items-center justify-center bg-primary text-white font-semibold p-3 text-sm sm:text-base">
-          {announcementData.data.attributes.announcement_text}{" "}
-          <span className="flex">
-            <a
-              href={announcementData.data.attributes.announcement_link}
-              className="underline mx-2"
-            >
-              {announcementData.data.attributes.announcement_link_text}
-            </a>
-            <SparklesIcon className="h-5 sm:h-6" />
-          </span>
+      {announcementData &&
+      announcementData.data.attributes.announcement.length ? (
+        <div className="w-full flex items-center justify-center bg-primary text-white font-semibold p-3 text-sm sm:text-base">
+          <span
+            dangerouslySetInnerHTML={{
+              __html: announcementData.data.attributes.announcement,
+            }}
+          />
+
+          <SparklesIcon className="h-5 sm:h-6 ml-2" />
         </div>
-      )}
+      ) : null}
       <div className="px-4 sm:px-6 w-full border-b-2 border-gray-100">
         <div className="flex justify-between max-w-6xl mx-auto  items-center py-6 md:justify-start md:space-x-10">
           <div className="relative h-10 w-full flex justify-start lg:flex-1">
