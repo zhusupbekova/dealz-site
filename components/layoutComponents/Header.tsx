@@ -334,7 +334,7 @@ export function Header({ user }: { user: IUserProps }) {
                                     {filterData.categoryStats?.map((item) => (
                                       <a
                                         key={`category_name_${item.title}`}
-                                        href={`/categories/${item.slug}`}
+                                        href={`/?categories=${item.slug}`}
                                         className="flex items-start rounded-lg hover:bg-gray-50"
                                       >
                                         <div className="flex w-full min-w-0">
