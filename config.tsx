@@ -13,6 +13,8 @@ export const navigation = [
   { name: "Submit a deal", href: "/submit-deal" },
   { name: "Top 10", href: "/top-10" },
   { name: "Categories", href: "/categories" },
+  { name: "Blog", href: "/blog"},
+  { name: "Facebook Group", href: "https://www.facebook.com/groups/SellerDeals"}
 ];
 
 export const announcementBar = {
@@ -37,7 +39,7 @@ export const footer = {
   social: [
     {
       name: "Facebook",
-      href: "#",
+      href: "https://www.facebook.com/groups/SellerDeals",
       icon: (props) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
