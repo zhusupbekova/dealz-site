@@ -1,4 +1,4 @@
-export const GOOGLE_ANALYTICS_ID = "";
+export const GOOGLE_ANALYTICS_ID = "GTM-MJKJ24Q";
 
 export const brand = {
   name: "SellerDeals",
